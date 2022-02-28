@@ -8,5 +8,6 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="64,52,0,0"/>
+        <Button x:Name="PrzyciskZmiany" Content="DobraZmiana" HorizontalAlignment="Left" Height="76" Margin="231,0,0,0" VerticalAlignment="Center" Width="286"/>
     </Grid>
 </Window>
