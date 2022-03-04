@@ -1,0 +1,16 @@
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\pdf-manager.exe.config
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\pdf-manager.exe
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\pdf-manager.pdb
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.AssemblyReference.cache
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.SuggestedBindingRedirects.cache
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\MainWindow.g.cs
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\App.g.cs
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager_MarkupCompile.cache
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager_MarkupCompile.lref
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\MainWindow.baml
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.g.resources
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf_manager.Properties.Resources.resources
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.GenerateResource.cache
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CoreCompileInputs.cache
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.exe
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.pdb

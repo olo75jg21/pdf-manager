@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:pdf_manager"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="64,52,0,0"/>
-    </Grid>
+    <DockPanel LastChildFill="False" Margin="0,0,0,0">
+        <StackPanel DockPanel.Dock="Left" Width="111" Height="343" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <StackPanel DockPanel.Dock="Top" Width="689" Height="97"/>
+    </DockPanel>
 </Window>
