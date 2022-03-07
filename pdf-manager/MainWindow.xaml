@@ -6,8 +6,18 @@
         xmlns:local="clr-namespace:pdf_manager"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel LastChildFill="False" Margin="0,0,0,0">
-        <StackPanel DockPanel.Dock="Left" Width="111" Height="343" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-        <StackPanel DockPanel.Dock="Top" Width="689" Height="97"/>
+    <DockPanel LastChildFill="True" Margin="0,0,0,0">
+        <ToolBar DockPanel.Dock="Top" Height="28" Header="">
+            <Label>"Toolbar"</Label>
+        </ToolBar>
+        <ToolBar DockPanel.Dock="Bottom">
+            <Label>"Footer"</Label>
+        </ToolBar>
+        <StackPanel DockPanel.Dock="Left" Background="Red">
+            <Label>"StackPanel"</Label>
+        </StackPanel>
+        <WrapPanel Background="Yellow">
+            <Label>"Workspace"</Label>
+        </WrapPanel>
     </DockPanel>
 </Window>
