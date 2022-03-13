@@ -34,3 +34,7 @@ C:\Users\Tomek\Source\Repos\pdf---manager\pdf-manager\obj\Debug\pdf_manager.Prop
 C:\Users\Tomek\Source\Repos\pdf---manager\pdf-manager\obj\Debug\pdf-manager.csproj.GenerateResource.cache
 C:\Users\Tomek\Source\Repos\pdf---manager\pdf-manager\obj\Debug\pdf-manager.csproj.CoreCompileInputs.cache
 C:\Users\Tomek\Source\Repos\pdf---manager\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\BouncyCastle.Crypto.dll
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\itextsharp.dll
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\itextsharp.xml
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
