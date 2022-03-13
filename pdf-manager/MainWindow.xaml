@@ -18,6 +18,9 @@
         </StackPanel>
         <WrapPanel Background="Yellow">
             <Label>"Workspace"</Label>
+            <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
+            <Button x:Name="open_pdf" Content="Open PDF" Height="26" Width="126" Click="open_pdf_Click"/>
+            <ListBox x:Name="results" Height="351" Width="354" d:ItemsSource="{d:SampleData ItemCount=5}"/>
         </WrapPanel>
     </DockPanel>
 </Window>
