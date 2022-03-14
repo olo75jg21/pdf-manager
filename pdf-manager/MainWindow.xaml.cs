@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using iTextSharp.text;
@@ -8,28 +9,46 @@ using Xceed.Wpf.Toolkit;
 
 class files_info
 {
-    string sciezka;
+    string sciezka = "";
     int strona;
     int linia;
+    string linijka;
+
+    public files_info(string sciezka, int strona, int linia, string linijka)
+    {
+        this.sciezka = sciezka;
+        this.strona = strona;
+        this.linia = linia;
+        this.linijka = linijka;
+    }
+    public string Sciezka { get => sciezka; }
+    public int Strona { get => strona; set => strona = value; }
+    public int Linia { get => linia; }
+    public string Linijka { get => linijka; }
 }
+
+
 
 namespace pdf_manager
 {
     /// <summary>
     /// Logika interakcji dla klasy MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
    {
-      public MainWindow()
+        List<files_info> pliki = new List<files_info>();
+
+        public MainWindow()
       {
             InitializeComponent();
-       }
+      }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
             // string searchText = "Ala";
-
+           
             using (PdfReader reader = new PdfReader(path))
             {
                 StringBuilder text = new StringBuilder();
@@ -48,6 +67,7 @@ namespace pdf_manager
                         if (line.Contains("Ala"))
                         {
                             results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                            pliki.Add(new files_info("",i,j,line) );
                         }
                         j++;
                     }
@@ -66,7 +86,26 @@ namespace pdf_manager
             {
                 for (int x = 0; x < results.SelectedItems.Count; x++)
                 {
-                     results.SelectedItems[x].ToString() + "\n";
+                    bool czyStrona = false;
+                    for (int i = 0; i < x; i++)
+                    {
+                        if( pliki[i].Strona == pliki[x].Strona )
+                        {
+                            czyStrona = true;
+                            break;
+                        }
+                    }
+                    if(czyStrona == false)
+                    {
+                        PdfDocument template = new PdfDocument(reader);
+                        srcDoc.copyPagesTo(1, srcDoc.getNumberOfPages(), pdfDoc);
+                    }
+
+
+
+                   
+
+
                 }
                 
             }
