@@ -2,41 +2,54 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+
+/// iTextSharp
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+
+/// CheckedBoxList
 using Xceed.Wpf.Toolkit;
 
+/// Spire 
+using Spire.Pdf;
+using System.Drawing;
+using Spire.Pdf.General.Find;
+
+
+
+/// klasa wybranych pdfow do pracy
 class files_info
 {
     string sciezka = "";
-    int strona;
-    int linia;
-    string linijka;
+    int strona; // strona gdzie znajduje sie wyszukany text
+    int linia_w_dokumencie; // linia gdzie znajduje sie wyszukany text
+    string text; // wyszukany text
+    int strona_w_pdfie = 0; // lokalizacja strony w nowo utworzynym  pdfie "Preview" - jesli takowa juz zostala dodana 
 
-    public files_info(string sciezka, int strona, int linia, string linijka)
+    public files_info(string sciezka, int strona, int linia_w_dokumencie, string text)
     {
         this.sciezka = sciezka;
         this.strona = strona;
-        this.linia = linia;
-        this.linijka = linijka;
+        this.linia_w_dokumencie = linia_w_dokumencie;
+        this.text = text;
     }
+    
+    // nie wszedzie sa settery ( nie potrzebne aktualnie ) 
     public string Sciezka { get => sciezka; }
-    public int Strona { get => strona; set => strona = value; }
-    public int Linia { get => linia; }
-    public string Linijka { get => linijka; }
+    public int Strona { get => strona; }
+    public int Linia_w_dokumencie { get => linia_w_dokumencie; }
+    public string Text { get => text; }
+    public int Strona_w_pdfie { get => strona_w_pdfie; set => strona = value; }
 }
 
 
 
 namespace pdf_manager
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
-
     public partial class MainWindow : Window
    {
+       // lista dodanych plikow do pracy 
         List<files_info> pliki = new List<files_info>();
 
         public MainWindow()
@@ -83,20 +96,23 @@ namespace pdf_manager
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
 
-           /// Sprawdzenie czy jakis checkbox zostal zaznaczony 
+            // aktualna ilosc stron w nowo utworzonym pdfie
+            int ilosc_stron = 1;
+
+           // Sprawdzenie czy jakis checkbox zostal zaznaczony 
             if (results.SelectedItems.Count != 0)
             {
-                /// Petla po wybranych checkboxach 
+                // Petla po wybranych checkboxach 
                 for (int x = 0; x < results.SelectedItems.Count; x++)
                 {
-                    /// Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
+                    // Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
                     bool czyStrona = false;
                     for (int i = 0; i < x; i++)
                     {
-                        /// sprawdzenie czy uzyte byly te same pliki
+                        // sprawdzenie czy uzyte byly te same pliki
                         if (pliki[i].Sciezka == pliki[i].Sciezka)
                         {
-                            /// sprawdzenie czy dodane zostaly te same linie do pliku
+                            // sprawdzenie czy dodane zostaly te same linie do pliku
                             if (pliki[i].Strona == pliki[x].Strona)
                             {
                                 czyStrona = true;
@@ -105,9 +121,13 @@ namespace pdf_manager
                         }
                     }
 
-                    /// jesli plik nie zostal dodany w takim wypadku go dodajemy 
+                    // jesli plik nie zostal dodany w takim wypadku go dodajemy 
                     if(czyStrona == false)
                     {
+                        // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
+                        pliki[x].Strona_w_pdfie = ilosc_stron;
+                        ilosc_stron++;
+
                         string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
 
                         using (PdfReader kopiowany_pdf = new PdfReader(path))
@@ -116,19 +136,29 @@ namespace pdf_manager
                             nowy_pdf.AddPage( importedPage );
                         }
                     }
-
-                    /// podekreslenie tekstu w nowym pliku
-
+                    doc.Close();
 
 
-                   
+                    // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
+                    
+                    // otwarcie pliku utowrzonego poprzednio
+                    Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
+                    docSpire.LoadFromFile("demo.pdf");
 
+                    PdfPageBase page = docSpire.Pages[ pliki[x].Strona - 1 ]; // liczy od 0 strony || wybor strony do przeszukania
+
+                    PdfTextFind[] result = page.FindText(pliki[x].Text).Finds; // przeszukanie strony 
+
+                    result[0].ApplyHighLight(); // dodanie tylko do pierwszego znalezienia podkreslenia 
+                                                //  teoretycznie nie bedzie cala linia identyczna
+
+                    doc.Close();
 
                 }
-                
+                System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego
+                                                                                      //  potem bedzie go mozna zapisac lub nie
             }
 
-            ///System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\test.pdf");
         }
     }
 }
