@@ -1,0 +1,8 @@
+# exclude suo files
+*.suo
+
+packages
+
+.cache
+.dll
+.env
