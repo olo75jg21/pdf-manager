@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using Xceed.Wpf.Toolkit;
+
+class files_info
+{
+    string sciezka;
+    int strona;
+    int linia;
+}
 
 namespace pdf_manager
 {
-   /// <summary>
-   /// Logika interakcji dla klasy MainWindow.xaml
-   /// </summary>
-   public partial class MainWindow : Window
+    /// <summary>
+    /// Logika interakcji dla klasy MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
    {
       public MainWindow()
       {
-         InitializeComponent();
-      }
+            InitializeComponent();
+       }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -57,9 +55,23 @@ namespace pdf_manager
             }
         }
 
-        private void open_pdf_Click(object sender, RoutedEventArgs e)
+        private void preview_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\test.pdf");
+            FileStream fs = new FileStream("demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            Document doc = new Document();
+            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+            doc.Open();
+
+            if (results.SelectedItems.Count != 0)
+            {
+                for (int x = 0; x < results.SelectedItems.Count; x++)
+                {
+                     results.SelectedItems[x].ToString() + "\n";
+                }
+                
+            }
+
+            ///System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\test.pdf");
         }
     }
 }

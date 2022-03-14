@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:pdf_manager"
+        xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel LastChildFill="True" Margin="0,0,0,0">
@@ -19,8 +19,8 @@
         <WrapPanel Background="Yellow">
             <Label>"Workspace"</Label>
             <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
-            <Button x:Name="open_pdf" Content="Open PDF" Height="26" Width="126" Click="open_pdf_Click"/>
-            <ListBox x:Name="results" Height="351" Width="354" d:ItemsSource="{d:SampleData ItemCount=5}"/>
+            <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
+            <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
         </WrapPanel>
     </DockPanel>
 </Window>
