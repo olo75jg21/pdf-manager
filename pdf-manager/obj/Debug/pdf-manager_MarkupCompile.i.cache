@@ -4,16 +4,28 @@
 winexe
 C#
 .cs
+<<<<<<< HEAD
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\
+=======
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\
+>>>>>>> Mushroomus
 pdf_manager
 none
 false
 DEBUG;TRACE
+<<<<<<< HEAD
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\App.xaml
 1219584333
 
 6-502434485
 161611097304
+=======
+D:\Projects\C#\repos\eng_project\pdf-manager\App.xaml
+1219584333
+
+6-502434485
+22-1282163400
+>>>>>>> Mushroomus
 MainWindow.xaml;
 
 True
