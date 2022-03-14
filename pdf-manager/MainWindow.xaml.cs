@@ -77,29 +77,47 @@ namespace pdf_manager
 
         private void preview_Click(object sender, RoutedEventArgs e)
         {
-            FileStream fs = new FileStream("demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            /// Tworzenie nowego pliku pdf 
+            FileStream stream = new FileStream("demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
-            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+            PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
 
+           /// Sprawdzenie czy jakis checkbox zostal zaznaczony 
             if (results.SelectedItems.Count != 0)
             {
+                /// Petla po wybranych checkboxach 
                 for (int x = 0; x < results.SelectedItems.Count; x++)
                 {
+                    /// Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
                     bool czyStrona = false;
                     for (int i = 0; i < x; i++)
                     {
-                        if( pliki[i].Strona == pliki[x].Strona )
+                        /// sprawdzenie czy uzyte byly te same pliki
+                        if (pliki[i].Sciezka == pliki[i].Sciezka)
                         {
-                            czyStrona = true;
-                            break;
+                            /// sprawdzenie czy dodane zostaly te same linie do pliku
+                            if (pliki[i].Strona == pliki[x].Strona)
+                            {
+                                czyStrona = true;
+                                break;
+                            }
                         }
                     }
+
+                    /// jesli plik nie zostal dodany w takim wypadku go dodajemy 
                     if(czyStrona == false)
                     {
-                        PdfDocument template = new PdfDocument(reader);
-                        srcDoc.copyPagesTo(1, srcDoc.getNumberOfPages(), pdfDoc);
+                        string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
+
+                        using (PdfReader kopiowany_pdf = new PdfReader(path))
+                        {
+                            PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
+                            nowy_pdf.AddPage( importedPage );
+                        }
                     }
+
+                    /// podekreslenie tekstu w nowym pliku
 
 
 
