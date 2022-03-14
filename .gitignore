@@ -1,8 +1,11 @@
-# exclude suo files
+# exclude files with this extension
 *.suo
+*.cache
+*.dll
+*.env
+*.pbd
+*.resources
+*.exe
 
+# exclude packages folder
 packages
-
-.cache
-.dll
-.env
