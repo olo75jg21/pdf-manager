@@ -62,7 +62,21 @@ namespace pdf_manager
         private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
             string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
-            filePaths.Add(itemHeader);
+            string dir = DirectoryTree.currentDirectory;
+            string toSave = dir + "\\" + itemHeader;
+            if (!filePaths.Contains(toSave))
+                filePaths.Add(toSave);
+            refreshFileList();
+        }
+
+        private void refreshFileList()
+        {
+            SelectedItemsList.Children.Clear();
+
+            foreach (string file in filePaths)
+            {
+                SelectedItemsList.Children.Add(new TextBlock() { Text = file.Substring(file.LastIndexOf('\\')) });
+            }
         }
 
         // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu

@@ -38,22 +38,23 @@
                 </Grid>
             </Button>
             <TreeView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  x:Name="Drzewko">
-                <TreeView Name="treeview">
-                    <TreeView.ItemContainerStyle>
+                <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                         </Style>
                     </TreeView.ItemContainerStyle>
                 </TreeView>
-            </TreeView>
             <Button Click="ButtonAddSelectedTreeItems_Click" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">Dodaj wybrane pliki</Button>
         </Grid>
-        <WrapPanel Background="Yellow" Margin="0,0,0,0">
-            <Label>"Workspace"</Label>
-            <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
-            <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
-            <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
-        </WrapPanel>
+        <DockPanel LastChildFill="True" Margin="0,0,0,0">
+            <StackPanel x:Name="SelectedItemsList" Orientation="Vertical" Width="Auto" DockPanel.Dock="Left">
+            </StackPanel>
+            <WrapPanel Background="Yellow" Margin="0,0,0,0">
+                <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
+                <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
+                <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
+            </WrapPanel>
+        </DockPanel>
     </DockPanel>
 </Window>
