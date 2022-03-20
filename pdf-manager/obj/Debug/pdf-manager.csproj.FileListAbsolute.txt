@@ -77,3 +77,7 @@ D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CoreCo
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.exe
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.pdb
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.dll
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.xml
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml

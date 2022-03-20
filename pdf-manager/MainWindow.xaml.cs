@@ -48,36 +48,36 @@ class files_info
 namespace pdf_manager
 {
     public partial class MainWindow : Window
-   {
-       // lista dodanych plikow do pracy 
+    {
+        // lista dodanych plikow do pracy 
+        List<string> filePaths = new List<string>();
         List<files_info> pliki = new List<files_info>();
 
         public MainWindow()
-      {
+        {
             InitializeComponent();
-      }
-
-
-        private void ListDirectory(TreeView treeView, string path)
-        {
-            var rootDirectoryInfo = new DirectoryInfo(path);
-            treeView.Items.Add(CreateDirectoryNode(rootDirectoryInfo));
         }
 
-        private static TreeViewItem CreateDirectoryNode(DirectoryInfo directoryInfo)
+        // przycisk pod drzewkiem, dodajacy wybrane pliki
+        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            var directoryNode = new TreeViewItem { Header = directoryInfo.Name };
-            foreach (var directory in directoryInfo.GetDirectories())
-                directoryNode.Items.Add(CreateDirectoryNode(directory));
-
-            foreach (var file in directoryInfo.GetFiles())
-                if (file.Extension == ".pdf")
-                    directoryNode.Items.Add(new TreeViewItem { Header = file.Name });
-
-            return directoryNode;
+            string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
+            filePaths.Add(itemHeader);
         }
 
-    private void button_Click(object sender, RoutedEventArgs e)
+        // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
+        private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            string selectedPath = DirectoryTree.OpenDirectoryDialog();
+
+            if (selectedPath != null)
+            {
+                DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
+            }
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
         {
             string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
             // string searchText = "Ala";
@@ -179,16 +179,6 @@ namespace pdf_manager
                                                                                       //  potem bedzie go mozna zapisac lub nie
             }
 
-        }
-
-        private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ListDirectory(this.Drzewko, fbd.SelectedPath);
-            }
         }
     }
 }
