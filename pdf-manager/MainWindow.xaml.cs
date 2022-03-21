@@ -15,8 +15,7 @@ using Xceed.Wpf.Toolkit;
 /// Spire 
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
-
-
+using System.Windows.Forms;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -51,7 +50,10 @@ namespace pdf_manager
     {
         // lista dodanych plikow do pracy 
         List<string> filePaths = new List<string>();
+
         List<files_info> pliki = new List<files_info>();
+
+        List<files_info> pliki_dodane = new List<files_info>();
 
         public MainWindow()
         {
@@ -120,12 +122,13 @@ namespace pdf_manager
                             string[] lines = page.Split('\n');
 
                             int j = 1;
+                            int licznik = 1;
                             foreach (string line in lines)
                             {
                                 if (line.Contains(szukana_fraza))
                                 {
-                                    results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
-                                    pliki.Add(new files_info("", i, j, line));
+                                    results.Items.Add(licznik + "  " + "Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                                    pliki.Add(new files_info(path, i, j, line));
                                 }
                                 j++;
                             }
@@ -140,10 +143,14 @@ namespace pdf_manager
             results.Items.Clear();
         }
 
+
+
+
+
         private void preview_Click(object sender, RoutedEventArgs e)
         {
             /// Tworzenie nowego pliku pdf 
-            FileStream stream = new FileStream("demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            FileStream stream = new FileStream("C:/Users/Tomek/Desktop/demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
@@ -152,66 +159,71 @@ namespace pdf_manager
             int ilosc_stron = 1;
 
             // Sprawdzenie czy jakis checkbox zostal zaznaczony 
-            if (results.SelectedItems.Count != 0)
+            foreach (int indexChecked in results.CheckedIndices)
             {
-                // Petla po wybranych checkboxach 
-                for (int x = 0; x < results.SelectedItems.Count; x++)
-                {
-                    // Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
-                    bool czyStrona = false;
-                    for (int i = 0; i < x; i++)
-                    {
-                        // sprawdzenie czy uzyte byly te same pliki
-                        if (pliki[i].Sciezka == pliki[i].Sciezka)
-                        {
-                            // sprawdzenie czy dodane zostaly te same linie do pliku
-                            if (pliki[i].Strona == pliki[x].Strona)
-                            {
-                                czyStrona = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    // jesli plik nie zostal dodany w takim wypadku go dodajemy 
-                    if (czyStrona == false)
-                    {
-                        // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
-                        pliki[x].Strona_w_pdfie = ilosc_stron;
-                        ilosc_stron++;
-
-                        string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
-
-                        using (PdfReader kopiowany_pdf = new PdfReader(path))
-                        {
-                            PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
-                            nowy_pdf.AddPage(importedPage);
-                        }
-                    }
-                    doc.Close();
 
 
-                    // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
-
-                    // otwarcie pliku utowrzonego poprzednio
-                    Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
-                    docSpire.LoadFromFile("demo.pdf");
-
-                    PdfPageBase page = docSpire.Pages[pliki[x].Strona - 1]; // liczy od 0 strony || wybor strony do przeszukania
-
-                    PdfTextFind[] result = page.FindText(pliki[x].Text).Finds; // przeszukanie strony 
-
-                    result[0].ApplyHighLight(); // dodanie tylko do pierwszego znalezienia podkreslenia 
-                                                //  teoretycznie nie bedzie cala linia identyczna
-
-                    doc.Close();
-
-                }
-                System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego
-                                                                                      //  potem bedzie go mozna zapisac lub nie
             }
+                string s = results.Items[x].ToString();
+                                string sub = s.Substring(8,  s.IndexOf("L") - s.IndexOf(" ") - 2 );
 
+                                System.Windows.MessageBox.Show( sub );
+
+                                // Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
+                                bool czyStrona = false;
+                                for (int i = 0; i < x; i++)
+                                {
+                                    // sprawdzenie czy uzyte byly te same pliki
+                                    if (pliki[i].Sciezka == pliki[x].Sciezka)
+                                    {
+                                        // sprawdzenie czy dodane zostaly te same linie do pliku
+                                        if (pliki[i].Strona == pliki[x].Strona)
+                                        {
+                                            System.Windows.MessageBox.Show("te same");
+                                            czyStrona = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // jesli plik nie zostal dodany w takim wypadku go dodajemy 
+                                if (czyStrona == false)
+                                {
+                                    // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
+                                    pliki[x].Strona_w_pdfie = ilosc_stron;
+                                    ilosc_stron++;
+
+                                    string path = pliki[x].Sciezka;
+                                    using (PdfReader kopiowany_pdf = new PdfReader(path))
+                                    {
+                                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
+                                        nowy_pdf.AddPage(importedPage);
+                                    }
+                                }
+                                */
+
+            /*
+                                // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
+
+                                // otwarcie pliku utowrzonego poprzednio
+
+                                Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
+                                docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
+
+                                PdfPageBase page = docSpire.Pages[pliki[x].Strona - 1]; // liczy od 0 strony || wybor strony do przeszukania
+
+                                PdfTextFind[] result = page.FindText(pliki[x].Text).Finds; // przeszukanie strony 
+
+                                result[0].ApplyHighLight(); // dodanie tylko do pierwszego znalezienia podkreslenia 
+                                                            //  teoretycznie nie bedzie cala linia identyczna
+
+            */
         }
+               // System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego                                                                                  //  potem bedzie go mozna zapisac lub nie
+  /*          }
+            doc.Close();
+
+        }*/
 
       private void Button_Click_1(object sender, RoutedEventArgs e)
       {
