@@ -96,36 +96,39 @@ namespace pdf_manager
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            string szukana_fraza;
-
-            if (case_sensitivity.IsChecked == true) 
-                szukana_fraza = searching_word.Text.ToLower();
-            else
-                szukana_fraza = searching_word.Text;
-
-            foreach(var path in filePaths)
+            if (filePaths.Count != 0)
             {
-                using (PdfReader reader = new PdfReader(path))
+                string szukana_fraza;
+
+                if (case_sensitivity.IsChecked == true)
+                    szukana_fraza = searching_word.Text.ToLower();
+                else
+                    szukana_fraza = searching_word.Text;
+
+                foreach (var path in filePaths)
                 {
-                    StringBuilder text = new StringBuilder();
-                    ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
-
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    using (PdfReader reader = new PdfReader(path))
                     {
-                        string page = "";
+                        StringBuilder text = new StringBuilder();
+                        ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
 
-                        page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
-                        string[] lines = page.Split('\n');
-
-                        int j = 1;
-                        foreach (string line in lines)
+                        for (int i = 1; i <= reader.NumberOfPages; i++)
                         {
-                            if (line.Contains(szukana_fraza))
+                            string page = "";
+
+                            page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
+                            string[] lines = page.Split('\n');
+
+                            int j = 1;
+                            foreach (string line in lines)
                             {
-                                results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
-                                pliki.Add(new files_info("", i, j, line));
+                                if (line.Contains(szukana_fraza))
+                                {
+                                    results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                                    pliki.Add(new files_info("", i, j, line));
+                                }
+                                j++;
                             }
-                            j++;
                         }
                     }
                 }
