@@ -94,11 +94,16 @@ namespace pdf_manager
             }
         }
 
-      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
-      /*
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            foreach(var path in pliki)
+            string szukana_fraza;
+
+            if (case_sensitivity.IsChecked == true) 
+                szukana_fraza = searching_word.Text.ToLower();
+            else
+                szukana_fraza = searching_word.Text;
+
+            foreach(var path in filePaths)
             {
                 using (PdfReader reader = new PdfReader(path))
                 {
@@ -115,7 +120,7 @@ namespace pdf_manager
                         int j = 1;
                         foreach (string line in lines)
                         {
-                            if (line.Contains("Ala"))
+                            if (line.Contains(szukana_fraza))
                             {
                                 results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
                                 pliki.Add(new files_info("", i, j, line));
@@ -124,16 +129,14 @@ namespace pdf_manager
                         }
                     }
                 }
-
             }
-               // string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
-                // string searchText = "Ala";
         }
-      */
 
-      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+        private void clear_Click(object sender, RoutedEventArgs e)
+        {
+            results.Items.Clear();
+        }
 
-      /*
         private void preview_Click(object sender, RoutedEventArgs e)
         {
             /// Tworzenie nowego pliku pdf 
@@ -145,7 +148,7 @@ namespace pdf_manager
             // aktualna ilosc stron w nowo utworzonym pdfie
             int ilosc_stron = 1;
 
-           // Sprawdzenie czy jakis checkbox zostal zaznaczony 
+            // Sprawdzenie czy jakis checkbox zostal zaznaczony 
             if (results.SelectedItems.Count != 0)
             {
                 // Petla po wybranych checkboxach 
@@ -168,7 +171,7 @@ namespace pdf_manager
                     }
 
                     // jesli plik nie zostal dodany w takim wypadku go dodajemy 
-                    if(czyStrona == false)
+                    if (czyStrona == false)
                     {
                         // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
                         pliki[x].Strona_w_pdfie = ilosc_stron;
@@ -179,19 +182,19 @@ namespace pdf_manager
                         using (PdfReader kopiowany_pdf = new PdfReader(path))
                         {
                             PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
-                            nowy_pdf.AddPage( importedPage );
+                            nowy_pdf.AddPage(importedPage);
                         }
                     }
                     doc.Close();
 
 
                     // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
-                    
+
                     // otwarcie pliku utowrzonego poprzednio
                     Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
                     docSpire.LoadFromFile("demo.pdf");
 
-                    PdfPageBase page = docSpire.Pages[ pliki[x].Strona - 1 ]; // liczy od 0 strony || wybor strony do przeszukania
+                    PdfPageBase page = docSpire.Pages[pliki[x].Strona - 1]; // liczy od 0 strony || wybor strony do przeszukania
 
                     PdfTextFind[] result = page.FindText(pliki[x].Text).Finds; // przeszukanie strony 
 
@@ -206,11 +209,11 @@ namespace pdf_manager
             }
 
         }
-      */
 
       private void Button_Click_1(object sender, RoutedEventArgs e)
       {
 
       }
-   }
+
+    }
 }

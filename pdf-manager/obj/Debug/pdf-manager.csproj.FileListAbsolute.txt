@@ -128,3 +128,13 @@ C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager.exe
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager.pdb
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\App.baml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.License.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.Pdf.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.mshtml.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.WindowsAPICodePack.Shell.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.License.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.Pdf.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\App.baml
