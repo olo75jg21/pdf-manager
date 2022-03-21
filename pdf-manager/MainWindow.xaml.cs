@@ -75,7 +75,10 @@ namespace pdf_manager
 
             foreach (string file in filePaths)
             {
-                SelectedItemsList.Children.Add(new TextBlock() { Text = file.Substring(file.LastIndexOf('\\')) });
+                SelectedItemsList.Children.Add(new TextBlock() 
+                {
+                   Text = file.Substring(file.LastIndexOf('\\'))
+                });
             }
         }
 
@@ -91,6 +94,8 @@ namespace pdf_manager
             }
         }
 
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+      /*
         private void button_Click(object sender, RoutedEventArgs e)
         {
             string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
@@ -121,7 +126,11 @@ namespace pdf_manager
                 }
             }
         }
+      */
 
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+
+      /*
         private void preview_Click(object sender, RoutedEventArgs e)
         {
             /// Tworzenie nowego pliku pdf 
@@ -194,5 +203,11 @@ namespace pdf_manager
             }
 
         }
-    }
+      */
+
+      private void Button_Click_1(object sender, RoutedEventArgs e)
+      {
+
+      }
+   }
 }
