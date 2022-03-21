@@ -16,6 +16,7 @@ using Xceed.Wpf.Toolkit;
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
 using System.Windows.Forms;
+using System;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -53,7 +54,7 @@ namespace pdf_manager
 
         List<files_info> pliki = new List<files_info>();
 
-        List<files_info> pliki_dodane = new List<files_info>();
+        List<int> pliki_dodane = new List<int>();
 
         public MainWindow()
         {
@@ -113,6 +114,7 @@ namespace pdf_manager
                     {
                         StringBuilder text = new StringBuilder();
                         ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
+                        int licznik = 1;
 
                         for (int i = 1; i <= reader.NumberOfPages; i++)
                         {
@@ -121,14 +123,14 @@ namespace pdf_manager
                             page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
                             string[] lines = page.Split('\n');
 
-                            int j = 1;
-                            int licznik = 1;
+                            int j = 1;      
                             foreach (string line in lines)
                             {
                                 if (line.Contains(szukana_fraza))
                                 {
-                                    results.Items.Add(licznik + "  " + "Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                                    results.Items.Add(licznik + ":  " + "Strona: " + i + " Linia: " + j + "\n" + line + "\n");
                                     pliki.Add(new files_info(path, i, j, line));
+                                    licznik++;
                                 }
                                 j++;
                             }
@@ -159,49 +161,53 @@ namespace pdf_manager
             int ilosc_stron = 1;
 
             // Sprawdzenie czy jakis checkbox zostal zaznaczony 
-            foreach (int indexChecked in results.CheckedIndices)
+            for (int x = 0; x < results.SelectedItems.Count; x++)
             {
+                // wyluskanie numeru linii z ListBox'a 
+                string number = results.SelectedItems[x].ToString();
+                number = number.Substring(0, number.IndexOf(":"));
+                int listBoxLineNumber = Int32.Parse(number) - 1;
 
+                bool czyStrona = false;
 
+                // literacja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
+                for(int i=0; i < pliki_dodane.Count; i++)
+                {
+                    System.Windows.MessageBox.Show(pliki[listBoxLineNumber].Sciezka.ToString());
+                    if ( pliki[ listBoxLineNumber ].Sciezka ==  pliki[ pliki_dodane[i] ].Sciezka )
+                    {
+                        if( pliki[ listBoxLineNumber ].Strona == pliki[pliki_dodane[i] ].Strona )
+                        {
+                            czyStrona = true;
+                            break;
+                        }
+                    }
+                }
+                if( czyStrona == false )
+                {
+                      // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
+                      pliki[listBoxLineNumber].Strona_w_pdfie = ilosc_stron;
+                      ilosc_stron++;
+
+                      string path = pliki[listBoxLineNumber].Sciezka;
+                      
+                      // kopiowanie do nowo utworzonego pdfa strony
+                      using (PdfReader kopiowany_pdf = new PdfReader(path))
+                      {
+                            PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[listBoxLineNumber].Strona);
+                            nowy_pdf.AddPage(importedPage);
+                      }
+
+                      // wpisanie do listy dodanych linii z ListBoxa 
+                      pliki_dodane.Add(listBoxLineNumber);
+                }
             }
-                string s = results.Items[x].ToString();
-                                string sub = s.Substring(8,  s.IndexOf("L") - s.IndexOf(" ") - 2 );
+            // wyswietlenie pdfa w przegladarce i zamkniecie dokumentu
+            System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego  
+            doc.Close();
 
-                                System.Windows.MessageBox.Show( sub );
-
-                                // Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
-                                bool czyStrona = false;
-                                for (int i = 0; i < x; i++)
-                                {
-                                    // sprawdzenie czy uzyte byly te same pliki
-                                    if (pliki[i].Sciezka == pliki[x].Sciezka)
-                                    {
-                                        // sprawdzenie czy dodane zostaly te same linie do pliku
-                                        if (pliki[i].Strona == pliki[x].Strona)
-                                        {
-                                            System.Windows.MessageBox.Show("te same");
-                                            czyStrona = true;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                // jesli plik nie zostal dodany w takim wypadku go dodajemy 
-                                if (czyStrona == false)
-                                {
-                                    // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
-                                    pliki[x].Strona_w_pdfie = ilosc_stron;
-                                    ilosc_stron++;
-
-                                    string path = pliki[x].Sciezka;
-                                    using (PdfReader kopiowany_pdf = new PdfReader(path))
-                                    {
-                                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
-                                        nowy_pdf.AddPage(importedPage);
-                                    }
-                                }
-                                */
-
+        }
+            
             /*
                                 // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
 
@@ -218,12 +224,6 @@ namespace pdf_manager
                                                             //  teoretycznie nie bedzie cala linia identyczna
 
             */
-        }
-               // System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego                                                                                  //  potem bedzie go mozna zapisac lub nie
-  /*          }
-            doc.Close();
-
-        }*/
 
       private void Button_Click_1(object sender, RoutedEventArgs e)
       {
