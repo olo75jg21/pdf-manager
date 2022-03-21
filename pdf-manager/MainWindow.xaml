@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        MinWidth="900"
+        MinHeight="600"
+        Title="Pdf Manager" Height="600" Width="900">
     <Grid Background="#fcf9f7">
         <!-- Main grid -->
         <Grid.ColumnDefinitions>
@@ -138,6 +140,7 @@
         
         <!-- Tool panel Grid-->
         <Grid Grid.Column="2" Background="White">
+            
             
         </Grid>
         <!-- End Tool Panel Grid-->
