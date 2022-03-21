@@ -17,6 +17,7 @@ using Spire.Pdf;
 using Spire.Pdf.General.Find;
 using System.Windows.Forms;
 using System;
+using System.Drawing;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -109,22 +110,30 @@ namespace pdf_manager
 
                 foreach (var path in filePaths)
                 {
-                    using (PdfReader reader = new PdfReader(path))
-                    {
-                        //StringBuilder text = new StringBuilder();
-                        //ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
+                        PdfReader reader = new PdfReader(@"C:\Users\Tomek\Desktop\Testing\test.pdf");
+                        string[] words;
+                        string line;
 
-                        string strText = string.Empty;
-                        ITextExtractionStrategy its = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
+                        for (int i = 1; i <= reader.NumberOfPages; i++)
+                        {
+                            string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+
+                            words = text.Split('\n');
+                            for (int x = 0, len = words.Length; x < len; x++)
+                            {
+                                line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
+
+                                if (line.Contains("Ala"))
+                                {
+                                    results.Items.Add( licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
+                                    pliki.Add(new files_info(path, i, x, line));
                                     licznik++;
-                                }
-                                j++;
+                                }    
                             }
                         }
                     }
                 }
             }
-        }
 
         private void clear_Click(object sender, RoutedEventArgs e)
         {
@@ -147,15 +156,15 @@ namespace pdf_manager
                 number = number.Substring(0, number.IndexOf(":"));
 
                 // w strukturze indeksuje sie od 0 dlatego - 1
-                int listBoxLineNumber = Int32.Parse(number) - 1 ;
+                int listBoxLineNumber = Int32.Parse(number) - 1;
                 bool czyStrona = false;
 
                 // literacja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
-                for(int i=0; i < pliki_dodane.Count; i++)
+                for (int i = 0; i < pliki_dodane.Count; i++)
                 {
-                    if ( pliki[ listBoxLineNumber ].Sciezka ==  pliki[ pliki_dodane[i] ].Sciezka )
+                    if (pliki[listBoxLineNumber].Sciezka == pliki[pliki_dodane[i]].Sciezka)
                     {
-                        if( pliki[ listBoxLineNumber ].Strona == pliki[pliki_dodane[i] ].Strona )
+                        if (pliki[listBoxLineNumber].Strona == pliki[pliki_dodane[i]].Strona)
                         {
                             czyStrona = true;
                             break;
@@ -164,37 +173,36 @@ namespace pdf_manager
                 }
 
                 string path = pliki[listBoxLineNumber].Sciezka;
-                if ( czyStrona == false )
+                if (czyStrona == false)
                 {
-                    // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
-                    System.Windows.MessageBox.Show(pliki[listBoxLineNumber].Sciezka.ToString());
-                    System.Windows.MessageBox.Show(pliki[listBoxLineNumber].Strona.ToString());
-
                     // kopiowanie do nowo utworzonego pdfa strony
                     using (PdfReader kopiowany_pdf = new PdfReader(path))
-                      {
-                            System.Windows.MessageBox.Show(pliki[listBoxLineNumber].Strona.ToString());
-                            PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[listBoxLineNumber].Strona );
-                            nowy_pdf.AddPage(importedPage);
-                      }
+                    {
+                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[listBoxLineNumber].Strona);
+                        nowy_pdf.AddPage(importedPage);
+                    }
 
-                      // wpisanie do listy dodanych linii z ListBoxa 
-                      pliki_dodane.Add(listBoxLineNumber);
+                    // wpisanie do listy dodanych linii z ListBoxa 
+                    pliki_dodane.Add(listBoxLineNumber);
                 }
-  /*
-                doc.Close();
+                /*
+                                Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
+                                docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
+                                PdfPageBase page = docSpire.Pages[0]; // liczy od 0 strony || wybor strony do przeszukania
+                                PdfTextFind[] finds = page.FindText(pliki[listBoxLineNumber].Text, TextFindParameter.CrossLine).Finds; // przeszukanie strony 
 
-                Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
-                docSpire.LoadFromFile(path);
-                PdfPageBase page = docSpire.Pages[pliki[listBoxLineNumber].Strona - 1]; // liczy od 0 strony || wybor strony do przeszukania
-                PdfTextFind[] result = page.FindText(pliki[listBoxLineNumber].Text).Finds; // przeszukanie strony 
-                result[0].ApplyHighLight();
-*/
+                                foreach (PdfTextFind result in finds)
+                                {
+                                    result.ApplyHighLight(Color.Yellow);
+                                }
+
+                                docSpire.SaveToFile("C:/Users/Tomek/Desktop/demo.pdf", FileFormat.PDF);
+                                docSpire.Close();
+                */
             }
-            // wyswietlenie pdfa w przegladarce i zamkniecie dokumentu
-            System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego  
-            doc.Close();
-
+                // wyswietlenie pdfa w przegladarce i zamkniecie dokumentu
+                System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego  
+                doc.Close();
         }
            
       private void Button_Click_1(object sender, RoutedEventArgs e)
