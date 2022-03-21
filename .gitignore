@@ -1,0 +1,11 @@
+# exclude files with these extension
+*.suo
+*.cache
+*.dll
+*.env
+*.pbd
+*.resources
+*.exe
+
+# exclude packages folder
+packages
