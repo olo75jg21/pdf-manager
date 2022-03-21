@@ -98,33 +98,36 @@ namespace pdf_manager
       /*
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
-            // string searchText = "Ala";
-           
-            using (PdfReader reader = new PdfReader(path))
+            foreach(var path in pliki)
             {
-                StringBuilder text = new StringBuilder();
-                ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
-
-                for (int i = 1; i <= reader.NumberOfPages; i++)
+                using (PdfReader reader = new PdfReader(path))
                 {
-                    string page = "";
+                    StringBuilder text = new StringBuilder();
+                    ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
 
-                    page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
-                    string[] lines = page.Split('\n');
-
-                    int j = 1;
-                    foreach (string line in lines)
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
                     {
-                        if (line.Contains("Ala"))
+                        string page = "";
+
+                        page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
+                        string[] lines = page.Split('\n');
+
+                        int j = 1;
+                        foreach (string line in lines)
                         {
-                            results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
-                            pliki.Add(new files_info("",i,j,line) );
+                            if (line.Contains("Ala"))
+                            {
+                                results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                                pliki.Add(new files_info("", i, j, line));
+                            }
+                            j++;
                         }
-                        j++;
                     }
                 }
+
             }
+               // string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
+                // string searchText = "Ala";
         }
       */
 
