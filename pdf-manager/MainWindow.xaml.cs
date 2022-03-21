@@ -111,24 +111,11 @@ namespace pdf_manager
                 {
                     using (PdfReader reader = new PdfReader(path))
                     {
-                        StringBuilder text = new StringBuilder();
-                        ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
-                     
-                        for (int i = 1; i <= reader.NumberOfPages; i++)
-                        {
-                            string page = "";
+                        //StringBuilder text = new StringBuilder();
+                        //ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
 
-                            page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
-                            string[] lines = page.Split('\n');
-
-                            int j = 1;      
-                            foreach (string line in lines)
-                            {
-                                System.Windows.MessageBox.Show(line);
-                                if (line.Contains(szukana_fraza))
-                                {
-                                    results.Items.Add(licznik + ":  " + "Strona: " + i + " Linia: " + j + "\n" + line + "\n");
-                                    pliki.Add(new files_info(path, i, j, line));
+                        string strText = string.Empty;
+                        ITextExtractionStrategy its = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
                                     licznik++;
                                 }
                                 j++;
