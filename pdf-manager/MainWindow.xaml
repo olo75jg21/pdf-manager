@@ -6,55 +6,143 @@
         xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel LastChildFill="True" Margin="0,0,0,0">
-        <ToolBar DockPanel.Dock="Top" Height="28" Header="">
-            <Label>"Toolbar"</Label>
-        </ToolBar>
-        <ToolBar DockPanel.Dock="Bottom">
-            <Label>"Footer"</Label>
-        </ToolBar>
-        <Grid DockPanel.Dock="Left" Margin="0,0,0,0" MinWidth="100" MaxWidth="200">
+    <Grid Background="#fcf9f7">
+        <!-- Main grid -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!-- End Main grid -->
+
+
+        <!-- Tree Directory Grid -->
+        <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
-                <RowDefinition Height="20" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="20" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Click="ButtonAddDirectory_Click">+</Button>
-            <Button Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2">-</Button>
-            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"></TextBox>
-            <Button Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="1" Height="20" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0*"/>
-                        <RowDefinition Height="0*"/>
-                    </Grid.RowDefinitions>
-                </Grid>
-            </Button>
-            <TreeView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"  x:Name="Drzewko">
+
+            <!-- Add and delete directory/file buttons Grid-->
+            <Grid Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button 
+                Grid.Column="0" 
+                Grid.Row="0"
+                Margin="5,5,5,5"
+                Click="ButtonAddDirectory_Click"
+                >
+                    + Dir
+                </Button>
+                <Button 
+                Grid.Column="1" 
+                Grid.Row="0"
+                Margin="5,5,5,5"
+                Click="Button_Click_1"
+                >
+                    - Dir
+                </Button>
+
+                <Button 
+                Grid.Column="2" 
+                Grid.Row="0"
+                Margin="5,5,5,5"
+                Click="ButtonAddDirectory_Click"
+                >
+                    + File
+                </Button>
+
+                <Button 
+                Grid.Column="3" 
+                Grid.Row="0"
+                Margin="5,5,5,5"
+                Click="Button_Click_1"
+                >
+                    - File
+                </Button>
+            </Grid>
+            <!-- End Add and delete directory/file buttons Grid-->
+
+            <Viewbox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Margin="2,2,2,2">Selected Directories:</TextBlock>
+            </Viewbox>
+
+            <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Margin="2,2,2,2">Selected Files:</TextBlock>
+            </Viewbox>
+
+            <TreeView 
+                Grid.Column="0" 
+                Grid.Row="2" 
+                x:Name="Drzewko"
+            >
                 <TreeView.ItemContainerStyle>
-                        <Style TargetType="TreeViewItem">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
-                </TreeView>
-            <Button Click="ButtonAddSelectedTreeItems_Click" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3">Dodaj wybrane pliki</Button>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+
+            <WrapPanel
+                Grid.Column="2"
+                Grid.Row="2"
+                x:Name="SelectedItemsList" 
+                
+                Orientation="Vertical"
+                Width="auto"
+                Height="auto"
+                Background="White"
+             />
+
+            <Button Click="ButtonAddSelectedTreeItems_Click" 
+                    Grid.Row="3" 
+                    Grid.Column="0" 
+                    Grid.ColumnSpan="2"
+                    Margin="4,4,4,4"
+            >
+                Dodaj wybrane pliki
+            </Button>
         </Grid>
-        <DockPanel LastChildFill="True" Margin="0,0,0,0">
-            <StackPanel x:Name="SelectedItemsList" Orientation="Vertical" Width="Auto" DockPanel.Dock="Left">
-            </StackPanel>
+        <!-- End Tree Directory Grid -->
+
+        <!-- Workspace Grid-->
+        <Grid Grid.Column="1">
+
+
+            <!-- ELDEN RING ENJOYER WRAP PANEL
             <WrapPanel Background="Yellow" Margin="0,0,0,0">
                 <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
                 <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
                 <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
             </WrapPanel>
-        </DockPanel>
-    </DockPanel>
+            -->
+        </Grid>
+        <!-- End Workspace Grid-->
+        
+        <!-- Tool panel Grid-->
+        <Grid Grid.Column="2" Background="White">
+            
+        </Grid>
+        <!-- End Tool Panel Grid-->
+
+        
+        
+    </Grid>
 </Window>
