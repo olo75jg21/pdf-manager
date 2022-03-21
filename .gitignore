@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+# exclude files with this extension
+=======
 # exclude files with these extension
+>>>>>>> Mushroomus
 *.suo
 *.cache
 *.dll

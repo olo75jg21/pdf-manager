@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 /// iTextSharp
 using iTextSharp.text;
@@ -13,7 +14,6 @@ using Xceed.Wpf.Toolkit;
 
 /// Spire 
 using Spire.Pdf;
-using System.Drawing;
 using Spire.Pdf.General.Find;
 
 
@@ -48,46 +48,92 @@ class files_info
 namespace pdf_manager
 {
     public partial class MainWindow : Window
-   {
-       // lista dodanych plikow do pracy 
+    {
+        // lista dodanych plikow do pracy 
+        List<string> filePaths = new List<string>();
         List<files_info> pliki = new List<files_info>();
 
         public MainWindow()
-      {
-            InitializeComponent();
-      }
-
-        private void button_Click(object sender, RoutedEventArgs e)
         {
-            string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
-            // string searchText = "Ala";
-           
-            using (PdfReader reader = new PdfReader(path))
+            InitializeComponent();
+        }
+
+        // przycisk pod drzewkiem, dodajacy wybrane pliki
+        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+        {
+            string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
+            string dir = DirectoryTree.currentDirectory;
+            string toSave = dir + "\\" + itemHeader;
+            if (!filePaths.Contains(toSave))
+                filePaths.Add(toSave);
+            refreshFileList();
+        }
+
+        private void refreshFileList()
+        {
+            SelectedItemsList.Children.Clear();
+
+            foreach (string file in filePaths)
             {
-                StringBuilder text = new StringBuilder();
-                ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
-
-                for (int i = 1; i <= reader.NumberOfPages; i++)
+                SelectedItemsList.Children.Add(new TextBlock() 
                 {
-                    string page = "";
-
-                    page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
-                    string[] lines = page.Split('\n');
-
-                    int j = 1;
-                    foreach (string line in lines)
-                    {
-                        if (line.Contains("Ala"))
-                        {
-                            results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
-                            pliki.Add(new files_info("",i,j,line) );
-                        }
-                        j++;
-                    }
-                }
+                   Text = file.Substring(file.LastIndexOf('\\'))
+                });
             }
         }
 
+        // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
+        private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            string selectedPath = DirectoryTree.OpenDirectoryDialog();
+
+            if (selectedPath != null)
+            {
+                DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
+            }
+        }
+
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+      /*
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var path in pliki)
+            {
+                using (PdfReader reader = new PdfReader(path))
+                {
+                    StringBuilder text = new StringBuilder();
+                    ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
+
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        string page = "";
+
+                        page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
+                        string[] lines = page.Split('\n');
+
+                        int j = 1;
+                        foreach (string line in lines)
+                        {
+                            if (line.Contains("Ala"))
+                            {
+                                results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                                pliki.Add(new files_info("", i, j, line));
+                            }
+                            j++;
+                        }
+                    }
+                }
+
+            }
+               // string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
+                // string searchText = "Ala";
+        }
+      */
+
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+
+      /*
         private void preview_Click(object sender, RoutedEventArgs e)
         {
             /// Tworzenie nowego pliku pdf 
@@ -160,5 +206,11 @@ namespace pdf_manager
             }
 
         }
-    }
+      */
+
+      private void Button_Click_1(object sender, RoutedEventArgs e)
+      {
+
+      }
+   }
 }
