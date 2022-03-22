@@ -150,6 +150,7 @@ namespace pdf_manager
             results.Items.Clear();
         }
 
+
         // wyswietlenie jak bedzie wygladac finalny pdf 
         private void preview_Click(object sender, RoutedEventArgs e)
         {
@@ -234,9 +235,18 @@ namespace pdf_manager
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                // sciezka do zapisu pdfa
-                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, "savedPDF.pdf");
-                
-                if( File.Exists(pathToSavePreview) )
+                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath + ".pdf");
+                if( File.Exists(pathToSaveCompleted) == true )
+                {
+                    System.Windows.MessageBox.Show("istnieje");
+                    userPath.Background = System.Windows.Media.Brushes.Red;
+                    return;
+                }
+                else
+                   userPath.Background = System.Windows.Media.Brushes.Black;
+
+
+                if ( File.Exists(pathToSavePreview) )
                 {
                     // sprawdzenie czy ktos chce miec ustawione haslo 
                     if (passwordChecked.IsChecked == true)
@@ -269,6 +279,12 @@ namespace pdf_manager
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
             password.Text = "";
+        }
+
+        // po kliknieciu w texboxa znika tekst 
+        private void userPath_GotFocus(object sender, RoutedEventArgs e)
+        {
+            userPath.Text = "";
         }
     }
 }

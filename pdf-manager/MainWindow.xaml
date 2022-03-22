@@ -146,8 +146,9 @@
                 </Button>
                 <syncfusion:CheckListBox x:Name="results" Width="514" Height="330"/>
                 <Button x:Name="savePreview" Content="Save Preview" Height="26" Width="85" Click="savePreview_Click"/>
+                <TextBox x:Name="userPath" Height="26" TextWrapping="Wrap" Text="Insert Path" Width="105" GotFocus="userPath_GotFocus"/>
                 <TextBox x:Name="password" Height="26" TextWrapping="Wrap" Text="Insert Password:" Width="116" GotFocus="password_GotFocus"/>
-                <CheckBox x:Name="passwordChecked" Content="User Password" Height="25" Width="120"/>
+                <CheckBox x:Name="passwordChecked" Content="User Password" Height="26" Width="120" RenderTransformOrigin="2.117,0.662"/>
             </WrapPanel>
 
         </Grid>
