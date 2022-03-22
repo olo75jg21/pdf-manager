@@ -22,23 +22,23 @@ using System.Drawing;
 /// klasa wybranych pdfow do pracy
 class files_info
 {
-    string sciezka = "";
-    int strona; // strona gdzie znajduje sie wyszukany text
-    int linia_w_dokumencie; // linia gdzie znajduje sie wyszukany text
+    string path = "";
+    int page; // strona gdzie znajduje sie wyszukany text
+    int line; // linia gdzie znajduje sie wyszukany text
     string text; // wyszukany text
 
-    public files_info(string sciezka, int strona, int linia_w_dokumencie, string text)
+    public files_info(string path, int page, int line, string text)
     {
-        this.sciezka = sciezka;
-        this.strona = strona;
-        this.linia_w_dokumencie = linia_w_dokumencie;
+        this.path = path;
+        this.page = page;
+        this.line = line;
         this.text = text;
     }
     
     // nie wszedzie sa settery ( nie potrzebne aktualnie ) 
-    public string Sciezka { get => sciezka; }
-    public int Strona { get => strona; }
-    public int Linia_w_dokumencie { get => linia_w_dokumencie; }
+    public string Path { get => path; }
+    public int Page { get => page; }
+    public int Line { get => line; }
     public string Text { get => text; }
 }
 
@@ -51,9 +51,9 @@ namespace pdf_manager
         // lista dodanych plikow do pracy 
         List<string> filePaths = new List<string>();
 
-        List<files_info> pliki = new List<files_info>();
+        List<files_info> easySearchFilesInfo = new List<files_info>();
 
-        List<int> pliki_dodane = new List<int>();
+        List<int> easySearchAddedFiles = new List<int>();
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
 
@@ -100,18 +100,22 @@ namespace pdf_manager
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            // sprawdzenie czy wybrane zostaly jakies pliki
             if (filePaths.Count != 0)
             {
                 string szukana_fraza;
                 int licznik = 1;
 
+                // czy ignorowac wielkosc liter
                 if (case_sensitivity.IsChecked == true)
                     szukana_fraza = searching_word.Text.ToLower();
                 else
                     szukana_fraza = searching_word.Text;
 
+                // przejscie po sciezkach plikow
                 foreach (var path in filePaths)
                 {
+                    // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
                         PdfReader reader = new PdfReader(@path);
                         string[] words;
                         string line;
@@ -121,14 +125,17 @@ namespace pdf_manager
                             string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
 
                             words = text.Split('\n');
-                            for (int x = 0, len = words.Length; x < len; x++)
+                            for (int x = 0, length = words.Length; x < length; x++)
                             {
                                 line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
 
-                                if (line.Contains("Ala"))
+                                if (line.Contains(szukana_fraza))
                                 {
+                                   
                                     results.Items.Add( licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
-                                    pliki.Add(new files_info(path, i, x, line));
+
+                                // dodawanie do struktury informacji o znalezionych liniach
+                                    easySearchFilesInfo.Add(new files_info(path, i, x, line));
                                     licznik++;
                                 }    
                             }
@@ -137,21 +144,23 @@ namespace pdf_manager
                 }
             }
 
+        // czyszczenie listy 
         private void clear_Click(object sender, RoutedEventArgs e)
         {
             results.Items.Clear();
         }
 
+        // wyswietlenie jak bedzie wygladac finalny pdf 
         private void preview_Click(object sender, RoutedEventArgs e)
         {
           
-            /// Tworzenie nowego pliku pdf 
+            // Tworzenie nowego pliku pdf 
             FileStream stream = new FileStream(pathToSavePreview, FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
 
-            // Sprawdzenie czy jakis checkbox zostal zaznaczony 
+            // przejscie po zaznaczonych checkboxach
             for (int x = 0; x < results.SelectedItems.Count; x++)
             {
                 // wyluskanie numeru linii z ListBox'a 
@@ -162,12 +171,12 @@ namespace pdf_manager
                 int listBoxLineNumber = Int32.Parse(number) - 1;
                 bool czyStrona = false;
 
-                // literacja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
-                for (int i = 0; i < pliki_dodane.Count; i++)
+                // iteracja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
+                for (int i = 0; i < easySearchAddedFiles.Count; i++)
                 {
-                    if (pliki[listBoxLineNumber].Sciezka == pliki[pliki_dodane[i]].Sciezka)
+                    if (easySearchFilesInfo[listBoxLineNumber].Path == easySearchFilesInfo[easySearchAddedFiles[i]].Path)
                     {
-                        if (pliki[listBoxLineNumber].Strona == pliki[pliki_dodane[i]].Strona)
+                        if (easySearchFilesInfo[listBoxLineNumber].Page == easySearchFilesInfo[easySearchAddedFiles[i]].Page)
                         {
                             czyStrona = true;
                             break;
@@ -175,20 +184,20 @@ namespace pdf_manager
                     }
                 }
 
-                string path = pliki[listBoxLineNumber].Sciezka;
+                string path = easySearchFilesInfo[listBoxLineNumber].Path;
                 if (czyStrona == false)
                 {
                     // kopiowanie do nowo utworzonego pdfa strony
                     using (PdfReader kopiowany_pdf = new PdfReader(path))
                     {
-                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[listBoxLineNumber].Strona);
+                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, easySearchFilesInfo[listBoxLineNumber].Page);
                         nowy_pdf.AddPage(importedPage);
                     }
 
                     // wpisanie do listy dodanych linii z ListBoxa 
-                    pliki_dodane.Add(listBoxLineNumber);
+                    easySearchAddedFiles.Add(listBoxLineNumber);
                 }
-                /*
+                /* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
                                 Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
                                 docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
                                 PdfPageBase page = docSpire.Pages[0]; // liczy od 0 strony || wybor strony do przeszukania
@@ -203,8 +212,8 @@ namespace pdf_manager
                                 docSpire.Close();
                 */
             }
-                // wyswietlenie pdfa w przegladarce i zamkniecie dokumentu
-                System.Diagnostics.Process.Start(@pathToSavePreview); // wyswietlenie pliku podgladowego  
+                // wyswietlenie podgladowego pdfa w przegladarce i zamkniecie dokumentu
+                System.Diagnostics.Process.Start(@pathToSavePreview);  
                 doc.Close();
         }
            
@@ -215,56 +224,51 @@ namespace pdf_manager
 
         private void savePreview_Click(object sender, RoutedEventArgs e)
         {
+           // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
+            preview_Click(null, null);
+
+           // okno dialogowe do wybrania folderu zapisu 
             var folderBrowserDialog1 = new FolderBrowserDialog();
             DialogResult result = folderBrowserDialog1.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-
-                if( ischecked )
+               // sciezka do zapisu pdfa
+                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, "savedPDF.pdf");
+                
+                if( File.Exists(pathToSavePreview) )
                 {
-                     using (Stream output = new FileStream(destPdf, FileMode.Create, FileAccess.Write, FileShare.None))
-                     {
-                          PdfReader reader = new PdfReader(input);
-                          string Password = "abc@123";
-                          PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
-                     }
+                    // sprawdzenie czy ktos chce miec ustawione haslo 
+                    if (passwordChecked.IsChecked == true)
+                    {
+                        // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
+                        using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            PdfReader reader = new PdfReader(pathToSavePreview);
+                            string Password = password.Text;
+                            PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
+                        }
+                    }
+                    else
+                    {
+                        // bez hasla mozna tylko przeniesc plik 
+                        File.Move(pathToSavePreview, pathToSaveCompleted);
+                    }
                 }
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("password-protected.pdf"));
-                writer.setEncryption(
-                        USER_PASSWORD.getBytes(),
-                        OWNER_PASSWORD.getBytes(),
-                        PdfWriter.ALLOW_COPY | PdfWriter.ALLOW_PRINTING,
-                        PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
-
-
-                /*
-
-                if (File.Exists(pathToSavePreview))
-                {
-                    File.Move(pathToSavePreview, folderBrowserDialog1.SelectedPath + "/savedPDF.pdf");
-                    File.Delete(pathToSavePreview);
-                }
-                */
             }
         }
 
+        // podczas zamykania aplikacji usuwamy plik preview.pdf
         private void Window_Closed(object sender, EventArgs e)
         {
             if (File.Exists(pathToSavePreview))
-            {
                 File.Delete(pathToSavePreview);
-            }
         }
 
+        // po kliknieciu w texboxa znika tekst 
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
             password.Text = "";
-        }
-
-        private void password_LostFocus(object sender, RoutedEventArgs e)
-        {
-            password.Text = "Insert Password";
         }
     }
 }
