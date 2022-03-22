@@ -148,13 +148,12 @@ namespace pdf_manager
         private void clear_Click(object sender, RoutedEventArgs e)
         {
             results.Items.Clear();
+            easySearchAddedFiles.Clear();
         }
 
-
-        // wyswietlenie jak bedzie wygladac finalny pdf 
-        private void preview_Click(object sender, RoutedEventArgs e)
+        private void previewFunction(object sender, RoutedEventArgs e)
         {
-          
+
             // Tworzenie nowego pliku pdf 
             FileStream stream = new FileStream(pathToSavePreview, FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
@@ -198,24 +197,24 @@ namespace pdf_manager
                     // wpisanie do listy dodanych linii z ListBoxa 
                     easySearchAddedFiles.Add(listBoxLineNumber);
                 }
-                /* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
-                                Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
-                                docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
-                                PdfPageBase page = docSpire.Pages[0]; // liczy od 0 strony || wybor strony do przeszukania
-                                PdfTextFind[] finds = page.FindText(pliki[listBoxLineNumber].Text, TextFindParameter.CrossLine).Finds; // przeszukanie strony 
-
-                                foreach (PdfTextFind result in finds)
-                                {
-                                    result.ApplyHighLight(Color.Yellow);
-                                }
-
-                                docSpire.SaveToFile("C:/Users/Tomek/Desktop/demo.pdf", FileFormat.PDF);
-                                docSpire.Close();
-                */
             }
-                // wyswietlenie podgladowego pdfa w przegladarce i zamkniecie dokumentu
-                System.Diagnostics.Process.Start(@pathToSavePreview);  
-                doc.Close();
+            
+            System.Windows.Controls.Button btnSender = (System.Windows.Controls.Button)sender;
+
+            // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
+            if ( btnSender == preview)
+                System.Diagnostics.Process.Start(@pathToSavePreview);
+
+            // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
+            easySearchAddedFiles.Clear();
+            doc.Close();
+        }
+
+
+        // wyswietlenie jak bedzie wygladac finalny pdf 
+        private void preview_Click(object sender, RoutedEventArgs e)
+        {
+            previewFunction(sender, null);
         }
            
       private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -223,28 +222,25 @@ namespace pdf_manager
 
       }
 
-        private void savePreview_Click(object sender, RoutedEventArgs e)
+         private void savePreview_Click(object sender, RoutedEventArgs e)
         {
-           // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
-            preview_Click(null, null);
+            // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
+            previewFunction(sender, null);
 
-           // okno dialogowe do wybrania folderu zapisu 
+            // okno dialogowe do wybrania folderu zapisu 
             var folderBrowserDialog1 = new FolderBrowserDialog();
             DialogResult result = folderBrowserDialog1.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                // sciezka do zapisu pdfa
-                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath + ".pdf");
-                if( File.Exists(pathToSaveCompleted) == true )
+                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
+                if( File.Exists(pathToSaveCompleted) )
                 {
-                    System.Windows.MessageBox.Show("istnieje");
+                    userPath.Text = "File Exists";
                     userPath.Background = System.Windows.Media.Brushes.Red;
                     return;
                 }
-                else
-                   userPath.Background = System.Windows.Media.Brushes.Black;
-
 
                 if ( File.Exists(pathToSavePreview) )
                 {
@@ -268,6 +264,7 @@ namespace pdf_manager
             }
         }
 
+
         // podczas zamykania aplikacji usuwamy plik preview.pdf
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -281,10 +278,27 @@ namespace pdf_manager
             password.Text = "";
         }
 
-        // po kliknieciu w texboxa znika tekst 
+        // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
         private void userPath_GotFocus(object sender, RoutedEventArgs e)
         {
             userPath.Text = "";
+            userPath.Background = System.Windows.Media.Brushes.White;
         }
     }
 }
+
+
+/* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
+                              Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
+                              docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
+                              PdfPageBase page = docSpire.Pages[0]; // liczy od 0 strony || wybor strony do przeszukania
+                              PdfTextFind[] finds = page.FindText(pliki[listBoxLineNumber].Text, TextFindParameter.CrossLine).Finds; // przeszukanie strony 
+
+                              foreach (PdfTextFind result in finds)
+                              {
+                                  result.ApplyHighLight(Color.Yellow);
+                              }
+
+                              docSpire.SaveToFile("C:/Users/Tomek/Desktop/demo.pdf", FileFormat.PDF);
+                              docSpire.Close();
+*/
