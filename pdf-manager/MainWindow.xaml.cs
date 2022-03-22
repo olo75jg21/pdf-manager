@@ -55,6 +55,8 @@ namespace pdf_manager
 
         List<int> pliki_dodane = new List<int>();
 
+        string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
+
         public MainWindow()
         {
             InitializeComponent();
@@ -110,7 +112,7 @@ namespace pdf_manager
 
                 foreach (var path in filePaths)
                 {
-                        PdfReader reader = new PdfReader(@"C:\Users\Tomek\Desktop\Testing\test.pdf");
+                        PdfReader reader = new PdfReader(@path);
                         string[] words;
                         string line;
 
@@ -142,8 +144,9 @@ namespace pdf_manager
 
         private void preview_Click(object sender, RoutedEventArgs e)
         {
+          
             /// Tworzenie nowego pliku pdf 
-            FileStream stream = new FileStream("C:/Users/Tomek/Desktop/demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
+            FileStream stream = new FileStream(pathToSavePreview, FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
@@ -201,7 +204,7 @@ namespace pdf_manager
                 */
             }
                 // wyswietlenie pdfa w przegladarce i zamkniecie dokumentu
-                System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego  
+                System.Diagnostics.Process.Start(@pathToSavePreview); // wyswietlenie pliku podgladowego  
                 doc.Close();
         }
            
@@ -210,5 +213,58 @@ namespace pdf_manager
 
       }
 
+        private void savePreview_Click(object sender, RoutedEventArgs e)
+        {
+            var folderBrowserDialog1 = new FolderBrowserDialog();
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+
+                if( ischecked )
+                {
+                     using (Stream output = new FileStream(destPdf, FileMode.Create, FileAccess.Write, FileShare.None))
+                     {
+                          PdfReader reader = new PdfReader(input);
+                          string Password = "abc@123";
+                          PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
+                     }
+                }
+                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("password-protected.pdf"));
+                writer.setEncryption(
+                        USER_PASSWORD.getBytes(),
+                        OWNER_PASSWORD.getBytes(),
+                        PdfWriter.ALLOW_COPY | PdfWriter.ALLOW_PRINTING,
+                        PdfWriter.ENCRYPTION_AES_256 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+
+
+                /*
+
+                if (File.Exists(pathToSavePreview))
+                {
+                    File.Move(pathToSavePreview, folderBrowserDialog1.SelectedPath + "/savedPDF.pdf");
+                    File.Delete(pathToSavePreview);
+                }
+                */
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (File.Exists(pathToSavePreview))
+            {
+                File.Delete(pathToSavePreview);
+            }
+        }
+
+        private void password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            password.Text = "";
+        }
+
+        private void password_LostFocus(object sender, RoutedEventArgs e)
+        {
+            password.Text = "Insert Password";
+        }
     }
 }
