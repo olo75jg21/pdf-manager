@@ -153,6 +153,9 @@ namespace pdf_manager
 
         private void previewFunction(object sender, RoutedEventArgs e)
         {
+            // jesli nie ma zadnego wybranego pliku to nic nie robi
+            if (results.SelectedItems.Count == 0)
+                return;
 
             // Tworzenie nowego pliku pdf 
             FileStream stream = new FileStream(pathToSavePreview, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -223,7 +226,11 @@ namespace pdf_manager
       }
 
          private void savePreview_Click(object sender, RoutedEventArgs e)
-        {
+        {     
+            // jesli nie ma zadnego wybranego pliku to nic nie robi
+            if (results.SelectedItems.Count == 0)
+                 return;
+
             // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
             previewFunction(sender, null);
 
@@ -233,8 +240,16 @@ namespace pdf_manager
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-               // sciezka do zapisu pdfa
-                string pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
+                // sciezka do zapisu pdfa
+                string pathToSaveCompleted;
+                if ( userPath.Text == "Insert Path" || userPath.Text == "" )
+                {
+                    userPath.Text = "Insert File Name";
+                    userPath.Background = System.Windows.Media.Brushes.Red;
+                    return;
+                }
+                pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
+               
                 if( File.Exists(pathToSaveCompleted) )
                 {
                     userPath.Text = "File Exists";
@@ -245,8 +260,15 @@ namespace pdf_manager
                 if ( File.Exists(pathToSavePreview) )
                 {
                     // sprawdzenie czy ktos chce miec ustawione haslo 
-                    if (passwordChecked.IsChecked == true)
+                    if (passwordChecked.IsChecked == true )
                     {
+                        // sprawdzenie czy pole z haslem nie jest puste 
+                        if( password.Text == "Insert Password" || password.Text == "" )
+                        {
+                            password.Text = "Insert Password";
+                            password.Background = System.Windows.Media.Brushes.Red;
+                            return;
+                        }
                         // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
                         using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
@@ -276,6 +298,7 @@ namespace pdf_manager
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
             password.Text = "";
+            password.Background = System.Windows.Media.Brushes.White;
         }
 
         // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
