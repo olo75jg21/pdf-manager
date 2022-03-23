@@ -175,3 +175,5 @@ C:\Users\admin\Desktop\pdf\pdf-manager\pdf-manager\obj\Debug\pdf-manager.csproj.
 C:\Users\admin\Desktop\pdf\pdf-manager\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
 C:\Users\admin\Desktop\pdf\pdf-manager\pdf-manager\obj\Debug\pdf-manager.exe
 C:\Users\admin\Desktop\pdf\pdf-manager\pdf-manager\obj\Debug\pdf-manager.pdb
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\App.baml

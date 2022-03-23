@@ -88,18 +88,24 @@
             <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Margin="2,2,2,2">Selected Files:</TextBlock>
             </Viewbox>
-
-            <TreeView 
+            
+            <TreeView
                 Grid.Column="0" 
-                Grid.Row="2" 
-                x:Name="Drzewko"
+                Grid.Row="2"
+                x:Name="DirectoryTreeView"
+                ItemsSource="{Binding RootDirectoryItems}"
             >
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="TreeViewItem">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
+                <TreeView.Resources>
+                
+                    <HierarchicalDataTemplate DataType="{x:Type local:UserDirectory}" ItemsSource="{Binding Items}">
+                        <Label Content="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type local:UserFile}">
+                        <Label Content="{Binding Name}" />
+                    </DataTemplate>
+                
+                </TreeView.Resources>
+            
             </TreeView>
 
             <WrapPanel

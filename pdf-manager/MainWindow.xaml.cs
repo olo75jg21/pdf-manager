@@ -16,6 +16,7 @@ using Xceed.Wpf.Toolkit;
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
 using System;
+using System.Collections.ObjectModel;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -53,6 +54,9 @@ namespace pdf_manager
 
       List<files_info> pliki = new List<files_info>();
 
+      // DirrectoryTree elements Collection
+      public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
+
       public MainWindow()
       {
          InitializeComponent();
@@ -61,7 +65,7 @@ namespace pdf_manager
       // przycisk pod drzewkiem, dodajacy wybrane pliki
       private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
       {
-         string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
+         string itemHeader = ((HeaderedItemsControl)DirectoryTreeView.SelectedItem).Header.ToString();
          string dir = DirectoryTree.currentDirectory;
          string toSave = dir + "\\" + itemHeader;
          if (!filePaths.Contains(toSave))
@@ -90,7 +94,7 @@ namespace pdf_manager
 
          if (selectedPath != null)
          {
-            DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
+            DirectoryTree.ListDirectory(this.DirectoryTreeView, selectedPath);
          }
       }
 
