@@ -132,7 +132,7 @@
             <WrapPanel Background="Yellow" Margin="0,0,0,0">
                 <Button x:Name="searchButton" Content="Search" Height="26" Width="59" Click="button_Click"/>
                 <Button x:Name="preview" Content="Preview" Height="26" Width="69" Click="preview_Click"/>
-                <TextBox x:Name="searching_word" Height="26" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+                <TextBox x:Name="searching_word" Height="26" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" VerticalAlignment="Stretch" GotFocus="searching_word_GotFocus"/>
                 <CheckBox x:Name="case_sensitivity" Content="Case Sensitivity" Height="16" Width="117"/>
                 <Button x:Name="clear" Content="Clear" Height="29" Width="46" RenderTransformOrigin="0.5,0.5" Click="clear_Click">
                     <Button.RenderTransform>
@@ -144,7 +144,7 @@
                         </TransformGroup>
                     </Button.RenderTransform>
                 </Button>
-                <syncfusion:CheckListBox x:Name="results" Width="514" Height="330"/>
+                <syncfusion:CheckListBox x:Name="results" Width="514" Height="495"/>
                 <Button x:Name="savePreview" Content="Save Preview" Height="26" Width="85" Click="savePreview_Click"/>
                 <TextBox x:Name="userPath" Height="26" TextWrapping="Wrap" Text="Insert Path" Width="105" GotFocus="userPath_GotFocus"/>
                 <TextBox x:Name="password" Height="26" TextWrapping="Wrap" Text="Insert Password" Width="116" GotFocus="password_GotFocus"/>

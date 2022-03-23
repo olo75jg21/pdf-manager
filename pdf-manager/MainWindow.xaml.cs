@@ -101,7 +101,7 @@ namespace pdf_manager
         private void button_Click(object sender, RoutedEventArgs e)
         {
             // sprawdzenie czy wybrane zostaly jakies pliki
-            if (filePaths.Count != 0 && searching_word.Text != "")
+            if (filePaths.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
             {
                 string szukana_fraza;
                 int licznik = 1;
@@ -307,9 +307,13 @@ namespace pdf_manager
             userPath.Text = "";
             userPath.Background = System.Windows.Media.Brushes.White;
         }
+
+        private void searching_word_GotFocus(object sender, RoutedEventArgs e)
+        {
+            searching_word.Text = "";
+        }
     }
 }
-
 
 /* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
                               Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
