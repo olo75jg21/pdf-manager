@@ -127,21 +127,36 @@
         <!-- Workspace Grid-->
         <Grid Grid.Column="1">
 
-
-            <!-- ELDEN RING ENJOYER WRAP PANEL
-            <WrapPanel Background="Yellow" Margin="0,0,0,0">
-                <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
-                <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
-                <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
-            </WrapPanel>
-            -->
+            <TextBlock Name="mergeOutput">
+                
+            </TextBlock>
+           
         </Grid>
         <!-- End Workspace Grid-->
         
         <!-- Tool panel Grid-->
         <Grid Grid.Column="2" Background="White">
-            
-            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Button HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    Width="50" Height="30" 
+                    Grid.Column="0"
+                    Margin="3,3,3,3"
+                    
+                    x:Name="mergeButton"
+                    Click="mergeButton_Click"
+             >
+                Merge
+            </Button>
         </Grid>
         <!-- End Tool Panel Grid-->
 
