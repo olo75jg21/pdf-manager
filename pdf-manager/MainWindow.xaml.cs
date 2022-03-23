@@ -101,7 +101,7 @@ namespace pdf_manager
         private void button_Click(object sender, RoutedEventArgs e)
         {
             // sprawdzenie czy wybrane zostaly jakies pliki
-            if (filePaths.Count != 0)
+            if (filePaths.Count != 0 && searching_word.Text != "")
             {
                 string szukana_fraza;
                 int licznik = 1;
