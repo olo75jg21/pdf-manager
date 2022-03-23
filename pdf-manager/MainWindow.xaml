@@ -132,15 +132,6 @@
 
         <!-- Workspace Grid-->
         <Grid Grid.Column="1">
-
-<<<<<<< HEAD
-            <TextBlock Name="mergeOutput">
-                
-            </TextBlock>
-           
-=======
-
-
             <WrapPanel Background="Yellow" Margin="0,0,0,0">
                 <Button x:Name="searchButton" Content="Search" Height="26" Width="59" Click="button_Click"/>
                 <Button x:Name="preview" Content="Preview" Height="26" Width="69" Click="preview_Click"/>
@@ -163,12 +154,10 @@
                 <CheckBox x:Name="passwordChecked" Content="User Password" Height="26" Width="120" RenderTransformOrigin="2.117,0.662"/>
             </WrapPanel>
 
->>>>>>> Mushroomus
         </Grid>
         <!-- End Workspace Grid-->
 
         <!-- Tool panel Grid-->
-<<<<<<< HEAD
         <Grid Grid.Column="2" Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -192,9 +181,6 @@
                 Merge
             </Button>
         </Grid>
-=======
-        <Grid Grid.Column="2" Background="White"/>
->>>>>>> Mushroomus
         <!-- End Tool Panel Grid-->
 
 

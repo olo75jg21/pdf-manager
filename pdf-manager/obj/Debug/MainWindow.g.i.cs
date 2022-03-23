@@ -1,5 +1,6 @@
+// Updated by XamlIntelliSenseFileGenerator 23.03.2022 10:21:38
 <<<<<<< HEAD
-﻿#pragma checksum "..\..\MainWindow.xaml" "{8829d00f-11b8-4213-878b-770e8597ac16}" "C7E60F054F1A2B81A15BEE7D807DF93E7259DEB9B46F5BF6D565EB4F6F7193B7"
+#pragma checksum "..\..\MainWindow.xaml" "{8829d00f-11b8-4213-878b-770e8597ac16}" "C7E60F054F1A2B81A15BEE7D807DF93E7259DEB9B46F5BF6D565EB4F6F7193B7"
 =======
 ﻿#pragma checksum "..\..\MainWindow.xaml" "{8829d00f-11b8-4213-878b-770e8597ac16}" "D7832BCEA1391954D1D75552928BE5B0B115112A14A73C9C3491EED55429C215"
 >>>>>>> Mushroomus
@@ -53,35 +54,28 @@ using Xceed.Wpf.Toolkit.Zoombox;
 using pdf_manager;
 
 
-namespace pdf_manager {
-    
-    
+namespace pdf_manager
+{
+
+
     /// <summary>
     /// MainWindow
     /// </summary>
-    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector {
-        
-        
-        #line 95 "..\..\MainWindow.xaml"
+    public partial class MainWindow : System.Windows.Window, System.Windows.Markup.IComponentConnector
+    {
+
+
+#line 95 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TreeView DirectoryTreeView;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 114 "..\..\MainWindow.xaml"
+
+#line default
+#line hidden
+
+
+#line 114 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.WrapPanel SelectedItemsList;
-        
-        #line default
-        #line hidden
-        
-        
-<<<<<<< HEAD
-        #line 136 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.TextBlock mergeOutput;
 =======
         #line 133 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
@@ -111,13 +105,13 @@ namespace pdf_manager {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.CheckBox case_sensitivity;
 >>>>>>> Mushroomus
-        
-        #line default
-        #line hidden
-        
-        
+
+#line default
+#line hidden
+
+
 <<<<<<< HEAD
-        #line 161 "..\..\MainWindow.xaml"
+#line 161 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button mergeButton;
 =======
@@ -165,112 +159,115 @@ namespace pdf_manager {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.CheckBox passwordChecked;
 >>>>>>> Mushroomus
-        
-        #line default
-        #line hidden
-        
+
+#line default
+#line hidden
+
         private bool _contentLoaded;
-        
+
         /// <summary>
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
-        public void InitializeComponent() {
-            if (_contentLoaded) {
+        public void InitializeComponent()
+        {
+            if (_contentLoaded)
+            {
                 return;
             }
             _contentLoaded = true;
             System.Uri resourceLocater = new System.Uri("/pdf-manager;component/mainwindow.xaml", System.UriKind.Relative);
-            
-            #line 1 "..\..\MainWindow.xaml"
+
+#line 1 "..\..\MainWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
-            
-            #line default
-            #line hidden
+
+#line default
+#line hidden
         }
-        
+
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
-        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+        void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target)
+        {
             switch (connectionId)
             {
-            case 1:
-            
-            #line 10 "..\..\MainWindow.xaml"
-            ((pdf_manager.MainWindow)(target)).Closed += new System.EventHandler(this.Window_Closed);
-            
-            #line default
-            #line hidden
-            return;
-            case 2:
-            
-            #line 51 "..\..\MainWindow.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddDirectory_Click);
-            
-            #line default
-            #line hidden
-            return;
-            case 3:
-            
-            #line 59 "..\..\MainWindow.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Button_Click_1);
-            
-            #line default
-            #line hidden
-            return;
-            case 4:
-            
-            #line 68 "..\..\MainWindow.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddDirectory_Click);
-            
-            #line default
-            #line hidden
-            return;
-            case 5:
-            
-            #line 77 "..\..\MainWindow.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Button_Click_1);
-            
-            #line default
-            #line hidden
-            return;
+                case 1:
+
+#line 10 "..\..\MainWindow.xaml"
+                    ((pdf_manager.MainWindow)(target)).Closed += new System.EventHandler(this.Window_Closed);
+
+#line default
+#line hidden
+                    return;
+                case 2:
+
+#line 51 "..\..\MainWindow.xaml"
+                    ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddDirectory_Click);
+
+#line default
+#line hidden
+                    return;
+                case 3:
+
+#line 59 "..\..\MainWindow.xaml"
+                    ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Button_Click_1);
+
+#line default
+#line hidden
+                    return;
+                case 4:
+
+#line 68 "..\..\MainWindow.xaml"
+                    ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddDirectory_Click);
+
+#line default
+#line hidden
+                    return;
+                case 5:
+
+#line 77 "..\..\MainWindow.xaml"
+                    ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Button_Click_1);
+
+#line default
+#line hidden
+                    return;
 <<<<<<< HEAD
-            case 5:
-            this.DirectoryTreeView = ((System.Windows.Controls.TreeView)(target));
+                case 5:
+                    this.DirectoryTreeView = ((System.Windows.Controls.TreeView)(target));
 =======
             case 6:
             this.Drzewko = ((System.Windows.Controls.TreeView)(target));
 >>>>>>> Mushroomus
-            return;
-            case 7:
-            this.SelectedItemsList = ((System.Windows.Controls.WrapPanel)(target));
-            return;
-            case 8:
-            
+                    return;
+                case 7:
+                    this.SelectedItemsList = ((System.Windows.Controls.WrapPanel)(target));
+                    return;
+                case 8:
+
 <<<<<<< HEAD
-            #line 122 "..\..\MainWindow.xaml"
+#line 122 "..\..\MainWindow.xaml"
 =======
             #line 116 "..\..\MainWindow.xaml"
 >>>>>>> Mushroomus
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddSelectedTreeItems_Click);
-            
-            #line default
-            #line hidden
-            return;
+                    ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddSelectedTreeItems_Click);
+
+#line default
+#line hidden
+                    return;
 <<<<<<< HEAD
-            case 8:
-            this.mergeOutput = ((System.Windows.Controls.TextBlock)(target));
-            return;
-            case 9:
-            this.mergeButton = ((System.Windows.Controls.Button)(target));
-            
-            #line 162 "..\..\MainWindow.xaml"
-            this.mergeButton.Click += new System.Windows.RoutedEventHandler(this.mergeButton_Click);
+                case 8:
+                    this.mergeOutput = ((System.Windows.Controls.TextBlock)(target));
+                    return;
+                case 9:
+                    this.mergeButton = ((System.Windows.Controls.Button)(target));
+
+#line 162 "..\..\MainWindow.xaml"
+                    this.mergeButton.Click += new System.Windows.RoutedEventHandler(this.mergeButton_Click);
 =======
             case 9:
             this.searchButton = ((System.Windows.Controls.Button)(target));
@@ -278,10 +275,10 @@ namespace pdf_manager {
             #line 133 "..\..\MainWindow.xaml"
             this.searchButton.Click += new System.Windows.RoutedEventHandler(this.button_Click);
 >>>>>>> Mushroomus
-            
-            #line default
-            #line hidden
-            return;
+
+#line default
+#line hidden
+                    return;
 <<<<<<< HEAD
 =======
             case 10:
@@ -351,6 +348,17 @@ namespace pdf_manager {
             }
             this._contentLoaded = true;
         }
+
+        internal System.Windows.Controls.Button searchButton;
+        internal System.Windows.Controls.Button preview;
+        internal System.Windows.Controls.TextBox searching_word;
+        internal System.Windows.Controls.CheckBox case_sensitivity;
+        internal System.Windows.Controls.Button clear;
+        internal Xceed.Wpf.Toolkit.CheckListBox results;
+        internal System.Windows.Controls.Button savePreview;
+        internal System.Windows.Controls.TextBox userPath;
+        internal System.Windows.Controls.TextBox password;
+        internal System.Windows.Controls.CheckBox passwordChecked;
     }
 }
 

@@ -15,14 +15,11 @@ using Xceed.Wpf.Toolkit;
 /// Spire 
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
-<<<<<<< HEAD
 using System;
 using System.Collections.ObjectModel;
-=======
 using System.Windows.Forms;
 using System;
 using System.Drawing;
->>>>>>> Mushroomus
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -51,12 +48,6 @@ class files_info
 
 namespace pdf_manager
 {
-<<<<<<< HEAD
-   public partial class MainWindow : Window
-   {
-      // lista dodanych plikow do pracy 
-      List<string> filePaths = new List<string>();
-=======
     public partial class MainWindow : Window
     {
         // lista dodanych plikow do pracy 
@@ -67,7 +58,6 @@ namespace pdf_manager
         List<int> easySearchAddedFiles = new List<int>();
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
->>>>>>> Mushroomus
 
       List<files_info> pliki = new List<files_info>();
 
@@ -109,13 +99,6 @@ namespace pdf_manager
          // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
          string selectedPath = DirectoryTree.OpenDirectoryDialog();
 
-<<<<<<< HEAD
-         if (selectedPath != null)
-         {
-            DirectoryTree.ListDirectory(this.DirectoryTreeView, selectedPath);
-         }
-      }
-=======
             if (selectedPath != null)
             {
                 DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
@@ -236,7 +219,6 @@ namespace pdf_manager
             easySearchAddedFiles.Clear();
             doc.Close();
         }
->>>>>>> Mushroomus
 
 
         // wyswietlenie jak bedzie wygladac finalny pdf 
@@ -250,81 +232,6 @@ namespace pdf_manager
 
       }
 
-<<<<<<< HEAD
-      private void mergeButton_Click(object sender, RoutedEventArgs e)
-      {
-         /*
-         object textBoxResult = FindName("mergeOutput");
-
-         if (textBoxResult is TextBlock)
-         {
-            TextBlock child = textBoxResult as TextBlock;
-            foreach (string file_path in filePaths.ToArray())
-            {
-               child.Text += file_path + " ";
-            }
-         }
-         */
-
-         // Pan prezesik musi naprawić dodawanie
-         foreach (string file in filePaths)
-         {
-            Console.WriteLine(file);
-         }
-
-         /*
-         string[] filePaths2 = new String[2];
-         filePaths2[0] = "C:/Users/admin/Desktop/2/TPI_w02.pdf";
-         filePaths2[1] = "C:/Users/admin/Desktop/3/TPI_w03.pdf";
-         */
-
-         CombineMultiplePDFs(filePaths, "D:/outMerged.pdf");
-      }
-
-      public static void CombineMultiplePDFs(List<string> fileNames, string outFile)
-      {
-         // step 1: creation of a document-object
-         Document document = new Document();
-         //create newFileStream object which will be disposed at the end
-         using (FileStream newFileStream = new FileStream(outFile, FileMode.Create))
-         {
-            // step 2: we create a writer that listens to the document
-            PdfCopy writer = new PdfCopy(document, newFileStream);
-
-            // step 3: we open the document
-            document.Open();
-
-            foreach (string fileName in fileNames)
-            {
-               // we create a reader for a certain document
-               using (PdfReader reader = new PdfReader(fileName))
-               {
-                  reader.ConsolidateNamedDestinations();
-
-                  // step 4: we add content
-                  for (int i = 1; i <= reader.NumberOfPages; i++)
-                  {
-                     PdfImportedPage page = writer.GetImportedPage(reader, i);
-                     writer.AddPage(page);
-                  }
-
-                  PRAcroForm form = reader.AcroForm;
-                  if (form != null)
-                  {
-                     writer.AddDocument(reader);
-                  }
-
-                  reader.Close();
-               }
-            }
-
-            // step 5: we close the document and writer
-            writer.Close();
-            document.Close();
-         }//disposes the newFileStream object
-      }
-   }
-=======
          private void savePreview_Click(object sender, RoutedEventArgs e)
         {     
             // jesli nie ma zadnego wybranego pliku to nic nie robi
@@ -413,7 +320,6 @@ namespace pdf_manager
             searching_word.Text = "";
         }
     }
->>>>>>> Mushroomus
 }
 
 /* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
