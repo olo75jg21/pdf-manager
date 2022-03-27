@@ -190,3 +190,4 @@ C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.License.xm
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.Pdf.xml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\App.baml
 >>>>>>> Mushroomus
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\GeneratedInternalTypeHelper.g.cs
