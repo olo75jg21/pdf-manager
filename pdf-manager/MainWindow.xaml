@@ -125,19 +125,8 @@
         <!-- End Tree Directory Grid -->
 
         <!-- Workspace Grid-->
-        <Grid Grid.Column="1">
-
-
-            <!-- ELDEN RING ENJOYER WRAP PANEL
-            <WrapPanel Background="Yellow" Margin="0,0,0,0">
-                <Button x:Name="button" Content="Click" Height="26" Width="78" Click="button_Click"/>
-                <Button x:Name="preview" Content="Preview" Height="26" Width="126" Click="preview_Click"/>
-                <syncfusion:CheckListBox x:Name="results" Width="416" Height="330"/>
-            </WrapPanel>
-            -->
-        </Grid>
         <!-- End Workspace Grid-->
-        
+
         <!-- Tool panel Grid-->
         <Grid Grid.Column="2" Background="White">
             <Grid.ColumnDefinitions>
@@ -181,11 +170,37 @@
                 Merge
                 All
             </Button>
-            
-        </Grid>
-        <!-- End Tool Panel Grid-->
 
-        
-        
+        </Grid>
+        <Button  Grid.Row="3" x:Name="preview" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
+        <TextBox x:Name="searching_word" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" GotFocus="searching_word_GotFocus" Margin="0,5,247,524" Grid.Column="1"/>
+        <CheckBox x:Name="case_sensitivity" Content="Case Sensitivity" Margin="272,10,124,528" Grid.Column="1"/>
+        <Button x:Name="clear" Content="Clear" RenderTransformOrigin="0.5,0.5" Click="clear_Click" Grid.Column="1" Margin="390,5,78,525">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.951"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="0.983"/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Button x:Name="savePreview" Content="Save Preview" Click="savePreview_Click" Margin="3,528,426,0" Grid.Column="1"/>
+        <TextBox x:Name="userPath" TextWrapping="Wrap" Text="Insert Path" GotFocus="userPath_GotFocus" Margin="88,528,321,0" Grid.Column="1"/>
+        <TextBox x:Name="password" TextWrapping="Wrap" Text="Insert Password" GotFocus="password_GotFocus" Margin="204,528,194,0" Grid.Column="1"/>
+        <CheckBox x:Name="passwordChecked" Content="User Password" RenderTransformOrigin="2.117,0.662" Grid.Column="1" Margin="320,529,72,29" Grid.RowSpan="2"/>
+        <Button x:Name="searchButton_Copy" Content="Search" Click="button_Click" Margin="3,5,450,524" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <syncfusion:CheckListBox x:Name="results" Grid.ColumnSpan="2" Margin="257,35,0,29"/>
+        <Button x:Name="preview_Copy" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
+        <!-- End Tool Panel Grid-->
     </Grid>
 </Window>
