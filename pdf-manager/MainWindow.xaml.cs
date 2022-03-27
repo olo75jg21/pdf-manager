@@ -16,6 +16,7 @@ using Xceed.Wpf.Toolkit;
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
 using System;
+using System.Windows.Forms;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -42,8 +43,6 @@ class files_info
     public int Strona_w_pdfie { get => strona_w_pdfie; set => strona = value; }
 }
 
-
-
 namespace pdf_manager
 {
    public partial class MainWindow : Window
@@ -52,6 +51,8 @@ namespace pdf_manager
       List<string> filePaths = new List<string>();
 
       List<files_info> pliki = new List<files_info>();
+
+      public List<string> FilePaths { get => filePaths; set => filePaths = value; }
 
       public MainWindow()
       {
@@ -64,8 +65,8 @@ namespace pdf_manager
          string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
          string dir = DirectoryTree.currentDirectory;
          string toSave = dir + "\\" + itemHeader;
-         if (!filePaths.Contains(toSave))
-            filePaths.Add(toSave);
+         if (!FilePaths.Contains(toSave))
+            FilePaths.Add(toSave);
          refreshFileList();
       }
 
@@ -73,7 +74,7 @@ namespace pdf_manager
       {
          SelectedItemsList.Children.Clear();
 
-         foreach (string file in filePaths)
+         foreach (string file in FilePaths)
          {
             SelectedItemsList.Children.Add(new TextBlock()
             {
@@ -99,34 +100,28 @@ namespace pdf_manager
 
       }
 
+      // Merges selected files
       private void mergeButton_Click(object sender, RoutedEventArgs e)
       {
-         /*
-         object textBoxResult = FindName("mergeOutput");
+         // Need to connect list with selected items
+         SaveMergedFile(filePaths);
+      }
 
-         if (textBoxResult is TextBlock)
+      // Merges all files
+      private void mergeAllButton_Click(object sender, RoutedEventArgs e)
+      {
+         SaveMergedFile(filePaths);
+      }
+
+      private void SaveMergedFile(List<string> sourceList)
+      {
+         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+         if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
          {
-            TextBlock child = textBoxResult as TextBlock;
-            foreach (string file_path in filePaths.ToArray())
-            {
-               child.Text += file_path + " ";
-            }
+            string mergePath = saveFileDialog.FileName;
+            CombineMultiplePDFs(sourceList, mergePath + ".pdf");
          }
-         */
-
-         // Pan prezesik musi naprawić dodawanie
-         foreach (string file in filePaths)
-         {
-            Console.WriteLine(file);
-         }
-
-         /*
-         string[] filePaths2 = new String[2];
-         filePaths2[0] = "C:/Users/admin/Desktop/2/TPI_w02.pdf";
-         filePaths2[1] = "C:/Users/admin/Desktop/3/TPI_w03.pdf";
-         */
-
-         CombineMultiplePDFs(filePaths, "D:/outMerged.pdf");
       }
 
       public static void CombineMultiplePDFs(List<string> fileNames, string outFile)

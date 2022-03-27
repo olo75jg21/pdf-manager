@@ -1957,7 +1957,7 @@
             </summary>
             <returns>if blank ,return true,or false</returns>
         </member>
-        <member name="M:Spire.Pdf.General.Render.Page.CheckContent(Spire.Pdf.General.Render.PdfElement.PdfRecordCollection)">
+        <member name="M:Spire.Pdf.General.Render.Page.CheckContent(Spire.Pdf.Core.PdfRecordCollection)">
             <summary>
             Whether this page content is blank.
             </summary>
@@ -2084,23 +2084,6 @@
             <summary>
             Clean up Memory
             </summary>
-        </member>
-        <member name="M:Spire.Pdf.General.Render.PdfElement.ContentParser.ReadBIData(System.Collections.Generic.List{System.Byte},System.Char,System.Char,System.Int32@)">
-            <summary>
-            read bi data
-            </summary>
-            <param name="eiBytes"></param>
-            <param name="ch2"></param>
-            <param name="nextChar"></param>
-            <param name="endPosition"></param>
-        </member>
-        <member name="M:Spire.Pdf.General.Render.PdfElement.ContentParser.ParseInlineImage">
-             <summary>
-             Parse an inline image.  An inline image starts with BI (already
-             read, contains a dictionary until ID, and then image data until
-             EI.
-             </summary>
-            
         </member>
         <member name="M:Spire.Pdf.General.Render.PdfElement.PdfFontStructure.BuildIFontFromSystemFont(System.String)">
             <summary>
@@ -2482,7 +2465,7 @@
             <param name="g"></param>
             <param name="resources"></param>
         </member>
-        <member name="M:Spire.Pdf.General.Render.PdfToImageRenderer.#ctor(Spire.Pdf.General.Render.PdfElement.PdfRecordCollection,Spire.Pdf.General.Render.PdfElement.PdfPageResources,System.Drawing.Graphics,Spire.Pdf.General.Render.Page,System.Boolean,Spire.Pdf.PdfPrintPageScaling)">
+        <member name="M:Spire.Pdf.General.Render.PdfToImageRenderer.#ctor(Spire.Pdf.Core.PdfRecordCollection,Spire.Pdf.General.Render.PdfElement.PdfPageResources,System.Drawing.Graphics,Spire.Pdf.General.Render.Page,System.Boolean,Spire.Pdf.PdfPrintPageScaling)">
             <summary>
             Print Pdf Page to Image
             </summary>
@@ -2687,7 +2670,7 @@
             <param name="annotType"></param>
             <param name="llffDisplay"></param>
         </member>
-        <member name="M:Spire.Pdf.General.Render.PdfToImageRenderer.ExecuteCommand(Spire.Pdf.General.Render.PdfElement.PdfRecord)">
+        <member name="M:Spire.Pdf.General.Render.PdfToImageRenderer.ExecuteCommand(Spire.Pdf.Core.PdfRecord)">
             <summary>
             Execute pdf command.
             </summary>
@@ -2935,7 +2918,7 @@
             </summary>
             <param name="annotElements">The annotation elements</param>
         </member>
-        <member name="M:Spire.Pdf.General.Render.PdfToPsRenderer.ExecuteCommand(Spire.Pdf.General.Render.PdfElement.PdfRecord)">
+        <member name="M:Spire.Pdf.General.Render.PdfToPsRenderer.ExecuteCommand(Spire.Pdf.Core.PdfRecord)">
             <summary>
             Execute pdf command.
             </summary>
@@ -3128,16 +3111,6 @@
             </summary>
             <param name="fontSouce"></param>
             <returns></returns>
-        </member>
-        <member name="M:Spire.Pdf.General.Paper.Drawing.Fonts.PdfExternalFontCache.Finalize">
-            <summary>
-            Destructor 
-            </summary>
-        </member>
-        <member name="M:Spire.Pdf.General.Paper.Drawing.Fonts.PdfExternalFontCache.Dispose">
-            <summary>
-            Clean up Memory
-            </summary>
         </member>
         <member name="T:Spire.Pdf.General.Paper.Drawing.Fonts.FontCache">
             <summary>
@@ -3532,6 +3505,16 @@
         <member name="P:Spire.Pdf.General.Paper.Drawing.BoundingBoxPoints.ActualWidth">
             <summary>
             Gets the actual width of the glygh.
+            </summary>
+        </member>
+        <member name="P:Spire.Pdf.General.Paper.Drawing.BoundingBoxPoints.LeftSideBearing">
+            <summary>
+            Gets the left side bearing.
+            </summary>
+        </member>
+        <member name="P:Spire.Pdf.General.Paper.Drawing.BoundingBoxPoints.RightSideBearing">
+            <summary>
+            Gets the right side bearing.
             </summary>
         </member>
         <member name="P:Spire.Pdf.General.Paper.Drawing.BoundingBoxPoints.IsEmpty">
@@ -17453,7 +17436,7 @@
             Whether was replaced.
             </summary>
         </member>
-        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegment(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Core.PdfString)">
+        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegment(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Core.PdfString)">
             <summary>
             Add segment.
             </summary>
@@ -17519,21 +17502,21 @@
             </summary>
             <param name="currentString">The current string</param>
         </member>
-        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegmentBefore(Spire.Pdf.General.Render.PdfElement.PdfRecord,System.Double@)">
+        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegmentBefore(Spire.Pdf.Core.PdfRecord,System.Double@)">
             <summary>
             Add the segment before.
             </summary>
             <param name="beforeRecord">The before record</param>
             <param name="shift">The shift</param>
         </member>
-        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegmentAfter(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.General.Paper.Text.AbstractTextRange@)">
+        <member name="M:Spire.Pdf.General.Paper.Text.AbstractTextRange.AddSegmentAfter(Spire.Pdf.Core.PdfRecord,Spire.Pdf.General.Paper.Text.AbstractTextRange@)">
             <summary>
             Add the after segment.
             </summary>
             <param name="afterRecord">The after record</param>
             <param name="segmentAfter">The after segment</param>
         </member>
-        <member name="M:Spire.Pdf.General.Paper.Text.ArrayTextRange.AddSegment(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Core.PdfString)">
+        <member name="M:Spire.Pdf.General.Paper.Text.ArrayTextRange.AddSegment(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Core.PdfString)">
             <summary>
             Add segment.
             </summary>
@@ -17575,7 +17558,7 @@
             <param name="escape">it is process escape character?</param>
             <returns>The unicode string</returns>
         </member>
-        <member name="M:Spire.Pdf.General.Paper.Text.StringTextRange.AddSegment(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Core.PdfString)">
+        <member name="M:Spire.Pdf.General.Paper.Text.StringTextRange.AddSegment(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Core.PdfString)">
             <summary>
             Add segment.
             </summary>
@@ -22786,7 +22769,7 @@
             </summary>
             <param name="pageDictionary">The page dictionary.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.LinearizedPdf.PdfPageStructure.FindPdfObject(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Primitives.PdfDictionary)">
+        <member name="M:Spire.Pdf.Conversion.LinearizedPdf.PdfPageStructure.FindPdfObject(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Primitives.PdfDictionary)">
             <summary>
             Find pdf object.
             </summary>
@@ -24881,7 +24864,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.EmdeddedFont.PdfEmbeddedFontProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.EmdeddedFont.PdfEmbeddedFontProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25085,7 +25068,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfX.PdfX1A2001Provider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfX.PdfX1A2001Provider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25145,7 +25128,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA1AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA1AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25205,7 +25188,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA1BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA1BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25260,7 +25243,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25315,7 +25298,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25370,7 +25353,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2UProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA2UProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25425,7 +25408,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3AProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25480,7 +25463,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3BProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25535,7 +25518,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3UProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Standards.PdfA.PdfA3UProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -25566,7 +25549,7 @@
             Other image color modes convert to cmyk mode
             </summary>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKImageBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKImageBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle image instructions current resources,rgb color to cmyk color for image
             </summary>
@@ -25574,7 +25557,7 @@
             <param name="resources"></param>
             <returns></returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKImageBuilder.HandleInstruction(Spire.Pdf.General.Render.PdfElement.PdfRecord,System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKImageBuilder.HandleInstruction(Spire.Pdf.Core.PdfRecord,System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle image instructions current resources,rgb color to cmyk color for image
             </summary>
@@ -25810,7 +25793,7 @@
             Current nonstroking color space.
             </summary>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space instructions in content stream.
             </summary>
@@ -25819,7 +25802,7 @@
             <param name="resources">The associated resources with the The content stream.</param>
             <returns>The new instructions.</returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKColorSpaceBuilder.HandleInstruction(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Standards.Utils.PdfCMYKColorSpaceBuilder.HandleInstruction(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space/color instructions in content stream.
             </summary>
@@ -26751,7 +26734,7 @@
             The ICC profile for DeviceCMYK.
             </summary>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfDeviceIndependentColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfDeviceIndependentColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space instructions in content stream.
             </summary>
@@ -26760,7 +26743,7 @@
             <param name="resources">The associated resources with the The content stream.</param>
             <returns>The new instructions.</returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfDeviceIndependentColorSpaceBuilder.HandleDeviceColorSpaceInstruction(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfDeviceIndependentColorSpaceBuilder.HandleDeviceColorSpaceInstruction(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle device color space which associated to instructions.
             </summary>
@@ -26878,7 +26861,7 @@
             Key: The font structure., Value: The char code to unicode mapping.
             </summary>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfEmbeddedFontBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfEmbeddedFontBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space instructions in content stream.
             </summary>
@@ -26887,7 +26870,7 @@
             <param name="resources">The associated resources with the The content stream.</param>
             <returns>The new instructions.</returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfEmbeddedFontBuilder.HandleInstruction(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfEmbeddedFontBuilder.HandleInstruction(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle text instructions in content stream.
             </summary>
@@ -27402,7 +27385,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfProcessProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfProcessProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -27437,7 +27420,7 @@
             <param name="resources">The associated resources with the The content stream.</param>
             <returns>The font dictionary.</returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Comm.PdfTransparencyBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.Comm.PdfTransparencyBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle graphics state transparency operate.
             </summary>
@@ -27484,7 +27467,7 @@
             </summary>
             <param name="targetColorSpace"></param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.PdfColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.PdfColorSpaceBuilder.HandleInstruction(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space instructions in content stream.
             </summary>
@@ -27493,7 +27476,7 @@
             <param name="resources">The associated resources with the The content stream.</param>
             <returns>The new instructions.</returns>
         </member>
-        <member name="M:Spire.Pdf.Conversion.PdfColorSpaceBuilder.HandleInstruction(Spire.Pdf.General.Render.PdfElement.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
+        <member name="M:Spire.Pdf.Conversion.PdfColorSpaceBuilder.HandleInstruction(Spire.Pdf.Core.PdfRecord,Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary})">
             <summary>
             Handle color space/color instructions in content stream.
             </summary>
@@ -27589,7 +27572,7 @@
             <param name="element">The pdf element.</param>
             <param name="context">The pdf processing context.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.Gray.PdfGrayProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.General.Render.PdfElement.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
+        <member name="M:Spire.Pdf.Conversion.Gray.PdfGrayProvider.HandleContentStreamResources(System.Collections.Generic.List{Spire.Pdf.Core.PdfRecord},Spire.Pdf.Primitives.PdfStream,System.Collections.Generic.List{Spire.Pdf.Primitives.PdfDictionary},Spire.Pdf.Conversion.Comm.PdfProcessContext)">
             <summary>
             Handle content stream and resources.
             </summary>
@@ -28183,7 +28166,7 @@
             <param name="pageIndex">The page index.</param>
             <param name="page">The Spire.Pdf.General.Render.Page.</param>
         </member>
-        <member name="M:Spire.Pdf.Conversion.PdfToImageConverter.RenderImage(System.Drawing.Graphics,Spire.Pdf.General.Render.Page,Spire.Pdf.General.Render.PdfElement.PdfPageResources,Spire.Pdf.General.Render.PdfElement.PdfRecordCollection,System.Drawing.Image)">
+        <member name="M:Spire.Pdf.Conversion.PdfToImageConverter.RenderImage(System.Drawing.Graphics,Spire.Pdf.General.Render.Page,Spire.Pdf.General.Render.PdfElement.PdfPageResources,Spire.Pdf.Core.PdfRecordCollection,System.Drawing.Image)">
             <summary>
             Render pdf page to image.
             </summary>
@@ -28940,6 +28923,23 @@
             otherwise, false.
             </returns>
         </member>
+        <member name="M:Spire.Pdf.Core.ContentParser.ReadBIData(System.Collections.Generic.List{System.Byte},System.Char,System.Char,System.Int32@)">
+            <summary>
+            read bi data
+            </summary>
+            <param name="eiBytes"></param>
+            <param name="ch2"></param>
+            <param name="nextChar"></param>
+            <param name="endPosition"></param>
+        </member>
+        <member name="M:Spire.Pdf.Core.ContentParser.ParseInlineImage">
+             <summary>
+             Parse an inline image.  An inline image starts with BI (already
+             read, contains a dictionary until ID, and then image data until
+             EI.
+             </summary>
+            
+        </member>
         <member name="T:Spire.Pdf.Core.PageTree">
             <summary>
             Represents page tree.
@@ -29021,6 +29021,96 @@
             <summary>
             Gets or sets the Exponent.
             </summary>
+        </member>
+        <member name="F:Spire.Pdf.Core.Utilities.ObjectDigest.m_digestMethod">
+            <summary>
+            The document.
+            </summary>
+        </member>
+        <member name="F:Spire.Pdf.Core.Utilities.ObjectDigest.m_visitedObjects">
+            <summary>
+            The objects that has already been visited.
+            </summary>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.#ctor(Spire.Security.Crypto.Digests.GeneralDigest)">
+            <summary>
+            Construct a new instance.
+            </summary>
+            <param name="digestMethod">The digest method.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.GetDigestValue">
+            <summary>
+            Get digest value.
+            </summary>
+            <returns>The digest value.</returns>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestObject(Spire.Pdf.Interfaces.IPdfPrimitive)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestNullObject(Spire.Pdf.Primitives.PdfNull)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestNumberObject(Spire.Pdf.Primitives.PdfNumber)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestBooleanObject(Spire.Pdf.Primitives.PdfBoolean)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestNameObject(Spire.Pdf.Primitives.PdfName)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestStringObject(Spire.Pdf.Core.PdfString)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestDictionaryObject(Spire.Pdf.Primitives.PdfDictionary)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestArrayObject(Spire.Pdf.Primitives.PdfArray)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestStreamObject(Spire.Pdf.Primitives.PdfStream)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestDictionaryKeyValuePair(Spire.Pdf.Primitives.PdfDictionary,System.String)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Spire.Pdf.Core.Utilities.ObjectDigest.DigestDictionaryEntryValue(Spire.Pdf.Primitives.PdfDictionary,System.String)">
+            <summary>
+            Digest the Pdf object.
+            </summary>
+            <param name="obj">The object to digest.</param>
+            <param name="key"></param>
         </member>
         <member name="T:Spire.Pdf.Interactive.Actions.PdfCatalogAdditionalActions">
             <summary>
@@ -29962,96 +30052,6 @@
             Detect changes.
             </summary>
             <returns>Whether is changed.</returns>
-        </member>
-        <member name="F:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.m_digestMethod">
-            <summary>
-            The document.
-            </summary>
-        </member>
-        <member name="F:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.m_visitedObjects">
-            <summary>
-            The objects that has already been visited.
-            </summary>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.#ctor(Spire.Security.Crypto.Digests.GeneralDigest)">
-            <summary>
-            Construct a new instance.
-            </summary>
-            <param name="digestMethod">The digest method.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.GetDigestValue">
-            <summary>
-            Get digest value.
-            </summary>
-            <returns>The digest value.</returns>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestObject(Spire.Pdf.Interfaces.IPdfPrimitive)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestNullObject(Spire.Pdf.Primitives.PdfNull)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestNumberObject(Spire.Pdf.Primitives.PdfNumber)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestBooleanObject(Spire.Pdf.Primitives.PdfBoolean)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestNameObject(Spire.Pdf.Primitives.PdfName)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestStringObject(Spire.Pdf.Core.PdfString)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestDictionaryObject(Spire.Pdf.Primitives.PdfDictionary)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestArrayObject(Spire.Pdf.Primitives.PdfArray)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestStreamObject(Spire.Pdf.Primitives.PdfStream)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestDictionaryKeyValuePair(Spire.Pdf.Primitives.PdfDictionary,System.String)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-            <param name="key"></param>
-        </member>
-        <member name="M:Spire.Pdf.Interactive.DigitalSignatures.PdfDigest.DigestDictionaryEntryValue(Spire.Pdf.Primitives.PdfDictionary,System.String)">
-            <summary>
-            Digest the Pdf object.
-            </summary>
-            <param name="obj">The object to digest.</param>
-            <param name="key"></param>
         </member>
         <member name="T:Spire.Pdf.Interactive.DigitalSignatures.PdfOrdinaryValidator">
             <summary>
@@ -32434,7 +32434,7 @@
             <param name="oldText">The old text</param>
             <param name="newText">The new text</param>
         </member>
-        <member name="M:Spire.Pdf.Texts.PdfTextReplacer.UpdateData(Spire.Pdf.General.Render.PdfElement.PdfRecordCollection)">
+        <member name="M:Spire.Pdf.Texts.PdfTextReplacer.UpdateData(Spire.Pdf.Core.PdfRecordCollection)">
             <summary>
             Update object stream.
             </summary>
@@ -39673,13 +39673,6 @@
             <param name="sourceDocuments">The source documents.</param>
             <returns>The document containing merged documents.</returns>
         </member>
-        <member name="M:Spire.Pdf.PdfDocumentBase.#ctor">
-            <summary>
-            Merge the PDF documents.
-            </summary>
-            <param name="inputFiles">The input PDF documents.</param>
-            <param name="outputFile">The output PDF document.</param>
-        </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.DisposeOnClose(System.IDisposable)">
             <summary>
             Adds an object to a collection of the objects that will be disposed during document closing.
@@ -39815,7 +39808,7 @@
             <param name="endIndex">The end index.</param>
         </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.SaveToPdf(System.String,System.Int32,System.Int32)">
-            <param name="filename">A relative or absolute path for the file</param>
+            <param name="fileName">A relative or absolute path for the file</param>
             <param name="startIndex">The start page index.</param>
             <param name="endIndex">The end page index.</param>
         </member>
@@ -39991,7 +39984,7 @@
             </summary>
             <param name="ldDoc">The loaded document.</param>
             <param name="pageIndex">Index of the page.</param>
-            <param name="targetPageIndex">The page index in the result document.</param>
+            <param name="resultPageIndex">The page index in the result document.</param>
             <returns>The page in the result document.</returns>
         </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.ImportPageRange(Spire.Pdf.PdfDocumentBase,System.Int32,System.Int32)">
@@ -40010,7 +40003,7 @@
             <param name="ldDoc">The loaded document.</param>
             <param name="startIndex">The start page index.</param>
             <param name="endIndex">The end page index.</param>
-            <param name="targetPageIndex">The page index in the result document when startIndex == endIndex.</param>
+            <param name="resultPageIndex">The page index in the result document when startIndex == endIndex.</param>
             <returns>The last created page in the result document.</returns>
         </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.HandleActionAnnotation(System.Collections.Generic.Dictionary{Spire.Pdf.Interfaces.IPdfPrimitive,Spire.Pdf.PdfPageBase},Spire.Pdf.PdfPageBase)">
@@ -40020,11 +40013,32 @@
             <param name="pageCorrespondance">The page corresponsedance</param>
             <param name="page">The page</param>
         </member>
+        <member name="M:Spire.Pdf.PdfDocumentBase.MergeFontResource(Spire.Pdf.Primitives.PdfDictionary,System.Collections.Generic.Dictionary{Spire.Pdf.Interfaces.IPdfPrimitive,System.Byte[]})">
+            <summary>
+            Merge same font when merge document. Bug_4941
+            </summary>
+            <param name="dictionary">The resource dictionary.</param>
+            <param name="fontMap">The document font map.</param>
+        </member>
+        <member name="M:Spire.Pdf.PdfDocumentBase.Equal(System.Byte[],System.Byte[])">
+            <summary>
+            Compare bytes.
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.CreateBookmarkDestinationDictionary">
             <summary>
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Spire.Pdf.PdfDocumentBase.Append(Spire.Pdf.PdfDocumentBase)">
+            <summary>
+            Appends the specified loaded document to this one.
+            </summary>
+            <param name="ldDoc">The loaded document.</param>
         </member>
         <member name="M:Spire.Pdf.PdfDocumentBase.ImportDestinations(Spire.Pdf.PdfDocumentBase)">
             <summary>
@@ -56893,7 +56907,7 @@
             <param name="resourceDictionary">The resource dictionary</param>
             <returns>forms type dictionary</returns>
         </member>
-        <member name="M:Spire.Pdf.PdfPageBase.IsApplyExtGStateRecord(Spire.Pdf.General.Render.PdfElement.PdfRecordCollection,System.Collections.Generic.Dictionary{System.String,System.Boolean},System.String)">
+        <member name="M:Spire.Pdf.PdfPageBase.IsApplyExtGStateRecord(Spire.Pdf.Core.PdfRecordCollection,System.Collections.Generic.Dictionary{System.String,System.Boolean},System.String)">
             <summary>
             Whether is apply the extgstate.
             </summary>
