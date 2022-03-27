@@ -74,7 +74,7 @@ namespace pdf_manager {
         #line hidden
         
         
-        #line 165 "..\..\MainWindow.xaml"
+        #line 164 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button mergeButton;
         
@@ -82,7 +82,7 @@ namespace pdf_manager {
         #line hidden
         
         
-        #line 178 "..\..\MainWindow.xaml"
+        #line 177 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button mergeAllButton;
         
@@ -159,7 +159,7 @@ namespace pdf_manager {
             return;
             case 7:
             
-            #line 116 "..\..\MainWindow.xaml"
+            #line 115 "..\..\MainWindow.xaml"
             ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.ButtonAddSelectedTreeItems_Click);
             
             #line default
@@ -168,7 +168,7 @@ namespace pdf_manager {
             case 8:
             this.mergeButton = ((System.Windows.Controls.Button)(target));
             
-            #line 166 "..\..\MainWindow.xaml"
+            #line 165 "..\..\MainWindow.xaml"
             this.mergeButton.Click += new System.Windows.RoutedEventHandler(this.mergeButton_Click);
             
             #line default
@@ -177,7 +177,7 @@ namespace pdf_manager {
             case 9:
             this.mergeAllButton = ((System.Windows.Controls.Button)(target));
             
-            #line 179 "..\..\MainWindow.xaml"
+            #line 178 "..\..\MainWindow.xaml"
             this.mergeAllButton.Click += new System.Windows.RoutedEventHandler(this.mergeAllButton_Click);
             
             #line default
