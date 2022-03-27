@@ -15,33 +15,31 @@ using Xceed.Wpf.Toolkit;
 /// Spire 
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
-using System;
-using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using System;
-using System.Drawing;
 
 /// klasa wybranych pdfow do pracy
 class files_info
 {
-    string path = "";
-    int page; // strona gdzie znajduje sie wyszukany text
-    int line; // linia gdzie znajduje sie wyszukany text
+    string sciezka = "";
+    int strona; // strona gdzie znajduje sie wyszukany text
+    int linia_w_dokumencie; // linia gdzie znajduje sie wyszukany text
     string text; // wyszukany text
+    int strona_w_pdfie = 0; // lokalizacja strony w nowo utworzynym  pdfie "Preview" - jesli takowa juz zostala dodana 
 
-    public files_info(string path, int page, int line, string text)
+    public files_info(string sciezka, int strona, int linia_w_dokumencie, string text)
     {
-        this.path = path;
-        this.page = page;
-        this.line = line;
+        this.sciezka = sciezka;
+        this.strona = strona;
+        this.linia_w_dokumencie = linia_w_dokumencie;
         this.text = text;
     }
     
     // nie wszedzie sa settery ( nie potrzebne aktualnie ) 
-    public string Path { get => path; }
-    public int Page { get => page; }
-    public int Line { get => line; }
+    public string Sciezka { get => sciezka; }
+    public int Strona { get => strona; }
+    public int Linia_w_dokumencie { get => linia_w_dokumencie; }
     public string Text { get => text; }
+    public int Strona_w_pdfie { get => strona_w_pdfie; set => strona = value; }
 }
 
 
@@ -52,52 +50,42 @@ namespace pdf_manager
     {
         // lista dodanych plikow do pracy 
         List<string> filePaths = new List<string>();
+        List<files_info> pliki = new List<files_info>();
 
-        List<files_info> easySearchFilesInfo = new List<files_info>();
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
-        List<int> easySearchAddedFiles = new List<int>();
+        // przycisk pod drzewkiem, dodajacy wybrane pliki
+        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+        {
+            string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
+            string dir = DirectoryTree.currentDirectory;
+            string toSave = dir + "\\" + itemHeader;
+            if (!filePaths.Contains(toSave))
+                filePaths.Add(toSave);
+            refreshFileList();
+        }
 
-        string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
+        private void refreshFileList()
+        {
+            SelectedItemsList.Children.Clear();
 
-      List<files_info> pliki = new List<files_info>();
-
-      // DirrectoryTree elements Collection
-      public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
-
-      public MainWindow()
-      {
-         InitializeComponent();
-      }
-
-      // przycisk pod drzewkiem, dodajacy wybrane pliki
-      private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
-      {
-         string itemHeader = ((HeaderedItemsControl)DirectoryTreeView.SelectedItem).Header.ToString();
-         string dir = DirectoryTree.currentDirectory;
-         string toSave = dir + "\\" + itemHeader;
-         if (!filePaths.Contains(toSave))
-            filePaths.Add(toSave);
-         refreshFileList();
-      }
-
-      private void refreshFileList()
-      {
-         SelectedItemsList.Children.Clear();
-
-         foreach (string file in filePaths)
-         {
-            SelectedItemsList.Children.Add(new TextBlock()
+            foreach (string file in filePaths)
             {
-               Text = file.Substring(file.LastIndexOf('\\'))
-            });
-         }
-      }
+                SelectedItemsList.Children.Add(new TextBlock() 
+                {
+                   Text = file.Substring(file.LastIndexOf('\\'))
+                });
+            }
+        }
 
-      // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
-      private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
-      {
-         // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-         string selectedPath = DirectoryTree.OpenDirectoryDialog();
+        // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
+        private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            string selectedPath = DirectoryTree.OpenDirectoryDialog();
 
             if (selectedPath != null)
             {
@@ -105,234 +93,187 @@ namespace pdf_manager
             }
         }
 
+      // Merges selected files
+      private void mergeButton_Click(object sender, RoutedEventArgs e)
+      {
+         // Need to connect list with selected items
+         SaveMergedFile(filePaths);
+      }
+
+      // Merges all files
+      private void mergeAllButton_Click(object sender, RoutedEventArgs e)
+      {
+         SaveMergedFile(filePaths);
+      }
+
+      private void SaveMergedFile(List<string> sourceList)
+      {
+         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+         if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+         {
+            string mergePath = saveFileDialog.FileName;
+            CombineMultiplePDFs(sourceList, mergePath + ".pdf");
+         }
+      }
+
+      public static void CombineMultiplePDFs(List<string> fileNames, string outFile)
+      {
+         // step 1: creation of a document-object
+         Document document = new Document();
+         //create newFileStream object which will be disposed at the end
+         using (FileStream newFileStream = new FileStream(outFile, FileMode.Create))
+         {
+            // step 2: we create a writer that listens to the document
+            PdfCopy writer = new PdfCopy(document, newFileStream);
+
+            // step 3: we open the document
+            document.Open();
+
+            foreach (string fileName in fileNames)
+            {
+               // we create a reader for a certain document
+               using (PdfReader reader = new PdfReader(fileName))
+               {
+                  reader.ConsolidateNamedDestinations();
+
+                  // step 4: we add content
+                  for (int i = 1; i <= reader.NumberOfPages; i++)
+                  {
+                     PdfImportedPage page = writer.GetImportedPage(reader, i);
+                     writer.AddPage(page);
+                  }
+
+                  PRAcroForm form = reader.AcroForm;
+                  if (form != null)
+                  {
+                     writer.AddDocument(reader);
+                  }
+
+                  reader.Close();
+               }
+            }
+
+            // step 5: we close the document and writer
+            writer.Close();
+            document.Close();
+         }//disposes the newFileStream object
+      }
+
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+      /*
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            // sprawdzenie czy wybrane zostaly jakies pliki
-            if (filePaths.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
+            string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
+            // string searchText = "Ala";
+           
+            using (PdfReader reader = new PdfReader(path))
             {
-                string szukana_fraza;
-                int licznik = 1;
+                StringBuilder text = new StringBuilder();
+                ITextExtractionStrategy Strategy = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
 
-                // czy ignorowac wielkosc liter
-                if (case_sensitivity.IsChecked == true)
-                    szukana_fraza = searching_word.Text.ToLower();
-                else
-                    szukana_fraza = searching_word.Text;
-
-                // przejscie po sciezkach plikow
-                foreach (var path in filePaths)
+                for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
-                        PdfReader reader = new PdfReader(@path);
-                        string[] words;
-                        string line;
+                    string page = "";
 
-                        for (int i = 1; i <= reader.NumberOfPages; i++)
+                    page = PdfTextExtractor.GetTextFromPage(reader, i, Strategy);
+                    string[] lines = page.Split('\n');
+
+                    int j = 1;
+                    foreach (string line in lines)
+                    {
+                        if (line.Contains("Ala"))
                         {
-                            string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
-
-                            words = text.Split('\n');
-                            for (int x = 0, length = words.Length; x < length; x++)
-                            {
-                                line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
-
-                                if (line.Contains(szukana_fraza))
-                                {
-                                   
-                                    results.Items.Add( licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
-
-                                // dodawanie do struktury informacji o znalezionych liniach
-                                    easySearchFilesInfo.Add(new files_info(path, i, x, line));
-                                    licznik++;
-                                }    
-                            }
+                            results.Items.Add("Strona: " + i + " Linia: " + j + "\n" + line + "\n");
+                            pliki.Add(new files_info("",i,j,line) );
                         }
+                        j++;
                     }
                 }
             }
-
-        // czyszczenie listy 
-        private void clear_Click(object sender, RoutedEventArgs e)
-        {
-            results.Items.Clear();
-            easySearchAddedFiles.Clear();
         }
+      */
 
-        private void previewFunction(object sender, RoutedEventArgs e)
+      // ELDEN RING ENJOYER FUNCTION CONENCTED WITH ELDEN RING ENJOYER COMMENTED WRAP PANEL
+
+      /*
+        private void preview_Click(object sender, RoutedEventArgs e)
         {
-            // jesli nie ma zadnego wybranego pliku to nic nie robi
-            if (results.SelectedItems.Count == 0)
-                return;
-
-            // Tworzenie nowego pliku pdf 
-            FileStream stream = new FileStream(pathToSavePreview, FileMode.Create, FileAccess.Write, FileShare.None);
+            /// Tworzenie nowego pliku pdf 
+            FileStream stream = new FileStream("demo.pdf", FileMode.Create, FileAccess.Write, FileShare.None);
             Document doc = new Document();
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
 
-            // przejscie po zaznaczonych checkboxach
-            for (int x = 0; x < results.SelectedItems.Count; x++)
+            // aktualna ilosc stron w nowo utworzonym pdfie
+            int ilosc_stron = 1;
+
+           // Sprawdzenie czy jakis checkbox zostal zaznaczony 
+            if (results.SelectedItems.Count != 0)
             {
-                // wyluskanie numeru linii z ListBox'a 
-                string number = results.SelectedItems[x].ToString();
-                number = number.Substring(0, number.IndexOf(":"));
-
-                // w strukturze indeksuje sie od 0 dlatego - 1
-                int listBoxLineNumber = Int32.Parse(number) - 1;
-                bool czyStrona = false;
-
-                // iteracja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
-                for (int i = 0; i < easySearchAddedFiles.Count; i++)
+                // Petla po wybranych checkboxach 
+                for (int x = 0; x < results.SelectedItems.Count; x++)
                 {
-                    if (easySearchFilesInfo[listBoxLineNumber].Path == easySearchFilesInfo[easySearchAddedFiles[i]].Path)
+                    // Sprawdzenie czy juz nie ma wybranego tekstu w nowo stworzonym pdfie
+                    bool czyStrona = false;
+                    for (int i = 0; i < x; i++)
                     {
-                        if (easySearchFilesInfo[listBoxLineNumber].Page == easySearchFilesInfo[easySearchAddedFiles[i]].Page)
+                        // sprawdzenie czy uzyte byly te same pliki
+                        if (pliki[i].Sciezka == pliki[i].Sciezka)
                         {
-                            czyStrona = true;
-                            break;
+                            // sprawdzenie czy dodane zostaly te same linie do pliku
+                            if (pliki[i].Strona == pliki[x].Strona)
+                            {
+                                czyStrona = true;
+                                break;
+                            }
                         }
                     }
-                }
 
-                string path = easySearchFilesInfo[listBoxLineNumber].Path;
-                if (czyStrona == false)
-                {
-                    // kopiowanie do nowo utworzonego pdfa strony
-                    using (PdfReader kopiowany_pdf = new PdfReader(path))
+                    // jesli plik nie zostal dodany w takim wypadku go dodajemy 
+                    if(czyStrona == false)
                     {
-                        PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, easySearchFilesInfo[listBoxLineNumber].Page);
-                        nowy_pdf.AddPage(importedPage);
+                        // przypisanie do zmiennej na ktorej stronie znajduje sie w nowym pdfie
+                        pliki[x].Strona_w_pdfie = ilosc_stron;
+                        ilosc_stron++;
+
+                        string path = "file:///C:/Users/Tomek/Desktop/test.pdf";
+
+                        using (PdfReader kopiowany_pdf = new PdfReader(path))
+                        {
+                            PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, pliki[x].Strona);
+                            nowy_pdf.AddPage( importedPage );
+                        }
                     }
+                    doc.Close();
 
-                    // wpisanie do listy dodanych linii z ListBoxa 
-                    easySearchAddedFiles.Add(listBoxLineNumber);
+
+                    // podekreslenie tekstu w nowym pliku - uzycie nowego frameworka Spire || itextsharp nie oferuje tego 
+                    
+                    // otwarcie pliku utowrzonego poprzednio
+                    Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
+                    docSpire.LoadFromFile("demo.pdf");
+
+                    PdfPageBase page = docSpire.Pages[ pliki[x].Strona - 1 ]; // liczy od 0 strony || wybor strony do przeszukania
+
+                    PdfTextFind[] result = page.FindText(pliki[x].Text).Finds; // przeszukanie strony 
+
+                    result[0].ApplyHighLight(); // dodanie tylko do pierwszego znalezienia podkreslenia 
+                                                //  teoretycznie nie bedzie cala linia identyczna
+
+                    doc.Close();
+
                 }
+                System.Diagnostics.Process.Start(@"C:\Users\Tomek\Desktop\demo.pdf"); // wyswietlenie pliku podgladowego
+                                                                                      //  potem bedzie go mozna zapisac lub nie
             }
-            
-            System.Windows.Controls.Button btnSender = (System.Windows.Controls.Button)sender;
 
-            // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
-            if ( btnSender == preview)
-                System.Diagnostics.Process.Start(@pathToSavePreview);
-
-            // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
-            easySearchAddedFiles.Clear();
-            doc.Close();
         }
+      */
 
-
-        // wyswietlenie jak bedzie wygladac finalny pdf 
-        private void preview_Click(object sender, RoutedEventArgs e)
-        {
-            previewFunction(sender, null);
-        }
-           
       private void Button_Click_1(object sender, RoutedEventArgs e)
       {
 
       }
-
-         private void savePreview_Click(object sender, RoutedEventArgs e)
-        {     
-            // jesli nie ma zadnego wybranego pliku to nic nie robi
-            if (results.SelectedItems.Count == 0)
-                 return;
-
-            // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
-            previewFunction(sender, null);
-
-            // okno dialogowe do wybrania folderu zapisu 
-            var folderBrowserDialog1 = new FolderBrowserDialog();
-            DialogResult result = folderBrowserDialog1.ShowDialog();
-
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                // sciezka do zapisu pdfa
-                string pathToSaveCompleted;
-                if ( userPath.Text == "Insert Path" || userPath.Text == "" )
-                {
-                    userPath.Text = "Insert File Name";
-                    userPath.Background = System.Windows.Media.Brushes.Red;
-                    return;
-                }
-                pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
-               
-                if( File.Exists(pathToSaveCompleted) )
-                {
-                    userPath.Text = "File Exists";
-                    userPath.Background = System.Windows.Media.Brushes.Red;
-                    return;
-                }
-
-                if ( File.Exists(pathToSavePreview) )
-                {
-                    // sprawdzenie czy ktos chce miec ustawione haslo 
-                    if (passwordChecked.IsChecked == true )
-                    {
-                        // sprawdzenie czy pole z haslem nie jest puste 
-                        if( password.Text == "Insert Password" || password.Text == "" )
-                        {
-                            password.Text = "Insert Password";
-                            password.Background = System.Windows.Media.Brushes.Red;
-                            return;
-                        }
-                        // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
-                        using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            PdfReader reader = new PdfReader(pathToSavePreview);
-                            string Password = password.Text;
-                            PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
-                        }
-                    }
-                    else
-                    {
-                        // bez hasla mozna tylko przeniesc plik 
-                        File.Move(pathToSavePreview, pathToSaveCompleted);
-                    }
-                }
-            }
-        }
-
-
-        // podczas zamykania aplikacji usuwamy plik preview.pdf
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            if (File.Exists(pathToSavePreview))
-                File.Delete(pathToSavePreview);
-        }
-
-        // po kliknieciu w texboxa znika tekst 
-        private void password_GotFocus(object sender, RoutedEventArgs e)
-        {
-            password.Text = "";
-            password.Background = System.Windows.Media.Brushes.White;
-        }
-
-        // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
-        private void userPath_GotFocus(object sender, RoutedEventArgs e)
-        {
-            userPath.Text = "";
-            userPath.Background = System.Windows.Media.Brushes.White;
-        }
-
-        private void searching_word_GotFocus(object sender, RoutedEventArgs e)
-        {
-            searching_word.Text = "";
-        }
-    }
+   }
 }
-
-/* Podkreslanie tekstu - nowy framework platny ( ograniczony ) 
-                              Spire.Pdf.PdfDocument docSpire = new Spire.Pdf.PdfDocument();
-                              docSpire.LoadFromFile("C:/Users/Tomek/Desktop/demo.pdf");
-                              PdfPageBase page = docSpire.Pages[0]; // liczy od 0 strony || wybor strony do przeszukania
-                              PdfTextFind[] finds = page.FindText(pliki[listBoxLineNumber].Text, TextFindParameter.CrossLine).Finds; // przeszukanie strony 
-
-                              foreach (PdfTextFind result in finds)
-                              {
-                                  result.ApplyHighLight(Color.Yellow);
-                              }
-
-                              docSpire.SaveToFile("C:/Users/Tomek/Desktop/demo.pdf", FileFormat.PDF);
-                              docSpire.Close();
-*/
