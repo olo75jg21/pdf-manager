@@ -10,7 +10,8 @@ using System;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
-
+using System.Linq;
+using System.Collections.Specialized;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -54,10 +55,26 @@ namespace pdf_manager
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        // przycisk pod drzewkiem, dodajacy wybrane pliki
-        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+            // Loading filePaths from last session
+            if (Properties.Settings.Default.filePaths != null)
+            {
+               filePaths = Properties.Settings.Default.filePaths.Cast<string>().ToList();
+               refreshFileList();
+            }
+         }
+         private void saveSettingsButton_Click(object sender, RoutedEventArgs e)
+         {
+            StringCollection filePathsCollection = new StringCollection();
+            foreach (string filePath in filePaths) 
+            {
+               filePathsCollection.Add(filePath); 
+            }
+            Properties.Settings.Default.filePaths = filePathsCollection; Properties.Settings.Default.Save();
+         }
+
+      // przycisk pod drzewkiem, dodajacy wybrane pliki
+      private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
             string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
             string dir = DirectoryTree.currentDirectory;
@@ -372,6 +389,6 @@ namespace pdf_manager
         {
             searching_word.Text = "";
         }
-    }
+   }
 }
 

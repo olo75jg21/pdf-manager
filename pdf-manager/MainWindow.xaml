@@ -171,6 +171,19 @@
                 All
             </Button>
 
+            <Button Grid.Column="0"
+                    Grid.Row="8"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Margin="3,3,3,3"
+                    Width="100"
+                    
+                    x:Name="saveSettingsButton"
+                    Click="saveSettingsButton_Click"
+             >
+                Save Settings
+            </Button>
+
         </Grid>
         <Button  Grid.Row="3" x:Name="preview" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
         <TextBox x:Name="searching_word" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" GotFocus="searching_word_GotFocus" Margin="0,5,247,524" Grid.Column="1"/>
