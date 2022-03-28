@@ -16,10 +16,7 @@ using System.Collections.Specialized;
 /// Spire 
 using Spire.Pdf;
 using Spire.Pdf.General.Find;
-using System;
 using System.Collections.ObjectModel;
-using System.Windows.Forms;
-using System.Drawing;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -75,17 +72,15 @@ namespace pdf_manager
             SelectedItemsList.DataContext = selectedFilesPath;
             DirectoryTreeView.DataContext = RootDirectoryItems;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
-        }
-        public MainWindow()
-        {
-            InitializeComponent();
 
             // Loading filePaths from last session
             if (Properties.Settings.Default.filePaths != null)
             {
-               filePaths = Properties.Settings.Default.filePaths.Cast<string>().ToList();
-               refreshFileList();
+                filePaths.AddRange(Properties.Settings.Default.filePaths.Cast<string>().ToList());
             }
+
+            foreach (String f in filePaths)
+                Console.WriteLine(f);
          }
          private void saveSettingsButton_Click(object sender, RoutedEventArgs e)
          {
@@ -260,6 +255,7 @@ namespace pdf_manager
             }
         }
 
+
         // czyszczenie listy 
         private void clear_Click(object sender, RoutedEventArgs e)
         {
@@ -321,7 +317,7 @@ namespace pdf_manager
             System.Windows.Controls.Button btnSender = (System.Windows.Controls.Button)sender;
 
             // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
-            if (btnSender == preview)
+            if (btnSender == preview1)
                 System.Diagnostics.Process.Start(@pathToSavePreview);
 
             // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu

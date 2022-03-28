@@ -13,7 +13,7 @@
         <BitmapImage x:Key="icoFolder" UriSource="pack://siteoforigin:,,,/icons/folder.ico"/>
         <BitmapImage x:Key="icoFile" UriSource="pack://siteoforigin:,,,/icons/file.ico"/>
     </Window.Resources>
-    
+
     <Grid Background="#fcf9f7">
         <!-- Main grid -->
         <Grid.ColumnDefinitions>
@@ -96,8 +96,9 @@
             </Viewbox>
             <TreeView
                 Grid.Column="0" 
-                Grid.Row="2" 
-                x:Name="Drzewko"
+                Grid.Row="2"
+                x:Name="DirectoryTreeView"
+                ItemsSource="{Binding RootDirectoryItems}"
             >
                 <!--
                 Setting up a TreeView style
@@ -167,6 +168,7 @@
         <!-- End Tree Directory Grid -->
 
         <!-- Workspace Grid-->
+
         <!-- End Workspace Grid-->
 
         <!-- Tool panel Grid-->
@@ -186,9 +188,9 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <!--<Button HorizontalAlignment="Center" 
+            <Button HorizontalAlignment="Center" 
                     VerticalAlignment="Top" 
-                    Width="50" Height="30" 
+                    Height="30" 
                     Grid.Column="0"
                     Margin="3,3,3,3"
                     Width="100"
@@ -210,11 +212,11 @@
                     Click="mergeAllButton_Click"
              >
                 Merge
-            </Button>-->
+            </Button>
         </Grid>
         <!-- End Tool Panel Grid-->
 
-            <Button Grid.Column="0"
+        <Button Grid.Column="0"
                     Grid.Row="8"
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
@@ -224,10 +226,9 @@
                     x:Name="saveSettingsButton"
                     Click="saveSettingsButton_Click"
              >
-                Save Settings
-            </Button>
+            Save Settings
+        </Button>
 
-        </Grid>
         <Button  Grid.Row="3" x:Name="preview" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
         <TextBox x:Name="searching_word" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" GotFocus="searching_word_GotFocus" Margin="0,5,247,524" Grid.Column="1"/>
         <CheckBox x:Name="case_sensitivity" Content="Case Sensitivity" Margin="272,10,124,528" Grid.Column="1"/>
@@ -256,7 +257,8 @@
             </Button.RenderTransform>
         </Button>
         <syncfusion:CheckListBox x:Name="results" Grid.ColumnSpan="2" Margin="257,35,0,29"/>
-        <Button x:Name="preview_Copy" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
-        <!-- End Tool Panel Grid-->
+        <Button x:Name="preview1" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
+
+    <!-- End Tool Panel Grid-->
     </Grid>
 </Window>
