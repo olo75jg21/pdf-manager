@@ -47,10 +47,6 @@ namespace pdf_manager
 {
     public partial class MainWindow : Window
     {
-        // lista dodanych plikow do pracy 
-        // lista dodanych plikow do pracy 
-        List<string> filePaths = new List<string>();
-
         List<files_info> easySearchFilesInfo = new List<files_info>();
 
         List<int> easySearchAddedFiles = new List<int>();
@@ -67,35 +63,32 @@ namespace pdf_manager
         public MainWindow()
         {
             InitializeComponent();
-            base.DataContext = this;
+            // Connecting XAML view with the data
             SelectedItemsList.ItemsSource = selectedFilesPath;
-            SelectedItemsList.DataContext = selectedFilesPath;
-            DirectoryTreeView.DataContext = RootDirectoryItems;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
 
-            // Loading filePaths from last session
+            // Loading selectedFilePaths from last session
+            LoadSession();
+        }
+        private void LoadSession()
+        {
             if (Properties.Settings.Default.filePaths != null)
             {
-                filePaths.AddRange(Properties.Settings.Default.filePaths.Cast<string>().ToList());
+                foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
+                    selectedFilesPath.Add(file);
             }
-
-            foreach (String f in filePaths)
-                Console.WriteLine(f);
-         }
-         private void saveSettingsButton_Click(object sender, RoutedEventArgs e)
-         {
+        }
+        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
             StringCollection filePathsCollection = new StringCollection();
-            foreach (string filePath in filePaths) 
-            {
-               filePathsCollection.Add(filePath); 
-            }
+            filePathsCollection.AddRange(selectedFilesPath.ToArray());
             Properties.Settings.Default.filePaths = filePathsCollection; Properties.Settings.Default.Save();
-         }
+        }
 
         // przycisk pod drzewkiem, dodajacy wybrane pliki
         private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            var file = DirectoryTreeView.SelectedItem as ItFile;
+            ItFile file = DirectoryTreeView.SelectedItem as ItFile;
             if (file != null)
             {
                 if (!selectedFilesPath.Contains(file.FilePath))
@@ -107,12 +100,12 @@ namespace pdf_manager
 
         private void ButtonRemoveSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            var file = DirectoryTreeView.SelectedItem as ItFile;
+            String file = SelectedItemsList.SelectedItem as String;
             if (file != null)
             {
-                if (selectedFilesPath.Contains(file.FilePath))
+                if (selectedFilesPath.Contains(file))
                 {
-                    selectedFilesPath.Remove(file.FilePath);
+                    selectedFilesPath.Remove(file);
                 }
             }
         }
@@ -129,7 +122,7 @@ namespace pdf_manager
         private void ButtonRemoveDirectory_Click(object sender, RoutedEventArgs e)
         {
             var directory = DirectoryTreeView.SelectedItem as ItDirectory;
-            
+
             if (directory != null)
             {
                 Console.WriteLine(directory.ToString());
@@ -137,77 +130,72 @@ namespace pdf_manager
             }
         }
 
-      // Merges selected files
-      private void mergeButton_Click(object sender, RoutedEventArgs e)
-      {
-         // Need to connect list with selected items
-         SaveMergedFile(filePaths);
-      }
+        // Merges selected files
+        private void mergeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Need to connect list with selected items
+            SaveMergedFile(selectedFilesPath.ToList());
+        }
 
-      // Merges all files
-      private void mergeAllButton_Click(object sender, RoutedEventArgs e)
-      {
-         SaveMergedFile(filePaths);
-      }
+        // Merges all files
+        private void mergeAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveMergedFile(selectedFilesPath.ToList());
+        }
 
-      private void SaveMergedFile(List<string> sourceList)
-      {
-         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void SaveMergedFile(List<string> sourceList)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-         if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-         {
-            string mergePath = saveFileDialog.FileName;
-            CombineMultiplePDFs(sourceList, mergePath + ".pdf");
-         }
-      }
-
-      public static void CombineMultiplePDFs(List<string> fileNames, string outFile)
-      {
-         // step 1: creation of a document-object
-         Document document = new Document();
-         //create newFileStream object which will be disposed at the end
-         using (FileStream newFileStream = new FileStream(outFile, FileMode.Create))
-         {
-            // step 2: we create a writer that listens to the document
-            PdfCopy writer = new PdfCopy(document, newFileStream);
-
-            // step 3: we open the document
-            document.Open();
-
-            foreach (string fileName in fileNames)
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-               // we create a reader for a certain document
-               using (PdfReader reader = new PdfReader(fileName))
-               {
-                  reader.ConsolidateNamedDestinations();
-
-                  // step 4: we add content
-                  for (int i = 1; i <= reader.NumberOfPages; i++)
-                  {
-                     PdfImportedPage page = writer.GetImportedPage(reader, i);
-                     writer.AddPage(page);
-                  }
-
-                  PRAcroForm form = reader.AcroForm;
-                  if (form != null)
-                  {
-                     writer.AddDocument(reader);
-                  }
-
-                  reader.Close();
-               }
+                string mergePath = saveFileDialog.FileName;
+                CombineMultiplePDFs(sourceList, mergePath + ".pdf");
             }
+        }
 
-            // step 5: we close the document and writer
-            writer.Close();
-            document.Close();
-         }//disposes the newFileStream object
-      }
+        public static void CombineMultiplePDFs(List<string> fileNames, string outFile)
+        {
+            // step 1: creation of a document-object
+            Document document = new Document();
+            //create newFileStream object which will be disposed at the end
+            using (FileStream newFileStream = new FileStream(outFile, FileMode.Create))
+            {
+                // step 2: we create a writer that listens to the document
+                PdfCopy writer = new PdfCopy(document, newFileStream);
 
-      private void Button_Click_1(object sender, RoutedEventArgs e)
-      {
+                // step 3: we open the document
+                document.Open();
 
-      }
+                foreach (string fileName in fileNames)
+                {
+                    // we create a reader for a certain document
+                    using (PdfReader reader = new PdfReader(fileName))
+                    {
+                        reader.ConsolidateNamedDestinations();
+
+                        // step 4: we add content
+                        for (int i = 1; i <= reader.NumberOfPages; i++)
+                        {
+                            PdfImportedPage page = writer.GetImportedPage(reader, i);
+                            writer.AddPage(page);
+                        }
+
+                        PRAcroForm form = reader.AcroForm;
+                        if (form != null)
+                        {
+                            writer.AddDocument(reader);
+                        }
+
+                        reader.Close();
+                    }
+                }
+
+                // step 5: we close the document and writer
+                writer.Close();
+                document.Close();
+            }//disposes the newFileStream object
+        }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -418,6 +406,6 @@ namespace pdf_manager
         {
             searching_word.Text = "";
         }
-   }
+    }
 }
 
