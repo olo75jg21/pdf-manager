@@ -63,14 +63,12 @@ namespace pdf_manager
         public MainWindow()
         {
             InitializeComponent();
-            base.DataContext = this;
+            // Connecting XAML view with the data
             SelectedItemsList.ItemsSource = selectedFilesPath;
-            SelectedItemsList.DataContext = selectedFilesPath;
-            DirectoryTreeView.DataContext = RootDirectoryItems;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
 
             // Loading selectedFilePaths from last session
-            LoadSession();    
+            LoadSession();
         }
         private void LoadSession()
         {
@@ -80,7 +78,7 @@ namespace pdf_manager
                     selectedFilesPath.Add(file);
             }
         }
-        private void saveSettingsButton_Click(object sender, RoutedEventArgs e)
+        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             StringCollection filePathsCollection = new StringCollection();
             filePathsCollection.AddRange(selectedFilesPath.ToArray());
@@ -90,7 +88,7 @@ namespace pdf_manager
         // przycisk pod drzewkiem, dodajacy wybrane pliki
         private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            var file = DirectoryTreeView.SelectedItem as ItFile;
+            ItFile file = DirectoryTreeView.SelectedItem as ItFile;
             if (file != null)
             {
                 if (!selectedFilesPath.Contains(file.FilePath))
@@ -102,12 +100,12 @@ namespace pdf_manager
 
         private void ButtonRemoveSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            var file = DirectoryTreeView.SelectedItem as ItFile;
+            String file = SelectedItemsList.SelectedItem as String;
             if (file != null)
             {
-                if (selectedFilesPath.Contains(file.FilePath))
+                if (selectedFilesPath.Contains(file))
                 {
-                    selectedFilesPath.Remove(file.FilePath);
+                    selectedFilesPath.Remove(file);
                 }
             }
         }
