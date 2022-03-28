@@ -138,3 +138,8 @@ C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.Window
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.License.xml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Spire.Pdf.xml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\App.baml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Syncfusion.Compression.Base.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Syncfusion.Licensing.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Syncfusion.Pdf.Base.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Syncfusion.Compression.Base.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Syncfusion.Pdf.Base.xml

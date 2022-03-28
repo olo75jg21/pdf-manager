@@ -19,6 +19,13 @@ using System.Windows.Forms;
 using System;
 using System.Drawing;
 
+using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Interactive;
+using Syncfusion.Pdf.Parsing;
+using System.Drawing;
+using System.Linq;
+
 /// klasa wybranych pdfow do pracy
 class files_info
 {
@@ -79,9 +86,9 @@ namespace pdf_manager
 
             foreach (string file in filePaths)
             {
-                SelectedItemsList.Children.Add(new TextBlock() 
+                SelectedItemsList.Children.Add(new TextBlock()
                 {
-                   Text = file.Substring(file.LastIndexOf('\\'))
+                    Text = file.Substring(file.LastIndexOf('\\'))
                 });
             }
         }
@@ -116,33 +123,33 @@ namespace pdf_manager
                 foreach (var path in filePaths)
                 {
                     // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
-                        PdfReader reader = new PdfReader(@path);
-                        string[] words;
-                        string line;
+                    PdfReader reader = new PdfReader(@path);
+                    string[] words;
+                    string line;
 
-                        for (int i = 1; i <= reader.NumberOfPages; i++)
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+
+                        words = text.Split('\n');
+                        for (int x = 0, length = words.Length; x < length; x++)
                         {
-                            string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                            line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
 
-                            words = text.Split('\n');
-                            for (int x = 0, length = words.Length; x < length; x++)
+                            if (line.Contains(szukana_fraza))
                             {
-                                line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
 
-                                if (line.Contains(szukana_fraza))
-                                {
-                                   
-                                    results.Items.Add( licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
+                                results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
 
                                 // dodawanie do struktury informacji o znalezionych liniach
-                                    easySearchFilesInfo.Add(new files_info(path, i, x, line));
-                                    licznik++;
-                                }    
+                                easySearchFilesInfo.Add(new files_info(path, i, x, line));
+                                licznik++;
                             }
                         }
                     }
                 }
             }
+        }
 
         // czyszczenie listy 
         private void clear_Click(object sender, RoutedEventArgs e)
@@ -151,7 +158,168 @@ namespace pdf_manager
             easySearchAddedFiles.Clear();
         }
 
-        private void previewFunction(object sender, RoutedEventArgs e)
+        private class RectAndText
+        {
+            public iTextSharp.text.Rectangle Rect;
+            public String Text;
+            public RectAndText(iTextSharp.text.Rectangle rect, String text)
+            {
+                this.Rect = rect;
+                this.Text = text;
+            }
+        }
+
+
+        private class MyLocationTextExtractionStrategy : LocationTextExtractionStrategy
+        {
+            //Hold each coordinate
+            public List<RectAndText> myPoints = new List<RectAndText>();
+
+            //The string that we're searching for
+            public String TextToSearchFor { get; set; }
+
+            //How to compare strings
+            public System.Globalization.CompareOptions CompareOptions { get; set; }
+
+            public MyLocationTextExtractionStrategy(String textToSearchFor, System.Globalization.CompareOptions compareOptions = System.Globalization.CompareOptions.None)
+            {
+                this.TextToSearchFor = textToSearchFor;
+                this.CompareOptions = compareOptions;
+            }
+
+            //Automatically called for each chunk of text in the PDF
+            public override void RenderText(TextRenderInfo renderInfo)
+            {
+                base.RenderText(renderInfo);
+
+                //See if the current chunk contains the text
+                var startPosition = System.Globalization.CultureInfo.CurrentCulture.CompareInfo.IndexOf(renderInfo.GetText(), this.TextToSearchFor, this.CompareOptions);
+
+                //If not found bail
+                if (startPosition < 0)
+                {
+                    return;
+                }
+
+                //Grab the individual characters
+                var chars = renderInfo.GetCharacterRenderInfos().Skip(startPosition).Take(this.TextToSearchFor.Length).ToList();
+
+                //Grab the first and last character
+                var firstChar = chars.First();
+                var lastChar = chars.Last();
+
+
+                //Get the bounding box for the chunk of text
+                var bottomLeft = firstChar.GetDescentLine().GetStartPoint();
+                var topRight = lastChar.GetAscentLine().GetEndPoint();
+
+                //Create a rectangle from it
+                var rect = new iTextSharp.text.Rectangle(
+                                                        bottomLeft[iTextSharp.text.pdf.parser.Vector.I1],
+                                                        bottomLeft[iTextSharp.text.pdf.parser.Vector.I2],
+                                                        topRight[iTextSharp.text.pdf.parser.Vector.I1],
+                                                        topRight[iTextSharp.text.pdf.parser.Vector.I2]
+                                                        );
+
+                //Add this to our main collection
+                this.myPoints.Add(new RectAndText(rect, this.TextToSearchFor));
+            }
+        }
+
+        private void highlightPDF()
+        {
+            //Create a new file from our test file with highlighting
+            string highLightFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Highlighted.pdf");
+
+            // Stream
+            //Bind a reader and stamper to our test PDF
+
+            var testFile = pathToSavePreview;
+
+            PdfReader reader = new PdfReader(testFile);
+
+            var numberOfPages = reader.NumberOfPages;
+            System.Globalization.CompareOptions cmp = System.Globalization.CompareOptions.None;
+            //Create an instance of our strategy
+
+
+            FileStream fs = new FileStream(highLightFile, FileMode.Create);
+            Document document = new Document(PageSize.A4);
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+
+            using (PdfStamper stamper = new PdfStamper(reader, fs))
+            {
+                //document.Open();
+                for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
+                {
+                    MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searching_word.Text, cmp);
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+
+                    //Parse page 1 of the document above
+                    using (var r = new PdfReader(testFile))
+                    {
+                        var ex = PdfTextExtractor.GetTextFromPage(r, currentPageIndex, strategyTest);
+                    }
+
+                    //Loop through each chunk found
+
+                    foreach (var p in strategyTest.myPoints)
+                    {
+
+                        float[] quad = { p.Rect.Left, p.Rect.Bottom, p.Rect.Right, p.Rect.Bottom, p.Rect.Left, p.Rect.Top, p.Rect.Right, p.Rect.Top };
+
+                        iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(p.Rect.Left,
+                                                       p.Rect.Top,
+                                                       p.Rect.Bottom,
+                                                       p.Rect.Right);
+
+                        iTextSharp.text.pdf.PdfAnnotation highlight = iTextSharp.text.pdf.PdfAnnotation.CreateMarkup(stamper.Writer, rect, null, iTextSharp.text.pdf.PdfAnnotation.MARKUP_HIGHLIGHT, quad);
+
+                        //Set the color
+                        highlight.Color = BaseColor.YELLOW;
+
+                        //Add the annotation
+                        stamper.AddAnnotation(highlight, 1);
+                    }
+                }
+            }
+        }
+
+            /*
+                    private void highlightPDF()
+                    {
+                        //Loads the document
+                        PdfLoadedDocument document = new PdfLoadedDocument(pathToSavePreview);
+                        //Gets the first page from the document
+                        PdfLoadedPage page = document.Pages[0] as PdfLoadedPage;
+                        //Add a list to maintain extracted text information
+                        List<TextData> extractedText = new List<TextData>();
+                        //Extract text from first page
+                        page.ExtractText(out extractedText);
+
+                        foreach (TextData textData in extractedText)
+                        {
+                            if (textData.Text == searching_word.Text)
+                            {
+                                //Add text markup annotation on the bounds of highlighting text
+                                PdfTextMarkupAnnotation textmarkup = new PdfTextMarkupAnnotation(textData.Bounds);
+                                //Sets the markup annotation type as HighLight
+                                textmarkup.TextMarkupAnnotationType = PdfTextMarkupAnnotationType.Highlight;
+                                //Sets the content of the annotation
+                                textmarkup.Text = "Highlight Text";
+                                //Sets the highlighting color
+                                textmarkup.TextMarkupColor = new PdfColor(Color.LightPink);
+                                //Add annotation into page
+                                page.Annotations.Add(textmarkup);
+                            }
+                        }
+                        //Save and close the document
+                        document.Save(pathToSavePreview);
+                        document.Close(true);
+                    }       
+             */
+
+            private void previewFunction(object sender, RoutedEventArgs e)
         {
             // jesli nie ma zadnego wybranego pliku to nic nie robi
             if (results.SelectedItems.Count == 0)
@@ -218,6 +386,7 @@ namespace pdf_manager
         private void preview_Click(object sender, RoutedEventArgs e)
         {
             previewFunction(sender, null);
+            highlightPDF();
         }
            
       private void Button_Click_1(object sender, RoutedEventArgs e)
