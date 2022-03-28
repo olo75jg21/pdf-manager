@@ -304,6 +304,7 @@ namespace pdf_manager
             }
 
             System.Windows.Controls.Button btnSender = (System.Windows.Controls.Button)sender;
+            doc.Close();
 
             // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
             if (btnSender == preview1)
@@ -319,7 +320,6 @@ namespace pdf_manager
 
             // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
             easySearchAddedFiles.Clear();
-            doc.Close();
         }
 
 
@@ -498,7 +498,7 @@ namespace pdf_manager
         private void highlightPDF()
         {
             //Create a new file from our test file with highlighting
-            string highLightFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Highlighted.pdf");
+            string highLightFile = pathToSaveHighlight;
 
             // Stream
             //Bind a reader and stamper to our test PDF
