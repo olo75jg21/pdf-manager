@@ -18,7 +18,6 @@ using Spire.Pdf.General.Find;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using System;
 using System.Drawing;
 
 /// klasa wybranych pdfow do pracy
@@ -36,7 +35,7 @@ class files_info
         this.line = line;
         this.text = text;
     }
-    
+
     // nie wszedzie sa settery ( nie potrzebne aktualnie ) 
     public string Path { get => path; }
     public int Page { get => page; }
@@ -50,8 +49,6 @@ namespace pdf_manager
 {
     public partial class MainWindow : Window
     {
-        // lista dodanych plikow do pracy 
-        List<string> filePaths = new List<string>();
 
         List<files_info> easySearchFilesInfo = new List<files_info>();
 
@@ -59,56 +56,72 @@ namespace pdf_manager
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
 
-      List<files_info> pliki = new List<files_info>();
+        List<files_info> pliki = new List<files_info>();
 
-      // DirrectoryTree elements Collection
-      public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
+        // DirrectoryTree elements Collection
+        public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
 
-      public MainWindow()
-      {
-         InitializeComponent();
-      }
+        // List of paths to selected files 
+        public ObservableCollection<String> selectedFilesPath = new ObservableCollection<String>();
+        public MainWindow()
+        {
+            InitializeComponent();
+            base.DataContext = this;
+            SelectedItemsList.ItemsSource = selectedFilesPath;
+            SelectedItemsList.DataContext = selectedFilesPath;
+            DirectoryTreeView.DataContext = RootDirectoryItems;
+            DirectoryTreeView.ItemsSource = RootDirectoryItems;
+        }
 
-      // przycisk pod drzewkiem, dodajacy wybrane pliki
-      private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
-      {
-         string itemHeader = ((HeaderedItemsControl)DirectoryTreeView.SelectedItem).Header.ToString();
-         string dir = DirectoryTree.currentDirectory;
-         string toSave = dir + "\\" + itemHeader;
-         if (!filePaths.Contains(toSave))
-            filePaths.Add(toSave);
-         refreshFileList();
-      }
-
-      private void refreshFileList()
-      {
-         SelectedItemsList.Children.Clear();
-
-         foreach (string file in filePaths)
-         {
-            SelectedItemsList.Children.Add(new TextBlock()
+        // przycisk pod drzewkiem, dodajacy wybrane pliki
+        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+        {
+            var file = DirectoryTreeView.SelectedItem as ItFile;
+            if (file != null)
             {
-               Text = file.Substring(file.LastIndexOf('\\'))
-            });
-         }
-      }
+                if (!selectedFilesPath.Contains(file.FilePath))
+                {
+                    selectedFilesPath.Add(file.FilePath);
+                }
+            }
+        }
 
-      // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
-      private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
-      {
-         // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-         string selectedPath = DirectoryTree.OpenDirectoryDialog();
+        private void ButtonRemoveSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+        {
+            var file = DirectoryTreeView.SelectedItem as ItFile;
+            if (file != null)
+            {
+                if (selectedFilesPath.Contains(file.FilePath))
+                {
+                    selectedFilesPath.Remove(file.FilePath);
+                }
+            }
+        }
+
+        // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
+        private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPath = TreeComponents.OpenDirectoryDialog();
 
             if (selectedPath != null)
+                RootDirectoryItems.Add(new ItDirectory(selectedPath));
+        }
+
+        private void ButtonRemoveDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = DirectoryTreeView.SelectedItem as ItDirectory;
+            
+            if (directory != null)
             {
-                DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
+                Console.WriteLine(directory.ToString());
+                RootDirectoryItems.Remove(directory);
             }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             // sprawdzenie czy wybrane zostaly jakies pliki
-            if (filePaths.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
+            if (selectedFilesPath.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
             {
                 string szukana_fraza;
                 int licznik = 1;
@@ -120,36 +133,36 @@ namespace pdf_manager
                     szukana_fraza = searching_word.Text;
 
                 // przejscie po sciezkach plikow
-                foreach (var path in filePaths)
+                foreach (var path in selectedFilesPath)
                 {
                     // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
-                        PdfReader reader = new PdfReader(@path);
-                        string[] words;
-                        string line;
+                    PdfReader reader = new PdfReader(@path);
+                    string[] words;
+                    string line;
 
-                        for (int i = 1; i <= reader.NumberOfPages; i++)
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+
+                        words = text.Split('\n');
+                        for (int x = 0, length = words.Length; x < length; x++)
                         {
-                            string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
+                            line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
 
-                            words = text.Split('\n');
-                            for (int x = 0, length = words.Length; x < length; x++)
+                            if (line.Contains(szukana_fraza))
                             {
-                                line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
 
-                                if (line.Contains(szukana_fraza))
-                                {
-                                   
-                                    results.Items.Add( licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
+                                results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
 
                                 // dodawanie do struktury informacji o znalezionych liniach
-                                    easySearchFilesInfo.Add(new files_info(path, i, x, line));
-                                    licznik++;
-                                }    
+                                easySearchFilesInfo.Add(new files_info(path, i, x, line));
+                                licznik++;
                             }
                         }
                     }
                 }
             }
+        }
 
         // czyszczenie listy 
         private void clear_Click(object sender, RoutedEventArgs e)
@@ -208,11 +221,11 @@ namespace pdf_manager
                     easySearchAddedFiles.Add(listBoxLineNumber);
                 }
             }
-            
+
             System.Windows.Controls.Button btnSender = (System.Windows.Controls.Button)sender;
 
             // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
-            if ( btnSender == preview)
+            if (btnSender == preview)
                 System.Diagnostics.Process.Start(@pathToSavePreview);
 
             // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
@@ -226,17 +239,17 @@ namespace pdf_manager
         {
             previewFunction(sender, null);
         }
-           
-      private void Button_Click_1(object sender, RoutedEventArgs e)
-      {
 
-      }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
 
-         private void savePreview_Click(object sender, RoutedEventArgs e)
-        {     
+        }
+
+        private void savePreview_Click(object sender, RoutedEventArgs e)
+        {
             // jesli nie ma zadnego wybranego pliku to nic nie robi
             if (results.SelectedItems.Count == 0)
-                 return;
+                return;
 
             // stworzenie preview jesli ktos by nie chcial go korzystac z opcji "preview"
             previewFunction(sender, null);
@@ -249,28 +262,28 @@ namespace pdf_manager
             {
                 // sciezka do zapisu pdfa
                 string pathToSaveCompleted;
-                if ( userPath.Text == "Insert Path" || userPath.Text == "" )
+                if (userPath.Text == "Insert Path" || userPath.Text == "")
                 {
                     userPath.Text = "Insert File Name";
                     userPath.Background = System.Windows.Media.Brushes.Red;
                     return;
                 }
                 pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
-               
-                if( File.Exists(pathToSaveCompleted) )
+
+                if (File.Exists(pathToSaveCompleted))
                 {
                     userPath.Text = "File Exists";
                     userPath.Background = System.Windows.Media.Brushes.Red;
                     return;
                 }
 
-                if ( File.Exists(pathToSavePreview) )
+                if (File.Exists(pathToSavePreview))
                 {
                     // sprawdzenie czy ktos chce miec ustawione haslo 
-                    if (passwordChecked.IsChecked == true )
+                    if (passwordChecked.IsChecked == true)
                     {
                         // sprawdzenie czy pole z haslem nie jest puste 
-                        if( password.Text == "Insert Password" || password.Text == "" )
+                        if (password.Text == "Insert Password" || password.Text == "")
                         {
                             password.Text = "Insert Password";
                             password.Background = System.Windows.Media.Brushes.Red;
