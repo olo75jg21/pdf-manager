@@ -12,6 +12,7 @@
     <Window.Resources>
         <BitmapImage x:Key="icoFolder" UriSource="pack://siteoforigin:,,,/icons/folder.ico"/>
         <BitmapImage x:Key="icoFile" UriSource="pack://siteoforigin:,,,/icons/file.ico"/>
+        <local:FileNameConverter x:Key="FileNameConverter" />
     </Window.Resources>
 
     <Grid Background="#fcf9f7">
@@ -150,7 +151,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding }" />
+                            <TextBlock Text="{Binding Path=., Converter={StaticResource FileNameConverter}}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -224,7 +225,7 @@
                     Width="100"
                     
                     x:Name="saveSettingsButton"
-                    Click="saveSettingsButton_Click"
+                    Click="SaveSettingsButton_Click"
              >
             Save Settings
         </Button>

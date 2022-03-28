@@ -1,16 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace pdf_manager
 {
-    internal class FilePath
+    public class FileNameConverter : IValueConverter
     {
-        private string _Path;
-        public string Path { get { return _Path; } set { _Path = value; } }
-        public string Name { get { return System.IO.Path.GetFileName(_Path); } }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return System.IO.Path.GetFileName(value as String);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
