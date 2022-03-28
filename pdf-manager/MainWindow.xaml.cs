@@ -13,10 +13,11 @@ using iTextSharp.text.pdf.parser;
 using System.Linq;
 using System.Collections.Specialized;
 
-/// Spire 
-using Spire.Pdf;
-using Spire.Pdf.General.Find;
 using System.Collections.ObjectModel;
+
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf.Security;
+
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -55,6 +56,10 @@ namespace pdf_manager
         string pathToSaveHighlight = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "previewHighlight.pdf");
 
         List<files_info> pliki = new List<files_info>();
+
+        // zapisywanie hasel 
+        Dictionary<string, string> encodedPassword = new Dictionary<string, string>();
+
 
         // DirrectoryTree elements Collection
         public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
@@ -171,7 +176,7 @@ namespace pdf_manager
                 foreach (string fileName in fileNames)
                 {
                     // we create a reader for a certain document
-                    using (PdfReader reader = new PdfReader(fileName))
+                    using (iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(fileName))
                     {
                         reader.ConsolidateNamedDestinations();
 
@@ -216,7 +221,7 @@ namespace pdf_manager
                 foreach (var path in selectedFilesPath)
                 {
                     // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
-                    PdfReader reader = new PdfReader(@path);
+                    iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(@path);
                     string[] words;
                     string line;
 
@@ -292,7 +297,7 @@ namespace pdf_manager
                 if (czyStrona == false)
                 {
                     // kopiowanie do nowo utworzonego pdfa strony
-                    using (PdfReader kopiowany_pdf = new PdfReader(path))
+                    using (iTextSharp.text.pdf.PdfReader kopiowany_pdf = new iTextSharp.text.pdf.PdfReader(path))
                     {
                         PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, easySearchFilesInfo[listBoxLineNumber].Page);
                         nowy_pdf.AddPage(importedPage);
@@ -384,7 +389,7 @@ namespace pdf_manager
                         // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
                         using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
-                            PdfReader reader = new PdfReader(fileToSave);
+                            iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(fileToSave);
                             string Password = password.Text;
                             PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
                         }
@@ -505,7 +510,7 @@ namespace pdf_manager
 
             var testFile = pathToSavePreview;
 
-            PdfReader reader = new PdfReader(testFile);
+            iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(testFile);
 
             var numberOfPages = reader.NumberOfPages;
             System.Globalization.CompareOptions cmp = System.Globalization.CompareOptions.None;
@@ -527,7 +532,7 @@ namespace pdf_manager
                     ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
 
                     //Parse page 1 of the document above
-                    using (var r = new PdfReader(testFile))
+                    using (var r = new iTextSharp.text.pdf.PdfReader(testFile))
                     {
                         var ex = PdfTextExtractor.GetTextFromPage(r, i, strategyTest);
                     }
@@ -552,6 +557,27 @@ namespace pdf_manager
                         stamper.AddAnnotation(highlight, i);
                     }
                 }
+            }
+        }
+
+        private void encode_Click(object sender, RoutedEventArgs e)
+        {
+            string encryptFile = selectedFilesPath[0];
+
+            if (selectedFilesPath.Count == 1 && textEncodePassword.Text != "")
+            {
+                PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile);
+
+                PdfSecuritySettings securitySettings = document.SecuritySettings;
+  
+                securitySettings.UserPassword = textEncodePassword.Text;
+                securitySettings.OwnerPassword = textEncodePassword.Text;
+
+                encodedPassword.Add(encryptFile, textEncodePassword.Text);
+
+                document.Save(encryptFile);
+                document.Close();
+                System.Windows.MessageBox.Show("Ustawiono haslo " + textEncodePassword.Text);
             }
         }
     }
