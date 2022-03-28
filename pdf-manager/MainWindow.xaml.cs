@@ -243,11 +243,17 @@ namespace pdf_manager
 
             FileStream fs = new FileStream(highLightFile, FileMode.Create, FileAccess.Write);
 
+            string searchText = "";
+            if (case_sensitivity.IsChecked == true)
+                searchText = searching_word.Text.ToLower();
+            else
+                searchText = searching_word.Text;
+
             using (PdfStamper stamper = new PdfStamper(reader, fs))
             {
                 for (int i = 1; i <= reader.NumberOfPages; i++)  //for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
                 {
-                    MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searching_word.Text, cmp);
+                    MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searchText, cmp);
                     ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
 
                     //Parse page 1 of the document above
@@ -275,46 +281,11 @@ namespace pdf_manager
                         //Add the annotation
                         stamper.AddAnnotation(highlight, i);
                     }
-                    System.Windows.MessageBox.Show("Page");
                 }
             }
         }
 
-            /*
-                    private void highlightPDF()
-                    {
-                        //Loads the document
-                        PdfLoadedDocument document = new PdfLoadedDocument(pathToSavePreview);
-                        //Gets the first page from the document
-                        PdfLoadedPage page = document.Pages[0] as PdfLoadedPage;
-                        //Add a list to maintain extracted text information
-                        List<TextData> extractedText = new List<TextData>();
-                        //Extract text from first page
-                        page.ExtractText(out extractedText);
-
-                        foreach (TextData textData in extractedText)
-                        {
-                            if (textData.Text == searching_word.Text)
-                            {
-                                //Add text markup annotation on the bounds of highlighting text
-                                PdfTextMarkupAnnotation textmarkup = new PdfTextMarkupAnnotation(textData.Bounds);
-                                //Sets the markup annotation type as HighLight
-                                textmarkup.TextMarkupAnnotationType = PdfTextMarkupAnnotationType.Highlight;
-                                //Sets the content of the annotation
-                                textmarkup.Text = "Highlight Text";
-                                //Sets the highlighting color
-                                textmarkup.TextMarkupColor = new PdfColor(Color.LightPink);
-                                //Add annotation into page
-                                page.Annotations.Add(textmarkup);
-                            }
-                        }
-                        //Save and close the document
-                        document.Save(pathToSavePreview);
-                        document.Close(true);
-                    }       
-             */
-
-            private void previewFunction(object sender, RoutedEventArgs e)
+        private void previewFunction(object sender, RoutedEventArgs e)
         {
             // jesli nie ma zadnego wybranego pliku to nic nie robi
             if (results.SelectedItems.Count == 0)
