@@ -214,6 +214,7 @@
              >
                 Merge
             </Button>
+            <CheckBox x:Name="highlight" Content="Highlight" HorizontalAlignment="Center" Height="26" Margin="0,5,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100"/>
         </Grid>
         <!-- End Tool Panel Grid-->
 
@@ -260,6 +261,6 @@
         <syncfusion:CheckListBox x:Name="results" Grid.ColumnSpan="2" Margin="257,35,0,29"/>
         <Button x:Name="preview1" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
 
-    <!-- End Tool Panel Grid-->
+        <!-- End Tool Panel Grid-->
     </Grid>
 </Window>
