@@ -622,6 +622,12 @@ namespace pdf_manager
 
         private void passwordHistory_Click(object sender, RoutedEventArgs e)
         {
+
+            if (System.Windows.MessageBox.Show(" Czy na pewno ? Workspace zostanie wyczyszczony", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
+               
             clear_Click(null, null);
 
             foreach (var item in encryptPasswordHistory)
