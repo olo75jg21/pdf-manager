@@ -169,7 +169,6 @@ namespace pdf_manager
             }
         }
 
-
         private class MyLocationTextExtractionStrategy : LocationTextExtractionStrategy
         {
             //Hold each coordinate
@@ -242,15 +241,11 @@ namespace pdf_manager
             System.Globalization.CompareOptions cmp = System.Globalization.CompareOptions.None;
             //Create an instance of our strategy
 
-
-            FileStream fs = new FileStream(highLightFile, FileMode.Create);
-            Document document = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            FileStream fs = new FileStream(highLightFile, FileMode.Create, FileAccess.Write);
 
             using (PdfStamper stamper = new PdfStamper(reader, fs))
             {
-                //document.Open();
-                for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
+                for (int i = 1; i <= reader.NumberOfPages; i++)  //for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
                 {
                     MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searching_word.Text, cmp);
                     ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
@@ -258,11 +253,10 @@ namespace pdf_manager
                     //Parse page 1 of the document above
                     using (var r = new PdfReader(testFile))
                     {
-                        var ex = PdfTextExtractor.GetTextFromPage(r, currentPageIndex, strategyTest);
+                        var ex = PdfTextExtractor.GetTextFromPage(r, i, strategyTest);
                     }
 
                     //Loop through each chunk found
-
                     foreach (var p in strategyTest.myPoints)
                     {
 
@@ -279,8 +273,9 @@ namespace pdf_manager
                         highlight.Color = BaseColor.YELLOW;
 
                         //Add the annotation
-                        stamper.AddAnnotation(highlight, 1);
+                        stamper.AddAnnotation(highlight, i);
                     }
+                    System.Windows.MessageBox.Show("Page");
                 }
             }
         }
