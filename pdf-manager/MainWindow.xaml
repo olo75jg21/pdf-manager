@@ -80,7 +80,7 @@
                 Grid.Column="3" 
                 Grid.Row="0"
                 Margin="5,5,5,5"
-                Click="ButtonAddSelectedTreeItems_Click"
+                Click="ButtonRemoveSelectedTreeItems_Click"
                 >
                     - File
                 </Button>
