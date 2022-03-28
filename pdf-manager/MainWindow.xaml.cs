@@ -13,6 +13,14 @@ using iTextSharp.text.pdf.parser;
 using System.Linq;
 using System.Collections.Specialized;
 
+/// Spire 
+using Spire.Pdf;
+using Spire.Pdf.General.Find;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Forms;
+using System.Drawing;
+
 /// klasa wybranych pdfow do pracy
 class files_info
 {
@@ -52,6 +60,22 @@ namespace pdf_manager
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
 
+        List<files_info> pliki = new List<files_info>();
+
+        // DirrectoryTree elements Collection
+        public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
+
+        // List of paths to selected files 
+        public ObservableCollection<String> selectedFilesPath = new ObservableCollection<String>();
+        public MainWindow()
+        {
+            InitializeComponent();
+            base.DataContext = this;
+            SelectedItemsList.ItemsSource = selectedFilesPath;
+            SelectedItemsList.DataContext = selectedFilesPath;
+            DirectoryTreeView.DataContext = RootDirectoryItems;
+            DirectoryTreeView.ItemsSource = RootDirectoryItems;
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -73,39 +97,48 @@ namespace pdf_manager
             Properties.Settings.Default.filePaths = filePathsCollection; Properties.Settings.Default.Save();
          }
 
-      // przycisk pod drzewkiem, dodajacy wybrane pliki
-      private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
+        // przycisk pod drzewkiem, dodajacy wybrane pliki
+        private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            string itemHeader = ((HeaderedItemsControl)Drzewko.SelectedItem).Header.ToString();
-            string dir = DirectoryTree.currentDirectory;
-            string toSave = dir + "\\" + itemHeader;
-            if (!filePaths.Contains(toSave))
-                filePaths.Add(toSave);
-            refreshFileList();
+            var file = DirectoryTreeView.SelectedItem as ItFile;
+            if (file != null)
+            {
+                if (!selectedFilesPath.Contains(file.FilePath))
+                {
+                    selectedFilesPath.Add(file.FilePath);
+                }
+            }
         }
 
-        private void refreshFileList()
+        private void ButtonRemoveSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            SelectedItemsList.Children.Clear();
-
-            foreach (string file in filePaths)
+            var file = DirectoryTreeView.SelectedItem as ItFile;
+            if (file != null)
             {
-                SelectedItemsList.Children.Add(new TextBlock() 
+                if (selectedFilesPath.Contains(file.FilePath))
                 {
-                   Text = file.Substring(file.LastIndexOf('\\'))
-                });
+                    selectedFilesPath.Remove(file.FilePath);
+                }
             }
         }
 
         // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
         private void ButtonAddDirectory_Click(object sender, RoutedEventArgs e)
         {
-            // System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-            string selectedPath = DirectoryTree.OpenDirectoryDialog();
+            string selectedPath = TreeComponents.OpenDirectoryDialog();
 
             if (selectedPath != null)
+                RootDirectoryItems.Add(new ItDirectory(selectedPath));
+        }
+
+        private void ButtonRemoveDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var directory = DirectoryTreeView.SelectedItem as ItDirectory;
+            
+            if (directory != null)
             {
-                DirectoryTree.ListDirectory(this.Drzewko, selectedPath);
+                Console.WriteLine(directory.ToString());
+                RootDirectoryItems.Remove(directory);
             }
         }
 
@@ -184,7 +217,7 @@ namespace pdf_manager
         private void button_Click(object sender, RoutedEventArgs e)
         {
             // sprawdzenie czy wybrane zostaly jakies pliki
-            if (filePaths.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
+            if (selectedFilesPath.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
             {
                 string szukana_fraza;
                 int licznik = 1;
@@ -196,7 +229,7 @@ namespace pdf_manager
                     szukana_fraza = searching_word.Text;
 
                 // przejscie po sciezkach plikow
-                foreach (var path in filePaths)
+                foreach (var path in selectedFilesPath)
                 {
                     // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
                     PdfReader reader = new PdfReader(@path);
