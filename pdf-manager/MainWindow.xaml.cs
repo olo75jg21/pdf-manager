@@ -52,6 +52,7 @@ namespace pdf_manager
         List<int> easySearchAddedFiles = new List<int>();
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
+        string pathToSaveHighlight = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "previewHighlight.pdf");
 
         List<files_info> pliki = new List<files_info>();
 
@@ -306,7 +307,15 @@ namespace pdf_manager
 
             // sprawdzenie czy "Search" wywoluje bo tam jest podglad | wyswietlenie podgladowego pdfa w przegladarce
             if (btnSender == preview1)
-                System.Diagnostics.Process.Start(@pathToSavePreview);
+            {
+                if( highlight.IsChecked == true )
+                {
+                    highlightPDF();
+                    System.Diagnostics.Process.Start(@pathToSaveHighlight);
+                }
+                else
+                    System.Diagnostics.Process.Start(@pathToSavePreview);
+            }
 
             // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
             easySearchAddedFiles.Clear();
@@ -345,6 +354,14 @@ namespace pdf_manager
                 }
                 pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
 
+                // wybieranie odpowiedniego pliku do zapisu z podkresleniem lub bez 
+                string fileToSave;
+                if (highlight.IsChecked == true)
+                    fileToSave = pathToSaveHighlight;
+                else
+                    fileToSave = pathToSavePreview;
+                
+                
                 if (File.Exists(pathToSaveCompleted))
                 {
                     userPath.Text = "File Exists";
@@ -352,7 +369,7 @@ namespace pdf_manager
                     return;
                 }
 
-                if (File.Exists(pathToSavePreview))
+                if (File.Exists(fileToSave))
                 {
                     // sprawdzenie czy ktos chce miec ustawione haslo 
                     if (passwordChecked.IsChecked == true)
@@ -367,7 +384,7 @@ namespace pdf_manager
                         // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
                         using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
-                            PdfReader reader = new PdfReader(pathToSavePreview);
+                            PdfReader reader = new PdfReader(fileToSave);
                             string Password = password.Text;
                             PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
                         }
@@ -375,7 +392,7 @@ namespace pdf_manager
                     else
                     {
                         // bez hasla mozna tylko przeniesc plik 
-                        File.Move(pathToSavePreview, pathToSaveCompleted);
+                        File.Move(fileToSave, pathToSaveCompleted);
                     }
                 }
             }
@@ -386,6 +403,8 @@ namespace pdf_manager
         {
             if (File.Exists(pathToSavePreview))
                 File.Delete(pathToSavePreview);
+            if (File.Exists(pathToSaveHighlight))
+                File.Delete(pathToSaveHighlight);
         }
 
         // po kliknieciu w texboxa znika tekst 
@@ -405,6 +424,134 @@ namespace pdf_manager
         private void searching_word_GotFocus(object sender, RoutedEventArgs e)
         {
             searching_word.Text = "";
+        }
+
+        private class RectAndText
+        {
+            public iTextSharp.text.Rectangle Rect;
+            public String Text;
+            public RectAndText(iTextSharp.text.Rectangle rect, String text)
+            {
+                this.Rect = rect;
+                this.Text = text;
+            }
+        }
+        
+        // podkreslanie tekstu 
+        private class MyLocationTextExtractionStrategy : LocationTextExtractionStrategy
+        {
+            //Hold each coordinate
+            public List<RectAndText> myPoints = new List<RectAndText>();
+
+            //The string that we're searching for
+            public String TextToSearchFor { get; set; }
+
+            //How to compare strings
+            public System.Globalization.CompareOptions CompareOptions { get; set; }
+
+            public MyLocationTextExtractionStrategy(String textToSearchFor, System.Globalization.CompareOptions compareOptions = System.Globalization.CompareOptions.None)
+            {
+                this.TextToSearchFor = textToSearchFor;
+                this.CompareOptions = compareOptions;
+            }
+
+            //Automatically called for each chunk of text in the PDF
+            public override void RenderText(TextRenderInfo renderInfo)
+            {
+                base.RenderText(renderInfo);
+
+                //See if the current chunk contains the text
+                var startPosition = System.Globalization.CultureInfo.CurrentCulture.CompareInfo.IndexOf(renderInfo.GetText(), this.TextToSearchFor, this.CompareOptions);
+
+                //If not found bail
+                if (startPosition < 0)
+                {
+                    return;
+                }
+
+                //Grab the individual characters
+                var chars = renderInfo.GetCharacterRenderInfos().Skip(startPosition).Take(this.TextToSearchFor.Length).ToList();
+
+                //Grab the first and last character
+                var firstChar = chars.First();
+                var lastChar = chars.Last();
+
+
+                //Get the bounding box for the chunk of text
+                var bottomLeft = firstChar.GetDescentLine().GetStartPoint();
+                var topRight = lastChar.GetAscentLine().GetEndPoint();
+
+                //Create a rectangle from it
+                var rect = new iTextSharp.text.Rectangle(
+                                                        bottomLeft[iTextSharp.text.pdf.parser.Vector.I1],
+                                                        bottomLeft[iTextSharp.text.pdf.parser.Vector.I2],
+                                                        topRight[iTextSharp.text.pdf.parser.Vector.I1],
+                                                        topRight[iTextSharp.text.pdf.parser.Vector.I2]
+                                                        );
+
+                //Add this to our main collection
+                this.myPoints.Add(new RectAndText(rect, this.TextToSearchFor));
+            }
+        }
+
+        private void highlightPDF()
+        {
+            //Create a new file from our test file with highlighting
+            string highLightFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Highlighted.pdf");
+
+            // Stream
+            //Bind a reader and stamper to our test PDF
+
+            var testFile = pathToSavePreview;
+
+            PdfReader reader = new PdfReader(testFile);
+
+            var numberOfPages = reader.NumberOfPages;
+            System.Globalization.CompareOptions cmp = System.Globalization.CompareOptions.None;
+            //Create an instance of our strategy
+
+            FileStream fs = new FileStream(highLightFile, FileMode.Create, FileAccess.Write);
+
+            string searchText = "";
+            if (case_sensitivity.IsChecked == true)
+                searchText = searching_word.Text.ToLower();
+            else
+                searchText = searching_word.Text;
+
+            using (PdfStamper stamper = new PdfStamper(reader, fs))
+            {
+                for (int i = 1; i <= reader.NumberOfPages; i++)  //for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
+                {
+                    MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searchText, cmp);
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+
+                    //Parse page 1 of the document above
+                    using (var r = new PdfReader(testFile))
+                    {
+                        var ex = PdfTextExtractor.GetTextFromPage(r, i, strategyTest);
+                    }
+
+                    //Loop through each chunk found
+                    foreach (var p in strategyTest.myPoints)
+                    {
+
+                        float[] quad = { p.Rect.Left, p.Rect.Bottom, p.Rect.Right, p.Rect.Bottom, p.Rect.Left, p.Rect.Top, p.Rect.Right, p.Rect.Top };
+
+                        iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(p.Rect.Left,
+                                                       p.Rect.Top,
+                                                       p.Rect.Bottom,
+                                                       p.Rect.Right);
+
+                        iTextSharp.text.pdf.PdfAnnotation highlight = iTextSharp.text.pdf.PdfAnnotation.CreateMarkup(stamper.Writer, rect, null, iTextSharp.text.pdf.PdfAnnotation.MARKUP_HIGHLIGHT, quad);
+
+                        //Set the color
+                        highlight.Color = BaseColor.YELLOW;
+
+                        //Add the annotation
+                        stamper.AddAnnotation(highlight, i);
+                    }
+                }
+            }
         }
     }
 }

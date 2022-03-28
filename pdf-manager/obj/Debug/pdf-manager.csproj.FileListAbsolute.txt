@@ -140,3 +140,4 @@ D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf_manager.Properties.Re
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.GenerateResource.cache
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CoreCompileInputs.cache
 D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\GeneratedInternalTypeHelper.g.cs
