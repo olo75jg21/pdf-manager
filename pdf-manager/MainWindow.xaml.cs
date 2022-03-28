@@ -566,21 +566,27 @@ namespace pdf_manager
 
             if (selectedFilesPath.Count == 1 && textEncryptPassword.Text != "")
             {
-                PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile);
+                try
+                {
+                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile);
+                    PdfSecuritySettings securitySettings = document.SecuritySettings;
 
-                PdfSecuritySettings securitySettings = document.SecuritySettings;
-  
-                securitySettings.UserPassword = textEncryptPassword.Text;
-                securitySettings.OwnerPassword = textEncryptPassword.Text;
+                    securitySettings.UserPassword = textEncryptPassword.Text;
+                    securitySettings.OwnerPassword = textEncryptPassword.Text;
 
-                if (encryptPasswordHistory.ContainsKey(encryptFile))
-                    encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
-                else
-                    encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
+                    if (encryptPasswordHistory.ContainsKey(encryptFile))
+                        encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
+                    else
+                        encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
 
-                document.Save(encryptFile);
-                document.Close();
-                System.Windows.MessageBox.Show("Ustawiono haslo " + textEncryptPassword.Text);
+                    document.Save(encryptFile);
+                    document.Close();
+                    System.Windows.MessageBox.Show("Ustawiono haslo " + textEncryptPassword.Text);
+                }
+                catch
+                {
+                    System.Windows.MessageBox.Show("Trzeba usunac poprzednie haslo");
+                }
             }
         }
 
@@ -590,18 +596,27 @@ namespace pdf_manager
 
             if (selectedFilesPath.Count == 1 && textDecryptPassword.Text != "")
             {
-                PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile, textDecryptPassword.Text);
+                try
+                {
+                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile);
+                    System.Windows.MessageBox.Show("Plik jest aktualnie bez hasla");
+                    return;
+                }
+                catch
+                {
+                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile, textDecryptPassword.Text);
 
-                PdfDocumentSecurityLevel level = document.SecuritySettings.DocumentSecurityLevel;
+                    PdfDocumentSecurityLevel level = document.SecuritySettings.DocumentSecurityLevel;
 
-                if (encryptPasswordHistory.ContainsKey(decryptFile) )
-                    encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
-                else
-                    encryptPasswordHistory.Add(decryptFile, "Usunieto haslo " + DateTime.Now );
+                    if (encryptPasswordHistory.ContainsKey(decryptFile))
+                        encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
+                    else
+                        encryptPasswordHistory.Add(decryptFile, "Usunieto haslo " + DateTime.Now);
 
-                document.Save(decryptFile);
-                document.Close();
-                System.Windows.MessageBox.Show("Usunieto haslo");
+                    document.Save(decryptFile);
+                    document.Close();
+                    System.Windows.MessageBox.Show("Usunieto haslo");
+                }
             }
         }
 
