@@ -10,8 +10,8 @@
         Title="Pdf Manager" Height="600" Width="900" Closed="Window_Closed">
 
     <Window.Resources>
-        <BitmapImage x:Key="icoFolder" UriSource="pack://siteoforigin:,,,/icons/folder.ico"/>
-        <BitmapImage x:Key="icoFile" UriSource="pack://siteoforigin:,,,/icons/file.ico"/>
+        <BitmapImage x:Key="icoFolder" UriSource="pack://application:,,,/pdf-manager;component/Resources/folder.ico"/>
+        <BitmapImage x:Key="icoFile" UriSource="pack://application:,,,/pdf-manager;component/Resources/file.ico"/>
         <local:FileNameConverter x:Key="FileNameConverter" />
     </Window.Resources>
 
