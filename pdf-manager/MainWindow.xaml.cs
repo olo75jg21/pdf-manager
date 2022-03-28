@@ -58,7 +58,7 @@ namespace pdf_manager
         List<files_info> pliki = new List<files_info>();
 
         // zapisywanie hasel 
-        Dictionary<string, string> encodedPassword = new Dictionary<string, string>();
+        Dictionary<string, string> encryptPasswordHistory = new Dictionary<string, string>();
 
 
         // DirrectoryTree elements Collection
@@ -564,20 +564,55 @@ namespace pdf_manager
         {
             string encryptFile = selectedFilesPath[0];
 
-            if (selectedFilesPath.Count == 1 && textEncodePassword.Text != "")
+            if (selectedFilesPath.Count == 1 && textEncryptPassword.Text != "")
             {
                 PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile);
 
                 PdfSecuritySettings securitySettings = document.SecuritySettings;
   
-                securitySettings.UserPassword = textEncodePassword.Text;
-                securitySettings.OwnerPassword = textEncodePassword.Text;
+                securitySettings.UserPassword = textEncryptPassword.Text;
+                securitySettings.OwnerPassword = textEncryptPassword.Text;
 
-                encodedPassword.Add(encryptFile, textEncodePassword.Text);
+                if (encryptPasswordHistory.ContainsKey(encryptFile))
+                    encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
+                else
+                    encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
 
                 document.Save(encryptFile);
                 document.Close();
-                System.Windows.MessageBox.Show("Ustawiono haslo " + textEncodePassword.Text);
+                System.Windows.MessageBox.Show("Ustawiono haslo " + textEncryptPassword.Text);
+            }
+        }
+
+        private void decrypt_Click(object sender, RoutedEventArgs e)
+        {
+            string decryptFile = selectedFilesPath[0];
+
+            if (selectedFilesPath.Count == 1 && textDecryptPassword.Text != "")
+            {
+                PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile, textDecryptPassword.Text);
+
+                PdfDocumentSecurityLevel level = document.SecuritySettings.DocumentSecurityLevel;
+
+                if (encryptPasswordHistory.ContainsKey(decryptFile) )
+                    encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
+                else
+                    encryptPasswordHistory.Add(decryptFile, "Usunieto haslo " + DateTime.Now );
+
+                document.Save(decryptFile);
+                document.Close();
+                System.Windows.MessageBox.Show("Usunieto haslo");
+            }
+        }
+
+        private void passwordHistory_Click(object sender, RoutedEventArgs e)
+        {
+            clear_Click(null, null);
+
+            foreach (var item in encryptPasswordHistory)
+            {
+                string result = item.Key + "\n" + item.Value;
+                results.Items.Add(result);
             }
         }
     }
