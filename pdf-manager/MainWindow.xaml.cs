@@ -403,6 +403,7 @@ namespace pdf_manager
         {
             if (File.Exists(pathToSavePreview))
                 File.Delete(pathToSavePreview);
+
             if (File.Exists(pathToSaveHighlight))
                 File.Delete(pathToSaveHighlight);
         }
