@@ -17,7 +17,7 @@ using System.Collections.ObjectModel;
 
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Security;
-
+using System.Windows.Media;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -417,22 +417,71 @@ namespace pdf_manager
         private void password_GotFocus(object sender, RoutedEventArgs e)
         {
             password.Text = "";
-            password.Background = System.Windows.Media.Brushes.White;
+            // password.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff");
         }
 
-        // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
-        private void userPath_GotFocus(object sender, RoutedEventArgs e)
+         private void password_LostFocus(object sender, RoutedEventArgs e)
+         {
+            if (password.Text.Length == 0)
+            {
+               password.Text = "Insert Password";
+            }
+         }
+
+      // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
+       private void userPath_GotFocus(object sender, RoutedEventArgs e)
         {
             userPath.Text = "";
-            userPath.Background = System.Windows.Media.Brushes.White;
         }
 
-        private void searching_word_GotFocus(object sender, RoutedEventArgs e)
+      private void userPath_LostFocus(object sender, RoutedEventArgs e)
+      {
+         if (userPath.Text.Length == 0)
+         {
+            userPath.Text = "Insert Name";
+         }
+      }
+
+      private void searching_word_GotFocus(object sender, RoutedEventArgs e)
         {
             searching_word.Text = "";
         }
 
-        private class RectAndText
+      private void searching_word_LostFocus(object sender, RoutedEventArgs e)
+      {
+         if (searching_word.Text.Length == 0)
+         {
+            searching_word.Text = "Enter Searching Text";
+         }
+      }
+
+      private void textEncryptPassword_GotFocus(object sender, RoutedEventArgs e)
+      {
+         textEncryptPassword.Text = "";
+      }
+
+      private void textEncryptPassword_LostFocus(object sender, RoutedEventArgs e)
+      {
+         if (textEncryptPassword.Text.Length == 0)
+         {
+            textEncryptPassword.Text = "Insert";
+         }
+      }
+
+      private void textDecryptPassword_GotFocus(object sender, RoutedEventArgs e)
+      {
+         textDecryptPassword.Text = "";
+      }
+
+      private void textDecryptPassword_LostFocus(object sender, RoutedEventArgs e)
+      {
+         if (textDecryptPassword.Text.Length == 0)
+         {
+            textDecryptPassword.Text = "Insert";
+         }
+      }
+
+      private class RectAndText
         {
             public iTextSharp.text.Rectangle Rect;
             public String Text;
@@ -636,6 +685,8 @@ namespace pdf_manager
                 results.Items.Add(result);
             }
         }
-    }
+
+
+   }
 }
 
