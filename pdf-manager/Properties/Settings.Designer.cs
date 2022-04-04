@@ -33,5 +33,17 @@ namespace pdf_manager.Properties {
                 this["filePaths"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string rootDirectoryItems {
+            get {
+                return ((string)(this["rootDirectoryItems"]));
+            }
+            set {
+                this["rootDirectoryItems"] = value;
+            }
+        }
     }
 }

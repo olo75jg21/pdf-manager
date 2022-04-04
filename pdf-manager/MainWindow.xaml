@@ -442,19 +442,6 @@
                     Width="130"
              />
 
-            <Button
-                    Grid.Row="8"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    
-                    FontSize="12"
-                    Width="130"
-                    x:Name="saveSettingsButton"
-                    Click="SaveSettingsButton_Click"
-             >
-                Save Settings
-            </Button>
-
         </Grid>
 
         <!-- End Tool Panel Grid-->

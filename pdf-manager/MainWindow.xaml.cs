@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System;
 
@@ -14,10 +13,9 @@ using System.Linq;
 using System.Collections.Specialized;
 
 using System.Collections.ObjectModel;
-
-using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Security;
-using System.Windows.Media;
+
+using Newtonsoft.Json;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -83,12 +81,6 @@ namespace pdf_manager
                 foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
                     selectedFilesPath.Add(file);
             }
-        }
-        private void SaveSettingsButton_Click(object sender, RoutedEventArgs e)
-        {
-            StringCollection filePathsCollection = new StringCollection();
-            filePathsCollection.AddRange(selectedFilesPath.ToArray());
-            Properties.Settings.Default.filePaths = filePathsCollection; Properties.Settings.Default.Save();
         }
 
         // przycisk pod drzewkiem, dodajacy wybrane pliki
@@ -406,6 +398,17 @@ namespace pdf_manager
         // podczas zamykania aplikacji usuwamy plik preview.pdf
         private void Window_Closed(object sender, EventArgs e)
         {
+            // zapisywanie dodanych plikow do listy 
+            StringCollection filePathsCollection = new StringCollection();
+            filePathsCollection.AddRange(selectedFilesPath.ToArray());
+            Properties.Settings.Default.filePaths = filePathsCollection;
+            Properties.Settings.Default.Save();
+
+            // zapisywanie rootow do listy 
+            string json = JsonConvert.SerializeObject(RootDirectoryItems);
+            Properties.Settings.Default.rootDirectoryItems = json;
+            Properties.Settings.Default.Save();
+
             if (File.Exists(pathToSavePreview))
                 File.Delete(pathToSavePreview);
 
