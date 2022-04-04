@@ -236,7 +236,7 @@ namespace pdf_manager
 
                             if (line.Contains(szukana_fraza))
                             {
-
+                                // linijki o wygladzie syf
                                 results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
 
                                 // dodawanie do struktury informacji o znalezionych liniach
@@ -424,7 +424,7 @@ namespace pdf_manager
          {
             if (password.Text.Length == 0)
             {
-               password.Text = "Insert Password";
+               password.Text = "Password";
             }
          }
 
@@ -438,7 +438,7 @@ namespace pdf_manager
       {
          if (userPath.Text.Length == 0)
          {
-            userPath.Text = "Insert Name";
+            userPath.Text = "File name";
          }
       }
 

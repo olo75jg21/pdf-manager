@@ -79,7 +79,7 @@
                     
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                     HorizontalAlignment="Center"
-                    ToolTip="MaterialDesignFloatingActionMiniButton"
+                    ToolTip="Add new directory"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 >
                     <materialDesign:PackIcon
@@ -92,7 +92,7 @@
                 Click="ButtonRemoveDirectory_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                 HorizontalAlignment="Center"
-                ToolTip="MaterialDesignFloatingActionMiniButton"
+                ToolTip="Remove selected directory"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
                     <materialDesign:PackIcon
@@ -105,7 +105,7 @@
                 Click="ButtonAddSelectedTreeItems_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                 HorizontalAlignment="Center"
-                ToolTip="MaterialDesignFloatingActionMiniButton"
+                ToolTip="Add file to selected list"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
                     <materialDesign:PackIcon
@@ -118,7 +118,7 @@
                 Click="ButtonRemoveSelectedTreeItems_Click"
                 Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                 HorizontalAlignment="Center"
-                ToolTip="MaterialDesignFloatingActionMiniButton"
+                ToolTip="Remove file from selected list"
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
                     <materialDesign:PackIcon
@@ -235,7 +235,7 @@
                     Click="button_Click"
                     
                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    ToolTip="Search text in selected files"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 >
                     <materialDesign:PackIcon Kind="Magnify" />
@@ -247,7 +247,7 @@
                         Grid.Column="2"
                         
                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                    ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                    ToolTip="Preview pdf file"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 >
                     <materialDesign:PackIcon Kind="Eye" />
@@ -259,7 +259,7 @@
                         Grid.Column="3"
                         
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        ToolTip="Clear workspace"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 >
                     <materialDesign:PackIcon Kind="Eraser" />
@@ -269,7 +269,7 @@
                     x:Name="case_sensitivity" 
                     Grid.Column="4"
                     FontSize="14"
-                    Content="Case Sensitivity" 
+                    Content="Case Sensitivity"
                 />
             </Grid>
             
@@ -293,7 +293,7 @@
                          GotFocus="userPath_GotFocus"
                          
                          VerticalAlignment="Center"
-                         Text="Insert Name"
+                         Text="File name"
                          FontSize="14"
                          Margin="1,2,5,1" 
                          LostFocus="userPath_LostFocus"
@@ -302,7 +302,7 @@
 
                 <TextBox x:Name="password" 
                          TextWrapping="Wrap" 
-                         Text="Insert Password" 
+                         Text="Password" 
                          GotFocus="password_GotFocus" 
                          Grid.Column="1"
                          FontSize="14"
@@ -322,7 +322,7 @@
                         Grid.Column="3" 
                         
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
-                        ToolTip="MaterialDesignFloatingActionMiniDarkButton"
+                        ToolTip="Save preview as pdf"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 >
                     <materialDesign:PackIcon Kind="ContentSave" />
