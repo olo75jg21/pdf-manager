@@ -44,5 +44,17 @@ namespace pdf_manager.Properties {
                 this["rootDirectoryItems"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string savedPasswords {
+            get {
+                return ((string)(this["savedPasswords"]));
+            }
+            set {
+                this["savedPasswords"] = value;
+            }
+        }
     }
 }

@@ -192,6 +192,15 @@ namespace pdf_manager
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            // usuwanie wyswietlonej histori hasel przed wyszukaniem
+            if ( encryptPasswordHistory.Count != 0 )
+            {
+                string check = encryptPasswordHistory.Keys.First() + "\n" + encryptPasswordHistory.Values.First();
+  
+                if (results.Items.Contains(check)) 
+                    clear_Click(null, null);
+            }
+
             // sprawdzenie czy wybrane zostaly jakies pliki
             if (selectedFilesPath.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
             {
@@ -409,6 +418,11 @@ namespace pdf_manager
             Properties.Settings.Default.rootDirectoryItems = rootPathCollection;
             Properties.Settings.Default.Save();
 
+
+            // zapisywanie zapisanych hasel 
+            string json = JsonConvert.SerializeObject(encryptPasswordHistory, Formatting.Indented);
+            Properties.Settings.Default.savedPasswords = json;
+            Properties.Settings.Default.Save();
 
 
             if (File.Exists(pathToSavePreview))
@@ -628,7 +642,7 @@ namespace pdf_manager
                     securitySettings.UserPassword = textEncryptPassword.Text;
                     securitySettings.OwnerPassword = textEncryptPassword.Text;
 
-                    if (encryptPasswordHistory.ContainsKey(encryptFile))
+                    if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
                         encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
                     else
                         encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
@@ -677,10 +691,8 @@ namespace pdf_manager
         private void passwordHistory_Click(object sender, RoutedEventArgs e)
         {
 
-            if (System.Windows.MessageBox.Show(" Czy na pewno ? Workspace zostanie wyczyszczony", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.No)
-            {
+            if (System.Windows.MessageBox.Show("Czy na pewno? Workspace zostanie wyczyszczony", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 return;
-            }
                
             clear_Click(null, null);
 
@@ -707,7 +719,10 @@ namespace pdf_manager
                     RootDirectoryItems.Add(new ItDirectory(file));
             }
 
-
+            // wczytanie hasel 
+            string json = Properties.Settings.Default.savedPasswords;
+            if ( json != "")
+                encryptPasswordHistory = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
     }
 }
