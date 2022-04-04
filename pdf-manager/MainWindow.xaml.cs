@@ -400,6 +400,7 @@ namespace pdf_manager
             Properties.Settings.Default.Save();
 
             
+            // zapisywanie dodanych katalogow do listy 
             foreach (var obj in RootDirectoryItems)
                 pathRoot.Add((string)obj.GetType().GetProperty("DirectoryPath").GetValue(obj,null) );
             
@@ -407,6 +408,8 @@ namespace pdf_manager
             rootPathCollection.AddRange(pathRoot.ToArray());
             Properties.Settings.Default.rootDirectoryItems = rootPathCollection;
             Properties.Settings.Default.Save();
+
+
 
             if (File.Exists(pathToSavePreview))
                 File.Delete(pathToSavePreview);
@@ -703,6 +706,8 @@ namespace pdf_manager
                  foreach (String file in Properties.Settings.Default.rootDirectoryItems.Cast<String>().ToList())
                     RootDirectoryItems.Add(new ItDirectory(file));
             }
+
+
         }
     }
 }
