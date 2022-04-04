@@ -81,6 +81,14 @@ namespace pdf_manager
                 foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
                     selectedFilesPath.Add(file);
             }
+
+            if (Properties.Settings.Default.rootDirectoryItems != null )
+            {
+
+                foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
+                    selectedFilesPath.Add(file);
+            }
+
         }
 
         // przycisk pod drzewkiem, dodajacy wybrane pliki
