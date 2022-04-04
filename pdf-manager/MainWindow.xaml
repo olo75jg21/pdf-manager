@@ -4,10 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        MinWidth="900"
-        MinHeight="600"
-        Title="Pdf Manager" Height="600" Width="900" Closed="Window_Closed">
+        MinWidth="1000"
+        MinHeight="700"
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="12"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        Title="Pdf Manager" Height="700" Width="100" Closed="Window_Closed">
 
     <Window.Resources>
         <BitmapImage x:Key="icoFolder" UriSource="pack://application:,,,/pdf-manager;component/Resources/folder.ico"/>
@@ -15,7 +24,7 @@
         <local:FileNameConverter x:Key="FileNameConverter" />
     </Window.Resources>
 
-    <Grid Background="#fcf9f7">
+    <Grid>
         <!-- Main grid -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -36,10 +45,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="12*"/>
             </Grid.RowDefinitions>
 
             <!-- Add and delete directory/file buttons Grid-->
@@ -51,39 +59,70 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button 
-                Grid.Column="0" 
-                Grid.Row="0"
-                Margin="5,5,5,5"
-                Click="ButtonAddDirectory_Click"
-                >
-                    + Dir
+                <!--
+                <Button
+                  Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                  HorizontalAlignment="Left"
+                  ToolTip="MaterialDesignFloatingActionMiniButton"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+                  <materialDesign:PackIcon
+                    Kind="Alarm"
+                    Height="{StaticResource IconSize}"
+                    Width="{StaticResource IconSize}" />
                 </Button>
+                -->
+                
+                <Button 
+                    Grid.Column="0" 
+                    Grid.Row="0"
+                    Click="ButtonAddDirectory_Click"
+                    
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    HorizontalAlignment="Center"
+                    ToolTip="Add new directory"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                >
+                    <materialDesign:PackIcon
+                    Kind="CardPlus" />
+                </Button>
+                
                 <Button 
                 Grid.Column="1" 
                 Grid.Row="0"
-                Margin="5,5,5,5"
                 Click="ButtonRemoveDirectory_Click"
+                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                HorizontalAlignment="Center"
+                ToolTip="Remove selected directory"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
-                    - Dir
+                    <materialDesign:PackIcon
+                    Kind="CardMinus" />
                 </Button>
 
                 <Button 
                 Grid.Column="2" 
                 Grid.Row="0"
-                Margin="5,5,5,5"
                 Click="ButtonAddSelectedTreeItems_Click"
+                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                HorizontalAlignment="Center"
+                ToolTip="Add file to selected list"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
-                    + File
+                    <materialDesign:PackIcon
+                    Kind="FilePlus" />
                 </Button>
 
                 <Button 
                 Grid.Column="3" 
                 Grid.Row="0"
-                Margin="5,5,5,5"
                 Click="ButtonRemoveSelectedTreeItems_Click"
+                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                HorizontalAlignment="Center"
+                ToolTip="Remove file from selected list"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
-                    - File
+                    <materialDesign:PackIcon
+                    Kind="Minus" />
                 </Button>
             </Grid>
             <!-- End Add and delete directory/file buttons Grid-->
@@ -100,6 +139,7 @@
                 Grid.Row="2"
                 x:Name="DirectoryTreeView"
                 ItemsSource="{Binding RootDirectoryItems}"
+                Background="#fff"
             >
                 <!--
                 Setting up a TreeView style
@@ -107,7 +147,7 @@
                 <TreeView.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="FontFamily" Value="Bahnschrift Light Condensed" />
-                        <Setter Property="FontSize" Value="10" />
+                        <Setter Property="FontSize" Value="12" />
                         <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                         <Setter Property="FontWeight" Value="Normal" />
@@ -156,27 +196,145 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <Button Click="ButtonAddSelectedTreeItems_Click" 
-                    Grid.Row="3" 
-                    Grid.Column="0" 
-                    Grid.ColumnSpan="2"
-                    Margin="4,4,4,4"
-            >
-                Dodaj wybrane pliki
-            </Button>
         </Grid>
         <!-- End Tree Directory Grid -->
 
-        <!-- Workspace Grid-->
+        <!-- Workspace Grid -->
 
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12.5*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Top panel grid -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="0.6*" />
+                    <ColumnDefinition Width="0.6*" />
+                    <ColumnDefinition Width="0.6*" />
+                    <ColumnDefinition Width="1.6*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- ??? <Button Grid.Column="1" x:Name="preview" Content="Preview" Click="preview_Click"/> -->
+
+                <TextBox x:Name="searching_word" 
+                         TextWrapping="Wrap" 
+                         Text="Enter Searching Text" 
+                         GotFocus="searching_word_GotFocus" 
+                         Grid.Column="0"
+                         FontSize="15"
+                         VerticalAlignment="Center" LostFocus="searching_word_LostFocus"
+                />
+
+                <Button 
+                    Grid.Column="1" 
+                    x:Name="searchButton_Copy" 
+                    Click="button_Click"
+                    
+                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                    ToolTip="Search text in selected files"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                >
+                    <materialDesign:PackIcon Kind="Magnify" />
+                </Button>
+
+
+                <Button x:Name="preview1" 
+                        Click="preview_Click" 
+                        Grid.Column="2"
+                        
+                    Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                    ToolTip="Preview pdf file"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                >
+                    <materialDesign:PackIcon Kind="Eye" />
+                </Button>
+
+
+                <Button x:Name="clear" 
+                        Click="clear_Click" 
+                        Grid.Column="3"
+                        
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                        ToolTip="Clear workspace"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                >
+                    <materialDesign:PackIcon Kind="Eraser" />
+                </Button>
+
+                <CheckBox 
+                    x:Name="case_sensitivity" 
+                    Grid.Column="4"
+                    FontSize="14"
+                    Content="Case Sensitivity"
+                />
+            </Grid>
+            
+            <!-- Middle panel grid -->
+
+            <Grid Grid.Row="1"
+                  Margin="0,5,0,5">
+                <syncfusion:CheckListBox x:Name="results" />
+            </Grid>
+            
+            <!-- Bottom panel grid -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1.3*" />
+                    <ColumnDefinition Width="0.6*" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBox x:Name="userPath"
+                         GotFocus="userPath_GotFocus"
+                         
+                         VerticalAlignment="Center"
+                         Text="File name"
+                         FontSize="14"
+                         Margin="1,2,5,1" 
+                         LostFocus="userPath_LostFocus"
+                 >
+                </TextBox>
+
+                <TextBox x:Name="password" 
+                         TextWrapping="Wrap" 
+                         Text="Password" 
+                         GotFocus="password_GotFocus" 
+                         Grid.Column="1"
+                         FontSize="14"
+                         Margin="1,2,5,1"
+                         VerticalAlignment="Center" 
+                         LostFocus="password_LostFocus"
+                />
+                
+                <CheckBox x:Name="passwordChecked" 
+                          Content="User Password" 
+                          RenderTransformOrigin="2.117,0.662" 
+                          Grid.Column="2" 
+                />
+
+                <Button x:Name="savePreview" 
+                        Click="savePreview_Click" 
+                        Grid.Column="3" 
+                        
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                        ToolTip="Save preview as pdf"
+                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                >
+                    <materialDesign:PackIcon Kind="ContentSave" />
+                </Button>
+
+            </Grid>
+            
+        </Grid>
         <!-- End Workspace Grid-->
 
         <!-- Tool panel Grid-->
-        <Grid Grid.Column="2" Background="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -189,81 +347,115 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <Button HorizontalAlignment="Center" 
-                    VerticalAlignment="Top" 
-                    Height="30" 
+            <!--
+            <Button
+              Style="{StaticResource MaterialDesignRaisedDarkButton}"
+              Width="{StaticResource ButtonWidth}"
+              ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
+              Content="_DARK"
+              IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+            -->
+
+            <CheckBox HorizontalAlignment="Center" 
+                    Grid.Row="0" 
+                    x:Name="highlight" 
+                    Content="Highlight"
+                    FontSize="15"
+             />
+
+            <Button
+                    HorizontalAlignment="Center" 
+                    Grid.Row="1"
+                    FontSize="14"
+                    Width="130"
+                    x:Name="mergeAllButton"
+                    Click="mergeAllButton_Click"
+                    VerticalAlignment="Top"
+             >
+                Merge All
+            </Button>
+
+            <Button Grid.Row="2"
+                    HorizontalAlignment="Center" 
                     Grid.Column="0"
-                    Margin="3,3,3,3"
-                    Width="100"
-                    
+                    FontSize="14"
+                    Width="130"
                     x:Name="mergeButton"
                     Click="mergeButton_Click"
+                    VerticalAlignment="Top"
              >
                 Merge Selected
             </Button>
 
-            <Button
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Top" 
-                    Margin="0,49,0,0"
-                    Width="100"
-                    
-                    x:Name="mergeAllButton"
-                    Click="mergeAllButton_Click" Grid.RowSpan="2"
-             >
-                Merge
-            </Button>
-            <CheckBox x:Name="highlight" Content="Highlight" HorizontalAlignment="Center" Height="26" Margin="0,20,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
-            <Button x:Name="encrypt" Content="Encrypt File" HorizontalAlignment="Left" Height="23" Margin="10,58,0,0" Grid.RowSpan="2" Grid.Row="1" VerticalAlignment="Top" Width="104" Click="encode_Click"/>
-            <TextBox x:Name="textEncryptPassword" HorizontalAlignment="Left" Height="29" Margin="10,20,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="104"/>
-            <Button x:Name="decrypt" Content="Decrypt File" HorizontalAlignment="Left" Height="23" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="104" Click="decrypt_Click"/>
-            <TextBox x:Name="textDecryptPassword" HorizontalAlignment="Left" Height="29" Margin="10,42,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="104" Grid.RowSpan="2"/>
-            <Button x:Name="passwordHistory" Content="Password History" HorizontalAlignment="Center" Height="31" Margin="0,31,0,0" Grid.RowSpan="2" Grid.Row="4" VerticalAlignment="Top" Width="100" Click="passwordHistory_Click"/>
-        </Grid>
-        <!-- End Tool Panel Grid-->
+            <Button Content="Encrypt File" 
+                    Grid.Row="3"
 
-        <Button Grid.Column="0"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,3"
+                    FontSize="14"
+                    Width="130"
+                    x:Name="encrypt"
+                    Click="encode_Click"
+             />
+
+            <TextBox x:Name="textEncryptPassword"
+                     Margin="5,5,5,5"
+                     VerticalAlignment="Bottom"
+                     Grid.Row="3" 
+                     TextWrapping="Wrap" 
+                     Text="Insert"
+                     MaxWidth="130"
+                     MaxHeight="50"
+                     FontSize="13"
+                     GotFocus="textEncryptPassword_GotFocus"
+                     LostFocus="textEncryptPassword_LostFocus"
+             />
+
+            <Button x:Name="decrypt" 
+                    Content="Decrypt File"
+                    Margin="0,3,0,3"
+                    FontSize="14"
+                    Width="130"
+                    VerticalAlignment="Top"
+                    Grid.Row="4" 
+                    Click="decrypt_Click"
+             />
+
+            <TextBox x:Name="textDecryptPassword" 
+                     Grid.Row="4"
+                     Margin="5,5,5,5"
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Bottom"
+                     Text="Insert"
+                     MaxWidth="130"
+                     MaxHeight="50"
+                     FontSize="13"
+                     GotFocus="textDecryptPassword_GotFocus"
+                     LostFocus="textDecryptPassword_LostFocus"
+             />
+
+            <Button x:Name="passwordHistory" 
+                    Content="Password History" 
+                    Grid.Row="7"
+                    Click="passwordHistory_Click"
+                    FontSize="12"
+                    Width="130"
+             />
+
+            <Button
                     Grid.Row="8"
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
-                    Margin="3,3,3,3"
-                    Width="100"
                     
+                    FontSize="12"
+                    Width="130"
                     x:Name="saveSettingsButton"
                     Click="SaveSettingsButton_Click"
              >
-            Save Settings
-        </Button>
+                Save Settings
+            </Button>
 
-        <Button  Grid.Row="3" x:Name="preview" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
-        <TextBox x:Name="searching_word" TextWrapping="Wrap" Width="124" Text="Enter Searching Text" FontWeight="Normal" HorizontalAlignment="Right" GotFocus="searching_word_GotFocus" Margin="0,5,247,524" Grid.Column="1"/>
-        <CheckBox x:Name="case_sensitivity" Content="Case Sensitivity" Margin="272,10,124,528" Grid.Column="1"/>
-        <Button x:Name="clear" Content="Clear" RenderTransformOrigin="0.5,0.5" Click="clear_Click" Grid.Column="1" Margin="390,5,78,525">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="0.951"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="0.983"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="savePreview" Content="Save Preview" Click="savePreview_Click" Margin="3,528,426,0" Grid.Column="1"/>
-        <TextBox x:Name="userPath" TextWrapping="Wrap" Text="Insert Path" GotFocus="userPath_GotFocus" Margin="88,528,321,0" Grid.Column="1"/>
-        <TextBox x:Name="password" TextWrapping="Wrap" Text="Insert Password" GotFocus="password_GotFocus" Margin="204,528,194,0" Grid.Column="1"/>
-        <CheckBox x:Name="passwordChecked" Content="User Password" RenderTransformOrigin="2.117,0.662" Grid.Column="1" Margin="320,529,72,29" Grid.RowSpan="2"/>
-        <Button x:Name="searchButton_Copy" Content="Search" Click="button_Click" Margin="3,5,450,524" Grid.Column="1" RenderTransformOrigin="0.5,0.5">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleX="1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <syncfusion:CheckListBox x:Name="results" Grid.ColumnSpan="2" Margin="257,35,0,29"/>
-        <Button x:Name="preview1" Content="Preview" Click="preview_Click" Margin="69,5,376,524" Grid.Column="1"/>
+        </Grid>
 
         <!-- End Tool Panel Grid-->
     </Grid>
