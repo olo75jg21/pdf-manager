@@ -240,3 +240,5 @@ C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\MaterialDesignTh
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\MaterialDesignThemes.Wpf.xml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.Xaml.Behaviors.pdb
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Newtonsoft.Json.xml

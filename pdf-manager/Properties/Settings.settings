@@ -5,7 +5,7 @@
     <Setting Name="filePaths" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="rootDirectoryItems" Type="System.String" Scope="User">
+    <Setting Name="rootDirectoryItems" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

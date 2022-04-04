@@ -58,9 +58,12 @@ namespace pdf_manager
         // zapisywanie hasel 
         Dictionary<string, string> encryptPasswordHistory = new Dictionary<string, string>();
 
+        List<string> pathRoot= new List<string>();
+
 
         // DirrectoryTree elements Collection
         public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
+
 
         // List of paths to selected files 
         public ObservableCollection<String> selectedFilesPath = new ObservableCollection<String>();
@@ -70,27 +73,8 @@ namespace pdf_manager
             // Connecting XAML view with the data
             SelectedItemsList.ItemsSource = selectedFilesPath;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
-
-            // Loading selectedFilePaths from last session
-            LoadSession();
         }
-        private void LoadSession()
-        {
-            if (Properties.Settings.Default.filePaths != null)
-            {
-                foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
-                    selectedFilesPath.Add(file);
-            }
-
-            if (Properties.Settings.Default.rootDirectoryItems != null )
-            {
-
-                foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
-                    selectedFilesPath.Add(file);
-            }
-
-        }
-
+   
         // przycisk pod drzewkiem, dodajacy wybrane pliki
         private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
@@ -122,7 +106,10 @@ namespace pdf_manager
             string selectedPath = TreeComponents.OpenDirectoryDialog();
 
             if (selectedPath != null)
+            {
                 RootDirectoryItems.Add(new ItDirectory(selectedPath));
+            }
+                
         }
 
         private void ButtonRemoveDirectory_Click(object sender, RoutedEventArgs e)
@@ -412,9 +399,13 @@ namespace pdf_manager
             Properties.Settings.Default.filePaths = filePathsCollection;
             Properties.Settings.Default.Save();
 
-            // zapisywanie rootow do listy 
-            string json = JsonConvert.SerializeObject(RootDirectoryItems);
-            Properties.Settings.Default.rootDirectoryItems = json;
+            
+            foreach (var obj in RootDirectoryItems)
+                pathRoot.Add((string)obj.GetType().GetProperty("DirectoryPath").GetValue(obj,null) );
+            
+            StringCollection rootPathCollection = new StringCollection();
+            rootPathCollection.AddRange(pathRoot.ToArray());
+            Properties.Settings.Default.rootDirectoryItems = rootPathCollection;
             Properties.Settings.Default.Save();
 
             if (File.Exists(pathToSavePreview))
@@ -697,7 +688,22 @@ namespace pdf_manager
             }
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // wybrane pliki wczytanie ostatnich plikow
+            if (Properties.Settings.Default.filePaths != null)
+            {
+                foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
+                    selectedFilesPath.Add(file);
+            }
 
-   }
+            // drzewko wczytanie ostatnich wybranych folderow
+            if (Properties.Settings.Default.rootDirectoryItems != null)
+            {
+                 foreach (String file in Properties.Settings.Default.rootDirectoryItems.Cast<String>().ToList())
+                    RootDirectoryItems.Add(new ItDirectory(file));
+            }
+        }
+    }
 }
 

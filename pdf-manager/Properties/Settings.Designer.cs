@@ -36,10 +36,9 @@ namespace pdf_manager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string rootDirectoryItems {
+        public global::System.Collections.Specialized.StringCollection rootDirectoryItems {
             get {
-                return ((string)(this["rootDirectoryItems"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["rootDirectoryItems"]));
             }
             set {
                 this["rootDirectoryItems"] = value;
