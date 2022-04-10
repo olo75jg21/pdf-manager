@@ -242,3 +242,5 @@ C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.Xaml.B
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Microsoft.Xaml.Behaviors.xml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\bin\Debug\Newtonsoft.Json.xml
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Newtonsoft.Json.dll
+D:\Projects\C#\repos\eng_project\pdf-manager\bin\Debug\Newtonsoft.Json.xml

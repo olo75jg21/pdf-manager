@@ -275,10 +275,35 @@
             </Grid>
 
             <!-- Middle panel grid -->
-
             <Grid Grid.Row="1"
                   Margin="0,5,0,5">
-                <syncfusion:CheckListBox x:Name="results" />
+                <!-- <syncfusion:CheckListBox x:Name="results" /> -->
+                <ListView
+                    HorizontalContentAlignment="Stretch"
+                    x:Name="results"
+                    ItemsSource="{Binding}"
+                    IsSynchronizedWithCurrentItem="True"
+                    SelectionMode="Multiple"
+                    FontSize="12"
+                    Padding="0,0,0,0"
+                    Margin="0,0,0,0" >
+                <ListView.View>
+                    <GridView>
+                            <GridView.Columns>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                            <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem},Path=IsSelected}"  Width="20"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Header="ID" Width="75"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+                </ListView>
             </Grid>
 
             <!-- Bottom panel grid -->
