@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        MinWidth="1000"
-        MinHeight="700"
+        MinWidth="1200"
+        MinHeight="800"
         
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -16,7 +16,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
-        Title="Pdf Manager" Height="700" Width="100" Closed="Window_Closed" Loaded="Window_Loaded">
+        Title="Pdf Manager" Height="800" Width="1200" Closed="Window_Closed" Loaded="Window_Loaded">
 
     <Window.Resources>
         <BitmapImage x:Key="icoFolder" UriSource="pack://application:,,,/pdf-manager;component/Resources/folder.ico"/>
@@ -27,10 +27,9 @@
     <Grid Margin="0,0,40,22">
         <!-- Main grid -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="174*"/>
-            <ColumnDefinition Width="112*"/>
-            <ColumnDefinition Width="571*"/>
-            <ColumnDefinition Width="143*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -179,9 +178,16 @@
 
             </TreeView>
 
-            <ListView
-                Grid.Column="2"
-                Grid.Row="2"
+
+
+            <Grid Grid.Column="2" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
+                <ListView
+                Grid.Row="0"
                 x:Name="SelectedItemsList" 
                 
                 Width="auto"
@@ -189,14 +195,112 @@
                 Background="White"
                 ItemsSource="{Binding Items}"
             >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=., Converter={StaticResource FileNameConverter}}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=., Converter={StaticResource FileNameConverter}}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.4*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <Button
+                            HorizontalAlignment="Center" 
+                            Grid.Row="0"
+                            FontSize="14"
+                            Width="130"
+                            x:Name="mergeAllButton"
+                            Click="mergeAllButton_Click"
+                            VerticalAlignment="Top"
+                        >
+                                    Merge All
+                        </Button>
+
+                        <Button
+                            HorizontalAlignment="Center" 
+                            Grid.Row="1"
+                            FontSize="14"
+                            Width="130"
+                            x:Name="mergeButton"
+                            Click="mergeButton_Click"
+                            VerticalAlignment="Top"
+                         >
+                            Merge Selected
+                        </Button>
+
+                        <Button x:Name="passwordHistory" 
+                            Content="Password History" 
+                            Grid.Row="2"
+                            Click="passwordHistory_Click"
+                            FontSize="12"
+                            Width="130"
+                        />
+                    </Grid>
+                    
+                    <Button Content="Encrypt File" 
+                        Grid.Row="1"
+                        VerticalAlignment="Top"
+                        Margin="0,6,0,3"
+                        FontSize="14"
+                        Width="130"
+                        x:Name="encrypt"
+                        Click="encode_Click"
+                    />
+
+                    <TextBox x:Name="textEncryptPassword"
+                         Margin="5,25,5,5"
+                         VerticalAlignment="Center"
+                         Grid.Row="1" 
+                         TextWrapping="Wrap" 
+                         Text="Insert"
+                         MaxWidth="130"
+                         MaxHeight="50"
+                         FontSize="13"
+                         GotFocus="textEncryptPassword_GotFocus"
+                         LostFocus="textEncryptPassword_LostFocus"
+                     />
+
+                    <Button x:Name="decrypt" 
+                        Content="Decrypt File"
+                        Margin="0,3,0,3"
+                        FontSize="14"
+                        Width="130"
+                        VerticalAlignment="Top"
+                        Grid.Row="2" 
+                        Click="decrypt_Click"
+                    />
+
+                    <TextBox x:Name="textDecryptPassword" 
+                         Grid.Row="2"
+                         Margin="5,25,5,5"
+                         TextWrapping="Wrap" 
+                         VerticalAlignment="Center"
+                         Text="Insert"
+                         MaxWidth="130"
+                         MaxHeight="50"
+                         FontSize="13"
+                         GotFocus="textDecryptPassword_GotFocus"
+                         LostFocus="textDecryptPassword_LostFocus"
+                     />
+
+
+                </Grid>
+
+            </Grid>
         </Grid>
         <!-- End Tree Directory Grid -->
 
@@ -266,12 +370,25 @@
                     <materialDesign:PackIcon Kind="Eraser" />
                 </Button>
 
-                <CheckBox 
-                    x:Name="case_sensitivity" 
-                    Grid.Column="4"
-                    FontSize="14"
-                    Content="Case Sensitivity"
-                />
+                <Grid Grid.Column="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox 
+                        x:Name="case_sensitivity" 
+                        Grid.Row="0"
+                        FontSize="14"
+                        Content="Case Sensitivity"
+                    />
+
+                    <CheckBox HorizontalAlignment="Center" 
+                        x:Name="highlight" 
+                        Grid.Row="1"
+                        Content="Highlight"
+                     />
+                </Grid>
             </Grid>
 
             <!-- Middle panel grid -->
@@ -333,118 +450,5 @@
 
         </Grid>
         <!-- End Workspace Grid-->
-
-        <!-- Tool panel Grid-->
-        <Grid Grid.Column="3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <!--
-            <Button
-              Style="{StaticResource MaterialDesignRaisedDarkButton}"
-              Width="{StaticResource ButtonWidth}"
-              ToolTip="Resource name: MaterialDesignRaisedLightDarkButton"
-              Content="_DARK"
-              IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
-            -->
-
-            <CheckBox HorizontalAlignment="Center" 
-                    Grid.Row="0" 
-                    x:Name="highlight" 
-                    Content="Highlight"
-                    FontSize="15"
-             />
-
-            <Button
-                    HorizontalAlignment="Center" 
-                    Grid.Row="1"
-                    FontSize="14"
-                    Width="130"
-                    x:Name="mergeAllButton"
-                    Click="mergeAllButton_Click"
-                    VerticalAlignment="Top"
-             >
-                Merge All
-            </Button>
-
-            <Button Grid.Row="2"
-                    HorizontalAlignment="Center" 
-                    Grid.Column="0"
-                    FontSize="14"
-                    Width="130"
-                    x:Name="mergeButton"
-                    Click="mergeButton_Click"
-                    VerticalAlignment="Top"
-             >
-                Merge Selected
-            </Button>
-
-            <Button Content="Encrypt File" 
-                    Grid.Row="3"
-
-                    VerticalAlignment="Top"
-                    Margin="0,0,0,3"
-                    FontSize="14"
-                    Width="130"
-                    x:Name="encrypt"
-                    Click="encode_Click"
-             />
-
-            <TextBox x:Name="textEncryptPassword"
-                     Margin="5,5,5,5"
-                     VerticalAlignment="Bottom"
-                     Grid.Row="3" 
-                     TextWrapping="Wrap" 
-                     Text="Insert"
-                     MaxWidth="130"
-                     MaxHeight="50"
-                     FontSize="13"
-                     GotFocus="textEncryptPassword_GotFocus"
-                     LostFocus="textEncryptPassword_LostFocus"
-             />
-
-            <Button x:Name="decrypt" 
-                    Content="Decrypt File"
-                    Margin="0,3,0,3"
-                    FontSize="14"
-                    Width="130"
-                    VerticalAlignment="Top"
-                    Grid.Row="4" 
-                    Click="decrypt_Click"
-             />
-
-            <TextBox x:Name="textDecryptPassword" 
-                     Grid.Row="4"
-                     Margin="5,5,5,5"
-                     TextWrapping="Wrap" 
-                     VerticalAlignment="Bottom"
-                     Text="Insert"
-                     MaxWidth="130"
-                     MaxHeight="50"
-                     FontSize="13"
-                     GotFocus="textDecryptPassword_GotFocus"
-                     LostFocus="textDecryptPassword_LostFocus"
-             />
-
-            <Button x:Name="passwordHistory" 
-                    Content="Password History" 
-                    Grid.Row="7"
-                    Click="passwordHistory_Click"
-                    FontSize="12"
-                    Width="130"
-             />
-
-        </Grid>
-
-        <!-- End Tool Panel Grid-->
     </Grid>
 </Window>
