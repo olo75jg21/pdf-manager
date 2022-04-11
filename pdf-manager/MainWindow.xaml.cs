@@ -203,6 +203,9 @@ namespace pdf_manager
                     clear_Click(null, null);
             }
 
+            // wyczyszczenie listy wynikowej
+            ResultItems.Clear();
+
             // sprawdzenie czy wybrane zostaly jakies pliki
             if (selectedFilesPath.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
             {
@@ -231,8 +234,9 @@ namespace pdf_manager
                         for (int x = 0, length = words.Length; x < length; x++)
                         {
                             line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
+                            string lineToCheck = case_sensitivity.IsChecked == false ? line.ToLower() : line;
 
-                            if (line.Contains(szukana_fraza))
+                            if (lineToCheck.Contains(szukana_fraza))
                             {
                                 // linijki o wygladzie syf
                                 ResultItems.Add(new ResultItem(licznik, path, i, x + 1, line));
