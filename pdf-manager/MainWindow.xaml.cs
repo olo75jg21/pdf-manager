@@ -61,6 +61,9 @@ namespace pdf_manager
         // zapisywanie hasel 
         Dictionary<string, string> encryptPasswordHistory = new Dictionary<string, string>();
 
+        // haslo do managera hasel 
+        Tuple<string, string> passwordManagerPassword = new Tuple<string, string>(String.Empty, "");
+
         List<string> pathRoot= new List<string>();
 
 
@@ -435,6 +438,11 @@ namespace pdf_manager
             string json = JsonConvert.SerializeObject(encryptPasswordHistory, Formatting.Indented);
             Properties.Settings.Default.savedPasswords = json;
             Properties.Settings.Default.Save();
+            
+
+            json = JsonConvert.SerializeObject( passwordManagerPassword, Formatting.Indented);
+            Properties.Settings.Default.managerPassword = json;
+            Properties.Settings.Default.Save();
 
 
             if (File.Exists(pathToSavePreview))
@@ -746,7 +754,6 @@ namespace pdf_manager
             }
        }
         
-        Tuple<string, string> passwordManagerPassword =  new Tuple<string, string>(String.Empty, "");
         static int salt_size = 64;
 
         private void passwordHistory_Click(object sender, RoutedEventArgs e)
@@ -806,6 +813,34 @@ namespace pdf_manager
             string json = Properties.Settings.Default.savedPasswords;
             if ( json != "")
                 encryptPasswordHistory = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+            json = Properties.Settings.Default.managerPassword;
+            if (json != "")
+                passwordManagerPassword = JsonConvert.DeserializeObject<Tuple<string, string>>(json);
+        }
+
+        private void resetPassword(object sender, RoutedEventArgs e)
+        {
+            if (passwordManagerPassword.Item1 != String.Empty)
+            {
+                if (System.Windows.MessageBox.Show("Poprzednio zapisane hasla zostana usuniete? Czy kontynuować?", "Password Manager Password",
+                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    string salt = CreateSalt();
+                    string newHash = Microsoft.VisualBasic.Interaction.InputBox("Proszę wprowadzić nowe hasło do wyświetlania historii haseł", "Password Manager Password");
+
+                    if (String.ReferenceEquals(newHash, String.Empty))
+                    {
+                        System.Windows.MessageBox.Show("Trzeba wprowadzic haslo - anulowano resetowanie hasla");
+                        return;
+                    }
+
+                    newHash = GenerateHash(newHash, salt);
+                    passwordManagerPassword = new Tuple<string, string>(newHash, salt);
+
+                    encryptPasswordHistory.Clear();
+                }
+            }     
         }
     }
 }

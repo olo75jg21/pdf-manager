@@ -227,7 +227,7 @@
                             Click="mergeAllButton_Click"
                             VerticalAlignment="Top"
                         >
-                                    Merge All
+                            Merge All
                         </Button>
 
                         <Button
@@ -249,8 +249,9 @@
                             FontSize="12"
                             Width="130"
                         />
+                        <Button x:Name="reset" Content="" HorizontalAlignment="Left" Height="32" Margin="186,0,0,6" Grid.Row="2" VerticalAlignment="Bottom" Width="36" RenderTransformOrigin="-0.109,0.15" Click="resetPassword"/>
                     </Grid>
-                    
+
                     <Button Content="Encrypt File" 
                         Grid.Row="1"
                         VerticalAlignment="Top"
@@ -404,22 +405,22 @@
                     FontSize="12"
                     Padding="0,0,0,0"
                     Margin="0,0,0,0" >
-                <ListView.View>
-                    <GridView>
+                    <ListView.View>
+                        <GridView>
                             <GridView.Columns>
-                            <GridViewColumn>
+                                <GridViewColumn>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem},Path=IsSelected}"  Width="20"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn DisplayMemberBinding="{Binding Helper}" Width="Auto" Header="ID PAGE LINE"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
                 </ListView>
             </Grid>
 
