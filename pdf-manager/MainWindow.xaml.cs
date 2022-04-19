@@ -61,8 +61,9 @@ namespace pdf_manager
         List<string> pathRoot= new List<string>();
 
 
-        // DirrectoryTree elements Collection
+        // DirectoryTree elements Collection
         public ObservableCollection<Object> RootDirectoryItems { get; } = new ObservableCollection<object>();
+        public ObservableCollection<ResultItem> ResultItems { get; } = new ObservableCollection<ResultItem>();
 
 
         // List of paths to selected files 
@@ -73,6 +74,7 @@ namespace pdf_manager
             // Connecting XAML view with the data
             SelectedItemsList.ItemsSource = selectedFilesPath;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
+            results.ItemsSource = ResultItems;
         }
    
         // przycisk pod drzewkiem, dodajacy wybrane pliki
@@ -196,10 +198,13 @@ namespace pdf_manager
             if ( encryptPasswordHistory.Count != 0 )
             {
                 string check = encryptPasswordHistory.Keys.First() + "\n" + encryptPasswordHistory.Values.First();
-  
-                if (results.Items.Contains(check)) 
+                
+                if (ResultItems.Any(i => i.Path == check)) 
                     clear_Click(null, null);
             }
+
+            // wyczyszczenie listy wynikowej
+            ResultItems.Clear();
 
             // sprawdzenie czy wybrane zostaly jakies pliki
             if (selectedFilesPath.Count != 0 && searching_word.Text != "" && searching_word.Text != "Enter Searching Text")
@@ -208,7 +213,7 @@ namespace pdf_manager
                 int licznik = 1;
 
                 // czy ignorowac wielkosc liter
-                if (case_sensitivity.IsChecked == true)
+                if (case_sensitivity.IsChecked == false)
                     szukana_fraza = searching_word.Text.ToLower();
                 else
                     szukana_fraza = searching_word.Text;
@@ -229,11 +234,13 @@ namespace pdf_manager
                         for (int x = 0, length = words.Length; x < length; x++)
                         {
                             line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
+                            string lineToCheck = case_sensitivity.IsChecked == false ? line.ToLower() : line;
 
-                            if (line.Contains(szukana_fraza))
+                            if (lineToCheck.Contains(szukana_fraza))
                             {
                                 // linijki o wygladzie syf
-                                results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
+                                ResultItems.Add(new ResultItem(licznik, path, i, x + 1, line));
+                                // results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
 
                                 // dodawanie do struktury informacji o znalezionych liniach
                                 easySearchFilesInfo.Add(new files_info(path, i, x, line));
@@ -249,7 +256,7 @@ namespace pdf_manager
         // czyszczenie listy 
         private void clear_Click(object sender, RoutedEventArgs e)
         {
-            results.Items.Clear();
+            ResultItems.Clear();
             easySearchAddedFiles.Clear();
         }
 
@@ -269,11 +276,12 @@ namespace pdf_manager
             for (int x = 0; x < results.SelectedItems.Count; x++)
             {
                 // wyluskanie numeru linii z ListBox'a 
-                string number = results.SelectedItems[x].ToString();
-                number = number.Substring(0, number.IndexOf(":"));
+                // string number = results.SelectedItems[x].ToString();
+                // number = number.Substring(0, number.IndexOf(":"));
 
                 // w strukturze indeksuje sie od 0 dlatego - 1
-                int listBoxLineNumber = Int32.Parse(number) - 1;
+                // int listBoxLineNumber = Int32.Parse(number) - 1;
+                int listBoxLineNumber = (results.SelectedItems[x] as ResultItem).Id - 1;
                 bool czyStrona = false;
 
                 // iteracja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
@@ -587,7 +595,7 @@ namespace pdf_manager
             FileStream fs = new FileStream(highLightFile, FileMode.Create, FileAccess.Write);
 
             string searchText = "";
-            if (case_sensitivity.IsChecked == true)
+            if (case_sensitivity.IsChecked == false)
                 searchText = searching_word.Text.ToLower();
             else
                 searchText = searching_word.Text;
