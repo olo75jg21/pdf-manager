@@ -242,6 +242,7 @@ namespace pdf_manager
                                 ResultItems.Add(new ResultItem(licznik, path, i, x + 1, line));
                                 // results.Items.Add(licznik + ": Strona " + i + " Linia: " + (x + 1) + "\n" + line + "\n");
 
+
                                 // dodawanie do struktury informacji o znalezionych liniach
                                 easySearchFilesInfo.Add(new files_info(path, i, x, line));
                                 licznik++;

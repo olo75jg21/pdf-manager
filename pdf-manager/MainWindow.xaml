@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:pdf_manager" xmlns:syncfusion="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:pdf_manager"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         MinWidth="1200"
@@ -408,13 +408,13 @@
                     <GridView>
                             <GridView.Columns>
                             <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
                                             <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem},Path=IsSelected}"  Width="20"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Header="ID" Width="75"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Width="Auto" Header="ID PAGE LINE"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/>
                                 <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
                         </GridView.Columns>
