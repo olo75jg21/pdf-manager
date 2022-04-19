@@ -16,6 +16,9 @@ using System.Collections.ObjectModel;
 using PdfSharp.Pdf.Security;
 
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+
+
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -697,12 +700,43 @@ namespace pdf_manager
             }
         }
 
-        private void passwordHistory_Click(object sender, RoutedEventArgs e)
-        {
 
+
+
+
+
+        // ---------------------------------------------------------------------------------------- 
+  
+        public string CreateSalt()
+        {
+            //Generate a cryptographic random number.
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] buff = new byte[salt_size];
+            rng.GetBytes(buff);
+
+            return Convert.ToBase64String(buff);
+        }
+
+        public string GenerateHash(string input, string salt)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(input + salt);
+            SHA256Managed sHA256ManagedString = new SHA256Managed();
+            byte[] hash = sHA256ManagedString.ComputeHash(bytes);
+            return Convert.ToBase64String(hash);
+        }
+
+        public bool AreEqual(string plainTextInput, string hashedInput, string salt)
+        {
+            string newHashedPin = GenerateHash(plainTextInput, salt);
+            return newHashedPin.Equals(hashedInput);
+        }
+        // ---------------------------------------------------------------------------------------- 
+
+       private void historyShow()
+       {
             if (System.Windows.MessageBox.Show("Czy na pewno? Workspace zostanie wyczyszczony", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 return;
-               
+
             clear_Click(null, null);
 
             foreach (var item in encryptPasswordHistory)
@@ -710,7 +744,47 @@ namespace pdf_manager
                 string result = item.Key + "\n" + item.Value;
                 results.Items.Add(result);
             }
+       }
+        
+        Tuple<string, string> passwordManagerPassword =  new Tuple<string, string>(String.Empty, "");
+        static int salt_size = 64;
+
+        private void passwordHistory_Click(object sender, RoutedEventArgs e)
+        {
+            if ( passwordManagerPassword.Item1 == String.Empty )
+            {
+                string salt = CreateSalt();
+                string newHash = Microsoft.VisualBasic.Interaction.InputBox("Proszę wprowadzić nowe hasło do wyświetlania historii haseł", "Password Manager Password");
+
+                if ( String.ReferenceEquals(newHash, String.Empty) )
+                {
+                    System.Windows.MessageBox.Show("Trzeba utworzyc haslo");
+                    return;
+                }
+
+                newHash = GenerateHash(newHash, salt);
+                passwordManagerPassword = new Tuple<string, string>(newHash, salt);
+
+                historyShow();
+            }
+            else
+            {
+                string passwordCheck = Microsoft.VisualBasic.Interaction.
+                InputBox("Proszę wprowadzić hasło uwierzytleniające", "Password Manager Password");
+
+
+                if (AreEqual(passwordCheck, passwordManagerPassword.Item1, passwordManagerPassword.Item2))
+                    historyShow();
+                else
+                {
+                    System.Windows.MessageBox.Show("Bledne haslo");
+                    return;
+                }
+            }
         }
+
+
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
