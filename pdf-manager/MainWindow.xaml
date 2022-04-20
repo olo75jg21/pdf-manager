@@ -250,6 +250,7 @@
                             Width="130"
                         />
                         <Button x:Name="reset" Content="" HorizontalAlignment="Left" Height="32" Margin="186,0,0,6" Grid.Row="2" VerticalAlignment="Bottom" Width="36" RenderTransformOrigin="-0.109,0.15" Click="resetPassword"/>
+                        <Button x:Name="change" Content="" HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="36" RenderTransformOrigin="-0.109,0.15" Click="changePassword"/>
                     </Grid>
 
                     <Button Content="Encrypt File" 

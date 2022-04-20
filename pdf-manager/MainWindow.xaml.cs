@@ -758,27 +758,28 @@ namespace pdf_manager
 
         private void passwordHistory_Click(object sender, RoutedEventArgs e)
         {
-            if ( passwordManagerPassword.Item1 == String.Empty )
+            Window2 win = new Window2();
+
+            if(passwordManagerPassword.Item1 == String.Empty)
+                win.passwordLabel.Content = "Proszę wprowadzić nowe hasło do wyświetlania historii haseł";
+            else
+                win.passwordLabel.Content = "Proszę wprowadzić hasło uwierzytleniające"; 
+
+            bool? result = win.ShowDialog();
+
+            if ( passwordManagerPassword.Item1 == String.Empty && result.Value )
             {
                 string salt = CreateSalt();
-                string newHash = Microsoft.VisualBasic.Interaction.InputBox("Proszę wprowadzić nowe hasło do wyświetlania historii haseł", "Password Manager Password");
-
-                if ( String.ReferenceEquals(newHash, String.Empty) )
-                {
-                    System.Windows.MessageBox.Show("Trzeba utworzyc haslo");
-                    return;
-                }
+                string newHash = win.newPassword.Text; 
 
                 newHash = GenerateHash(newHash, salt);
                 passwordManagerPassword = new Tuple<string, string>(newHash, salt);
 
                 historyShow();
             }
-            else
+            else if( result.Value )
             {
-                string passwordCheck = Microsoft.VisualBasic.Interaction.
-                InputBox("Proszę wprowadzić hasło uwierzytleniające", "Password Manager Password");
-
+                string passwordCheck = win.newPassword.Text;
 
                 if (AreEqual(passwordCheck, passwordManagerPassword.Item1, passwordManagerPassword.Item2))
                     historyShow();
@@ -789,9 +790,6 @@ namespace pdf_manager
                 }
             }
         }
-
-
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -821,26 +819,52 @@ namespace pdf_manager
 
         private void resetPassword(object sender, RoutedEventArgs e)
         {
-            if (passwordManagerPassword.Item1 != String.Empty)
+            Window2 win = new Window2();
+            win.passwordLabel.Content = "Proszę wprowadzić nowe hasło do wyświetlania historii haseł";
+            bool? result = win.ShowDialog();
+
+            if (passwordManagerPassword.Item1 != String.Empty && result.Value == true)
             {
                 if (System.Windows.MessageBox.Show("Poprzednio zapisane hasla zostana usuniete? Czy kontynuować?", "Password Manager Password",
                     MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    string salt = CreateSalt();
-                    string newHash = Microsoft.VisualBasic.Interaction.InputBox("Proszę wprowadzić nowe hasło do wyświetlania historii haseł", "Password Manager Password");
+                        string salt = CreateSalt();
 
-                    if (String.ReferenceEquals(newHash, String.Empty))
-                    {
-                        System.Windows.MessageBox.Show("Trzeba wprowadzic haslo - anulowano resetowanie hasla");
-                        return;
-                    }
+                        string newHash = win.newPassword.Text;
 
-                    newHash = GenerateHash(newHash, salt);
-                    passwordManagerPassword = new Tuple<string, string>(newHash, salt);
+                        if (String.ReferenceEquals(newHash, String.Empty))
+                        {
+                            System.Windows.MessageBox.Show("Trzeba wprowadzic haslo - anulowano resetowanie hasla");
+                            return;
+                        }
 
-                    encryptPasswordHistory.Clear();
+                        newHash = GenerateHash(newHash, salt);
+                        passwordManagerPassword = new Tuple<string, string>(newHash, salt);
+
+                        encryptPasswordHistory.Clear();            
                 }
             }     
+        }
+
+        private void changePassword(object sender, RoutedEventArgs e)
+        {
+            Window1 win = new Window1();
+
+            bool? result = win.ShowDialog();
+
+            if ( result.Value )
+            {
+                if (AreEqual(win.oldPassword.Text, passwordManagerPassword.Item1, passwordManagerPassword.Item2))
+                {
+                    string salt = CreateSalt();
+
+                    string newHash = GenerateHash(win.newPassword.Text, salt);
+                    passwordManagerPassword = new Tuple<string, string>(newHash, salt);
+                    System.Windows.MessageBox.Show("Zmieniono haslo");
+                }
+                else
+                    System.Windows.MessageBox.Show("Podano bledne stare haslo");
+            }
         }
     }
 }
