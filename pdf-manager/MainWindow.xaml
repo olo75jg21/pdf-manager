@@ -109,7 +109,7 @@
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                 >
                     <materialDesign:PackIcon
-                    Kind="FilePlus" />
+                    Kind="Plus" />
                 </Button>
 
                 <Button 
@@ -182,7 +182,7 @@
 
             <Grid Grid.Column="2" Grid.Row="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2.6*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
@@ -206,30 +206,148 @@
 
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1.4*" />
+                        <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
 
+
+
                     <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button 
+                            Grid.Column="1"
+                            x:Name="encrypt"
+                            Click="encode_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Encrypt File"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                            <materialDesign:PackIcon
+                            Kind="Lock" 
+                             />
+                        </Button>
+
+                        <TextBox 
+                             x:Name="textEncryptPassword"
+                             VerticalAlignment="Center"
+                             Grid.Column="0" 
+                             TextWrapping="Wrap" 
+                             Text="Insert"
+                             MaxWidth="150"
+                             MaxHeight="50"
+                             FontSize="13"
+                             GotFocus="textEncryptPassword_GotFocus"
+                             LostFocus="textEncryptPassword_LostFocus"
+                        />
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                            Grid.Column="1"
+                            x:Name="decrypt" 
+                            Click="decrypt_Click"
+                            
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Decrypt File"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                         >
+                            <materialDesign:PackIcon
+                            Kind="LockOpen" 
+                             />
+                        </Button>
+
+                        <TextBox 
+                         x:Name="textDecryptPassword" 
+                         Grid.Column="0"
+                         TextWrapping="Wrap" 
+                         VerticalAlignment="Center"
+                         Text="Insert"
+                         MaxWidth="150"
+                         MaxHeight="50"
+                         FontSize="13"
+                         GotFocus="textDecryptPassword_GotFocus"
+                         LostFocus="textDecryptPassword_LostFocus"
+                        />
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0.9*" />
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                            <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
 
-                        <Button
-                            HorizontalAlignment="Center" 
+
+                        <Button 
                             Grid.Row="0"
-                            FontSize="14"
-                            Width="130"
+                            Grid.Column="0"
                             x:Name="mergeAllButton"
                             Click="mergeAllButton_Click"
-                            VerticalAlignment="Top"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Merge All"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                         >
-                            Merge All
+                            <materialDesign:PackIcon
+                            Kind="Merge" 
+                        />
                         </Button>
 
+                        <Button x:Name="passwordHistory" 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Click="passwordHistory_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Password History"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                            <materialDesign:PackIcon
+                                Kind="History" 
+                            />
+                        </Button>
+
+                        <Button 
+                            x:Name="reset" 
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Click="resetPassword"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Reset Password"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                            <materialDesign:PackIcon
+                                Kind="LockReset" 
+                            />
+                        </Button>
+
+                        <Button 
+                            x:Name="change"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Click="changePassword"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Change Password"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                            <materialDesign:PackIcon
+                                Kind="KeyChange" 
+                            />
+                        </Button>
+
+                        <!--
                         <Button
                             HorizontalAlignment="Center" 
                             Grid.Row="1"
@@ -241,67 +359,9 @@
                          >
                             Merge Selected
                         </Button>
-
-                        <Button x:Name="passwordHistory" 
-                            Content="Password History" 
-                            Grid.Row="2"
-                            Click="passwordHistory_Click"
-                            FontSize="12"
-                            Width="130"
-                        />
-                        <Button x:Name="reset" Content="" HorizontalAlignment="Left" Height="32" Margin="186,0,0,6" Grid.Row="2" VerticalAlignment="Bottom" Width="36" RenderTransformOrigin="-0.109,0.15" Click="resetPassword"/>
-                        <Button x:Name="change" Content="" HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Grid.Row="2" VerticalAlignment="Center" Width="36" RenderTransformOrigin="-0.109,0.15" Click="changePassword"/>
+                        -->
                     </Grid>
-
-                    <Button Content="Encrypt File" 
-                        Grid.Row="1"
-                        VerticalAlignment="Top"
-                        Margin="0,6,0,3"
-                        FontSize="14"
-                        Width="130"
-                        x:Name="encrypt"
-                        Click="encode_Click"
-                    />
-
-                    <TextBox x:Name="textEncryptPassword"
-                         Margin="5,25,5,5"
-                         VerticalAlignment="Center"
-                         Grid.Row="1" 
-                         TextWrapping="Wrap" 
-                         Text="Insert"
-                         MaxWidth="130"
-                         MaxHeight="50"
-                         FontSize="13"
-                         GotFocus="textEncryptPassword_GotFocus"
-                         LostFocus="textEncryptPassword_LostFocus"
-                     />
-
-                    <Button x:Name="decrypt" 
-                        Content="Decrypt File"
-                        Margin="0,3,0,3"
-                        FontSize="14"
-                        Width="130"
-                        VerticalAlignment="Top"
-                        Grid.Row="2" 
-                        Click="decrypt_Click"
-                    />
-
-                    <TextBox x:Name="textDecryptPassword" 
-                         Grid.Row="2"
-                         Margin="5,25,5,5"
-                         TextWrapping="Wrap" 
-                         VerticalAlignment="Center"
-                         Text="Insert"
-                         MaxWidth="130"
-                         MaxHeight="50"
-                         FontSize="13"
-                         GotFocus="textDecryptPassword_GotFocus"
-                         LostFocus="textDecryptPassword_LostFocus"
-                     />
-
-
                 </Grid>
-
             </Grid>
         </Grid>
         <!-- End Tree Directory Grid -->
@@ -385,10 +445,11 @@
                         Content="Case Sensitivity"
                     />
 
-                    <CheckBox HorizontalAlignment="Center" 
-                        x:Name="highlight" 
+                    <CheckBox HorizontalAlignment="Left" 
+                        FontSize="14"
+                        x:Name="highlight"
+                        Content="Highlight" 
                         Grid.Row="1"
-                        Content="Highlight"
                      />
                 </Grid>
             </Grid>

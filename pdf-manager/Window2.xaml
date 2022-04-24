@@ -4,13 +4,78 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pdf_manager"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Window2" Height="450" Width="800">
+        Title="Reset Password" 
+        Height="200" Width="400"
+        MinHeight="200" MinWidth="400"
+        MaxHeight="200" MaxWidth="400"
+        
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="12"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        >
     <Grid>
-        <Label x:Name="passwordLabel" Content="Label" HorizontalAlignment="Left" Height="30" Margin="183,114,0,0" VerticalAlignment="Top" Width="340"/>
-        <Button x:Name="okButton" Content="OK" HorizontalAlignment="Left" Height="33" Margin="183,195,0,0" VerticalAlignment="Top" Width="91" Click="okButton_Click"/>
-        <Button x:Name="cancelButton" Content="CANCEL" HorizontalAlignment="Left" Height="33" Margin="294,195,0,0" VerticalAlignment="Top" Width="118" Click="cancelButton_Click"/>
-        <TextBox x:Name="newPassword" HorizontalAlignment="Left" Height="30" Margin="183,149,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="231" RenderTransformOrigin="0.015,1.074"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Label 
+                x:Name="passwordLabel" 
+                Content="Label" 
+                HorizontalAlignment="Center"
+                FontSize="12"
+            />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TextBox 
+                x:Name="newPassword" 
+                TextWrapping="Wrap" 
+                Width="230"
+                FontSize="15"
+            />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Column="0"
+                    x:Name="okButton" 
+                    Click="okButton_Click"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    ToolTip="Save"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                >
+                    <materialDesign:PackIcon
+                        Kind="ContentSave" 
+                    />
+                </Button>
+
+                <Button 
+                    Grid.Column="1"
+                    x:Name="cancelButton" 
+                    Click="cancelButton_Click"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    ToolTip="Cancel"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                    >
+                        <materialDesign:PackIcon
+                            Kind="Cancel" 
+                        />
+                </Button>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
