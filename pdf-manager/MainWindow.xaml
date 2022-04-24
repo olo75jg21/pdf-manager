@@ -211,7 +211,7 @@
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
 
-                    
+
 
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
@@ -238,7 +238,7 @@
                              Grid.Column="0" 
                              TextWrapping="Wrap" 
                              Text="Insert"
-                             MaxWidth="130"
+                             MaxWidth="150"
                              MaxHeight="50"
                              FontSize="13"
                              GotFocus="textEncryptPassword_GotFocus"
@@ -251,7 +251,7 @@
                             <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        
+
                         <Button
                             Grid.Column="1"
                             x:Name="decrypt" 
@@ -272,7 +272,7 @@
                          TextWrapping="Wrap" 
                          VerticalAlignment="Center"
                          Text="Insert"
-                         MaxWidth="130"
+                         MaxWidth="150"
                          MaxHeight="50"
                          FontSize="13"
                          GotFocus="textDecryptPassword_GotFocus"
@@ -285,7 +285,7 @@
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0.9*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
@@ -445,10 +445,11 @@
                         Content="Case Sensitivity"
                     />
 
-                    <CheckBox HorizontalAlignment="Center" 
-                        x:Name="highlight" 
+                    <CheckBox HorizontalAlignment="Left" 
+                        FontSize="14"
+                        x:Name="highlight"
+                        Content="Highlight" 
                         Grid.Row="1"
-                        Content="Highlight"
                      />
                 </Grid>
             </Grid>
