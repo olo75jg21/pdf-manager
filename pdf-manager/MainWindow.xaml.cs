@@ -82,7 +82,9 @@ namespace pdf_manager
             results.ItemsSource = ResultItems;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(results.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Filename");
+            PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("NamedPage");
             view.GroupDescriptions.Add(groupDescription);
+            view.GroupDescriptions.Add(groupDescription2);
         }
    
         // przycisk pod drzewkiem, dodajacy wybrane pliki
