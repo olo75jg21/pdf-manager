@@ -19,13 +19,17 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         >
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="329*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="4*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,20" Grid.RowSpan="2">
             <Label 
                 x:Name="passwordLabel" 
                 Content="Label" 
@@ -35,7 +39,7 @@
             />
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <TextBox 
                 x:Name="newPassword" 
                 TextWrapping="Wrap" 
@@ -44,7 +48,7 @@
             />
         </Grid>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,20,0,0" Grid.RowSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -72,7 +76,7 @@
                     ToolTip="Cancel"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
                     >
-                        <materialDesign:PackIcon
+                    <materialDesign:PackIcon
                             Kind="Cancel" 
                         />
                 </Button>

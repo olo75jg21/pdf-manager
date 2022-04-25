@@ -73,6 +73,38 @@ namespace pdf_manager
 
         // List of paths to selected files 
         public ObservableCollection<String> selectedFilesPath = new ObservableCollection<String>();
+        
+        // List of passwords to selcted files
+        List<string> selectedFilesPassword = new List<string>();
+
+        // Check pdf has a password 
+        public static bool IsPasswordProtected(string pdfFullname)
+        {
+            try
+            {
+                PdfReader pdfReader = new PdfReader(pdfFullname);
+                return false;
+            }
+            catch (iTextSharp.text.exceptions.BadPasswordException)
+            {
+                return true;
+            }
+        }
+
+        // Verify inserted password
+        public static bool IsPasswordValid(string pdfFullname, byte[] password)
+        {
+            try
+            {
+                PdfReader pdfReader = new PdfReader(pdfFullname, password);
+                return false;
+            }
+            catch (iTextSharp.text.exceptions.BadPasswordException)
+            {
+                return true;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -84,7 +116,7 @@ namespace pdf_manager
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Filename");
             view.GroupDescriptions.Add(groupDescription);
         }
-   
+
         // przycisk pod drzewkiem, dodajacy wybrane pliki
         private void ButtonAddSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
@@ -93,7 +125,30 @@ namespace pdf_manager
             {
                 if (!selectedFilesPath.Contains(file.FilePath))
                 {
-                    selectedFilesPath.Add(file.FilePath);
+                    if (IsPasswordProtected(file.FilePath))
+                    {
+                        Window2 win = new Window2();
+                        win.passwordLabel.Content = "Wprowadz haslo do pdfa";
+                        win.Title = "PDF Password";
+
+                        bool? result = win.ShowDialog();
+
+                        if (result.Value)
+                        {
+                            if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Text)))
+                            {
+                                selectedFilesPath.Add(file.FilePath);
+                                selectedFilesPassword.Add(win.newPassword.Text);
+                            }
+                            else
+                                System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                        }
+                    }
+                    else
+                    {
+                        selectedFilesPath.Add(file.FilePath);
+                        selectedFilesPassword.Add("");
+                    }
                 }
             }
         }
@@ -105,6 +160,8 @@ namespace pdf_manager
             {
                 if (selectedFilesPath.Contains(file))
                 {
+                    selectedFilesPassword.RemoveAt(selectedFilesPath.IndexOf(file));
+                    
                     selectedFilesPath.Remove(file);
                 }
             }
