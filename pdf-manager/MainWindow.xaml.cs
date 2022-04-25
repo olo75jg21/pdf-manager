@@ -17,8 +17,7 @@ using PdfSharp.Pdf.Security;
 
 using Newtonsoft.Json;
 using System.Security.Cryptography;
-
-
+using System.Windows.Data;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -81,6 +80,9 @@ namespace pdf_manager
             SelectedItemsList.ItemsSource = selectedFilesPath;
             DirectoryTreeView.ItemsSource = RootDirectoryItems;
             results.ItemsSource = ResultItems;
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(results.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Filename");
+            view.GroupDescriptions.Add(groupDescription);
         }
    
         // przycisk pod drzewkiem, dodajacy wybrane pliki
@@ -761,9 +763,9 @@ namespace pdf_manager
             Window2 win = new Window2();
 
             if(passwordManagerPassword.Item1 == String.Empty)
-                win.passwordLabel.Content = "Proszę wprowadzić nowe hasło do wyświetlania historii haseł";
+                win.passwordLabel.Content = "Wprowadź nowe hasło do wyświetlania historii haseł:";
             else
-                win.passwordLabel.Content = "Proszę wprowadzić hasło uwierzytleniające"; 
+                win.passwordLabel.Content = "Wprowadź hasło uwierzytleniające:"; 
 
             bool? result = win.ShowDialog();
 

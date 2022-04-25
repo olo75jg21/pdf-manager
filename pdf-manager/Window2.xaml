@@ -30,7 +30,8 @@
                 x:Name="passwordLabel" 
                 Content="Label" 
                 HorizontalAlignment="Center"
-                FontSize="12"
+                FontSize="16"
+                FontWeight="Bold"
             />
         </Grid>
 

@@ -48,7 +48,6 @@
                 x:Name="oldPassword" 
                 Height="30" 
                 TextWrapping="Wrap" 
-                Text="TextBox" 
                 Width="121"
                 FontSize="15"
             />
@@ -73,7 +72,6 @@
                 x:Name="newPassword" 
                 Height="30" 
                 TextWrapping="Wrap" 
-                Text="TextBox" 
                 Width="121"
                 FontSize="15"
             />

@@ -139,7 +139,6 @@
                 Grid.Row="2"
                 x:Name="DirectoryTreeView"
                 ItemsSource="{Binding RootDirectoryItems}"
-                Background="#fff"
             >
                 <!--
                 Setting up a TreeView style
@@ -461,8 +460,8 @@
                 <ListView
                     HorizontalContentAlignment="Stretch"
                     x:Name="results"
-                    ItemsSource="{Binding}"
                     IsSynchronizedWithCurrentItem="True"
+                    ItemsSource="{Binding}"
                     SelectionMode="Multiple"
                     FontSize="12"
                     Padding="0,0,0,0"
@@ -470,19 +469,39 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem},Path=IsSelected}"  Width="20"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Width="Auto" Header="ID PAGE LINE"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/>
+                                
+                                
+                                
+                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Width="Auto" Header="ID&#x09;PAGE&#x09;LINE"/>
+                                <!-- <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/> -->
                                 <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
                             </GridView.Columns>
                         </GridView>
                     </ListView.View>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Expander IsExpanded="False">
+                                                    <Expander.Header>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                        </StackPanel>
+                                                    </Expander.Header>
+                                                    <ItemsPresenter />
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
                 </ListView>
             </Grid>
 
