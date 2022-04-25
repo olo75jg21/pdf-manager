@@ -214,7 +214,7 @@ namespace pdf_manager
             }
         }
 
-        public static void CombineMultiplePDFs(List<string> fileNames, string outFile)
+        public void CombineMultiplePDFs(List<string> fileNames, string outFile)
         {
             // step 1: creation of a document-object
             Document document = new Document();
@@ -229,8 +229,10 @@ namespace pdf_manager
 
                 foreach (string fileName in fileNames)
                 {
+                    string password = selectedFilesPassword[selectedFilesPath.IndexOf(fileName)];
+
                     // we create a reader for a certain document
-                    using (iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(fileName))
+                    using (iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(fileName, Encoding.ASCII.GetBytes(password)))
                     {
                         reader.ConsolidateNamedDestinations();
 
