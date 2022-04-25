@@ -135,10 +135,10 @@ namespace pdf_manager
 
                         if (result.Value)
                         {
-                            if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Text)))
+                            if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Password.ToString())))
                             {
                                 selectedFilesPath.Add(file.FilePath);
-                                selectedFilesPassword.Add(win.newPassword.Text);
+                                selectedFilesPassword.Add(win.newPassword.Password.ToString());
                             }
                             else
                                 System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
@@ -824,7 +824,7 @@ namespace pdf_manager
             if ( passwordManagerPassword.Item1 == String.Empty && result.Value )
             {
                 string salt = CreateSalt();
-                string newHash = win.newPassword.Text; 
+                string newHash = win.newPassword.Password.ToString(); 
 
                 newHash = GenerateHash(newHash, salt);
                 passwordManagerPassword = new Tuple<string, string>(newHash, salt);
@@ -833,7 +833,7 @@ namespace pdf_manager
             }
             else if( result.Value )
             {
-                string passwordCheck = win.newPassword.Text;
+                string passwordCheck = win.newPassword.Password.ToString();
 
                 if (AreEqual(passwordCheck, passwordManagerPassword.Item1, passwordManagerPassword.Item2))
                     historyShow();
@@ -893,7 +893,7 @@ namespace pdf_manager
                 {
                         string salt = CreateSalt();
 
-                        string newHash = win.newPassword.Text;
+                        string newHash = win.newPassword.Password.ToString();
 
                         if (String.ReferenceEquals(newHash, String.Empty))
                         {
@@ -917,16 +917,23 @@ namespace pdf_manager
 
             if ( result.Value )
             {
-                if (AreEqual(win.oldPassword.Text, passwordManagerPassword.Item1, passwordManagerPassword.Item2))
+                if (AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2) 
+                    && win.newPassword.Password.ToString() == win.newPasswordCheck.Password.ToString())
                 {
                     string salt = CreateSalt();
 
-                    string newHash = GenerateHash(win.newPassword.Text, salt);
+                    string newHash = GenerateHash(win.newPassword.Password.ToString(), salt);
                     passwordManagerPassword = new Tuple<string, string>(newHash, salt);
                     System.Windows.MessageBox.Show("Zmieniono haslo");
                 }
-                else
+                else if( !AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2)
+                    && win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString())
+                    System.Windows.MessageBox.Show("Bledne stare haslo oraz nowe hasla nie sa identyczne");
+                else if(!AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2) )
                     System.Windows.MessageBox.Show("Podano bledne stare haslo");
+                else if(win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString() )
+                    System.Windows.MessageBox.Show("Nowe hasla nie sa identyczne");
+
             }
         }
     }
