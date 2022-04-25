@@ -286,8 +286,11 @@ namespace pdf_manager
                 // przejscie po sciezkach plikow
                 foreach (var path in selectedFilesPath)
                 {
+                    // odczytanie hasla do danego pliku i uzycie jego w readerze 
+                    string password = selectedFilesPassword[selectedFilesPath.IndexOf(path)];
+
                     // sprawdzanie czy w kazdej linii znajduje sie poszukiwany fragment
-                    iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(@path);
+                    iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(@path, Encoding.ASCII.GetBytes(password) );
                     string[] words;
                     string line;
 
@@ -482,7 +485,13 @@ namespace pdf_manager
             Properties.Settings.Default.filePaths = filePathsCollection;
             Properties.Settings.Default.Save();
 
-            
+            // zapisywanie hasel plikow pdf dodanych do  listy 
+            StringCollection filePathPasswordCollection = new StringCollection();
+            filePathPasswordCollection.AddRange(selectedFilesPassword.ToArray());
+            Properties.Settings.Default.filePathPasswords = filePathPasswordCollection;
+            Properties.Settings.Default.Save();
+
+
             // zapisywanie dodanych katalogow do listy 
             foreach (var obj in RootDirectoryItems)
                 pathRoot.Add((string)obj.GetType().GetProperty("DirectoryPath").GetValue(obj,null) );
@@ -852,11 +861,20 @@ namespace pdf_manager
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
             // wybrane pliki wczytanie ostatnich plikow
             if (Properties.Settings.Default.filePaths != null)
             {
                 foreach (String file in Properties.Settings.Default.filePaths.Cast<String>().ToList())
                     selectedFilesPath.Add(file);
+            }
+            
+
+            // hasla do plikow pdf wczytanie
+            if (Properties.Settings.Default.filePathPasswords != null)
+            {
+                foreach (String file in Properties.Settings.Default.filePathPasswords.Cast<String>().ToList())
+                    selectedFilesPassword.Add(file);
             }
 
             // drzewko wczytanie ostatnich wybranych folderow

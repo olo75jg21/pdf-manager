@@ -68,5 +68,16 @@ namespace pdf_manager.Properties {
                 this["managerPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection filePathPasswords {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["filePathPasswords"]));
+            }
+            set {
+                this["filePathPasswords"] = value;
+            }
+        }
     }
 }
