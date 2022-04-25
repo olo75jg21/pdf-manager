@@ -48,6 +48,7 @@ namespace pdf_manager
         public int Id { get { return _id; } }
         public string Path { get { return _path; } }
         public int Page { get { return _page; } }
+        public string NamedPage { get { return "Page " + _page; } }
         public int Line { get { return _line; } }
         public string Data { get { return _data; } }
         public string Helper { get { return _id + "\t" + _page + "\t" + _line; } }

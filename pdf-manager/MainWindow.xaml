@@ -457,9 +457,15 @@
                         <GridView>
                             <GridView.Columns>
                                 
+                                <GridViewColumn>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Tag="{Binding Id}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem},Path=IsSelected}"  Width="20"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 
-                                
-                                <GridViewColumn DisplayMemberBinding="{Binding Helper}" Width="Auto" Header="ID&#x09;PAGE&#x09;LINE"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Line}" Width="Auto" Header="Line"/>
                                 <!-- <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/> -->
                                 <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
                             </GridView.Columns>
@@ -475,9 +481,9 @@
                                                 <Expander IsExpanded="False">
                                                     <Expander.Header>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                            <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-                                                            <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="10" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text="{Binding ItemCount}" FontSize="10" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text=" item(s)" FontSize="10" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
                                                         </StackPanel>
                                                     </Expander.Header>
                                                     <ItemsPresenter />
@@ -487,6 +493,11 @@
                                     </Setter>
                                 </Style>
                             </GroupStyle.ContainerStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
                         </GroupStyle>
                     </ListView.GroupStyle>
                 </ListView>
