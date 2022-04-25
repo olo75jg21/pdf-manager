@@ -264,19 +264,6 @@
                             Kind="LockOpen" 
                              />
                         </Button>
-
-                        <TextBox 
-                         x:Name="textDecryptPassword" 
-                         Grid.Column="0"
-                         TextWrapping="Wrap" 
-                         VerticalAlignment="Center"
-                         Text="Insert"
-                         MaxWidth="150"
-                         MaxHeight="50"
-                         FontSize="13"
-                         GotFocus="textDecryptPassword_GotFocus"
-                         LostFocus="textDecryptPassword_LostFocus"
-                        />
                     </Grid>
 
                     <Grid Grid.Row="2">

@@ -367,10 +367,12 @@ namespace pdf_manager
                 }
 
                 string path = easySearchFilesInfo[listBoxLineNumber].Path;
+                string password = selectedFilesPassword[selectedFilesPath.IndexOf(path)];
+
                 if (czyStrona == false)
                 {
                     // kopiowanie do nowo utworzonego pdfa strony
-                    using (iTextSharp.text.pdf.PdfReader kopiowany_pdf = new iTextSharp.text.pdf.PdfReader(path))
+                    using (iTextSharp.text.pdf.PdfReader kopiowany_pdf = new iTextSharp.text.pdf.PdfReader(path, Encoding.ASCII.GetBytes(password)))
                     {
                         PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, easySearchFilesInfo[listBoxLineNumber].Page);
                         nowy_pdf.AddPage(importedPage);
@@ -575,19 +577,6 @@ namespace pdf_manager
          }
       }
 
-      private void textDecryptPassword_GotFocus(object sender, RoutedEventArgs e)
-      {
-         textDecryptPassword.Text = "";
-      }
-
-      private void textDecryptPassword_LostFocus(object sender, RoutedEventArgs e)
-      {
-         if (textDecryptPassword.Text.Length == 0)
-         {
-            textDecryptPassword.Text = "Insert";
-         }
-      }
-
       private class RectAndText
         {
             public iTextSharp.text.Rectangle Rect;
@@ -682,7 +671,7 @@ namespace pdf_manager
 
             using (PdfStamper stamper = new PdfStamper(reader, fs))
             {
-                for (int i = 1; i <= reader.NumberOfPages; i++)  //for (var currentPageIndex = 1; currentPageIndex <= numberOfPages; currentPageIndex++)
+                for (int i = 1; i <= reader.NumberOfPages; i++)  
                 {
                     MyLocationTextExtractionStrategy strategyTest = new MyLocationTextExtractionStrategy(searchText, cmp);
                     ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
@@ -719,16 +708,18 @@ namespace pdf_manager
         private void encode_Click(object sender, RoutedEventArgs e)
         {
             string encryptFile = selectedFilesPath[0];
+            string password = selectedFilesPassword[0];
 
             if (selectedFilesPath.Count == 1 && textEncryptPassword.Text != "")
             {
-                try
-                {
-                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile);
+
+                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile, password);
                     PdfSecuritySettings securitySettings = document.SecuritySettings;
 
                     securitySettings.UserPassword = textEncryptPassword.Text;
                     securitySettings.OwnerPassword = textEncryptPassword.Text;
+
+                    selectedFilesPassword[0] = textEncryptPassword.Text;
 
                     if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
                         encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
@@ -737,32 +728,29 @@ namespace pdf_manager
 
                     document.Save(encryptFile);
                     document.Close();
-                    System.Windows.MessageBox.Show("Ustawiono haslo " + textEncryptPassword.Text);
-                }
-                catch
-                {
-                    System.Windows.MessageBox.Show("Trzeba usunac poprzednie haslo");
-                }
+                    System.Windows.MessageBox.Show("Ustawiono/zmieniono haslo " + textEncryptPassword.Text);
             }
         }
 
         private void decrypt_Click(object sender, RoutedEventArgs e)
         {
             string decryptFile = selectedFilesPath[0];
+            string password = selectedFilesPassword[0];
 
-            if (selectedFilesPath.Count == 1 && textDecryptPassword.Text != "")
+            if (selectedFilesPath.Count == 1 )
             {
-                try
+                if( password == "")
                 {
-                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile);
                     System.Windows.MessageBox.Show("Plik jest aktualnie bez hasla");
                     return;
                 }
-                catch
+                else
                 {
-                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile, textDecryptPassword.Text);
+                    PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(decryptFile, password);
 
                     PdfDocumentSecurityLevel level = document.SecuritySettings.DocumentSecurityLevel;
+
+                    selectedFilesPassword[0] = "";
 
                     if (encryptPasswordHistory.ContainsKey(decryptFile))
                         encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
@@ -775,10 +763,6 @@ namespace pdf_manager
                 }
             }
         }
-
-
-
-
 
 
         // ---------------------------------------------------------------------------------------- 
