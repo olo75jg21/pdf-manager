@@ -79,5 +79,17 @@ namespace pdf_manager.Properties {
                 this["filePathPasswords"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string historyOfSelectedFiles {
+            get {
+                return ((string)(this["historyOfSelectedFiles"]));
+            }
+            set {
+                this["historyOfSelectedFiles"] = value;
+            }
+        }
     }
 }

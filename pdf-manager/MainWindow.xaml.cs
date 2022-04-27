@@ -77,6 +77,9 @@ namespace pdf_manager
         // List of passwords to selcted files
         List<string> selectedFilesPassword = new List<string>();
 
+        // Dictionary of saved previously passwords from selected files
+        Dictionary<string, string> historyPasswordOfSelectedFiles = new Dictionary<string, string>();
+
         // Check pdf has a password 
         public static bool IsPasswordProtected(string pdfFullname)
         {
@@ -130,20 +133,59 @@ namespace pdf_manager
                     if (IsPasswordProtected(file.FilePath))
                     {
                         Window2 win = new Window2();
-                        win.passwordLabel.Content = "Wprowadz haslo do pdfa";
-                        win.Title = "PDF Password";
 
-                        bool? result = win.ShowDialog();
+                        string value;
+                        bool hasValue = historyPasswordOfSelectedFiles.TryGetValue(file.FilePath, out value);
 
-                        if (result.Value)
+                        // jesli sciezka z haslem byla poprzednio zapisana
+                        if (hasValue)
                         {
-                            if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Password.ToString())))
+                            // sprawdzenie czy poprzednio zapisane haslo wciaz jest aktualne
+                            if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(value) ) )
                             {
                                 selectedFilesPath.Add(file.FilePath);
-                                selectedFilesPassword.Add(win.newPassword.Password.ToString());
+                                selectedFilesPassword.Add( value );
                             }
                             else
-                                System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                            {
+                                win.passwordLabel.Content = "Haslo do pdfa zostalo zmienione - podaj nowe";
+                                win.Title = "PDF Password";
+
+                                bool? result = win.ShowDialog();
+
+                                if (result.Value)
+                                {
+                                    if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Password.ToString())))
+                                    {
+                                        selectedFilesPath.Add(file.FilePath);
+                                        selectedFilesPassword.Add(win.newPassword.Password.ToString());
+
+                                        historyPasswordOfSelectedFiles[file.FilePath] = win.newPassword.Password.ToString();
+                                    }
+                                    else
+                                        System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                                }
+                            }
+                        }
+                        // nie ma takiej sciezki w historii
+                        else
+                        {
+                            win.passwordLabel.Content = "Wprowadz haslo do pdfa";
+                            win.Title = "PDF Password";
+
+                            bool? result = win.ShowDialog();
+
+                            if (result.Value)
+                            {
+                                if (!IsPasswordValid(file.FilePath, Encoding.ASCII.GetBytes(win.newPassword.Password.ToString())))
+                                {
+                                    selectedFilesPath.Add(file.FilePath);
+                                    selectedFilesPassword.Add(win.newPassword.Password.ToString());
+                                    historyPasswordOfSelectedFiles.Add(file.FilePath, win.newPassword.Password.ToString());
+                                }
+                                else
+                                    System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                            }
                         }
                     }
                     else
@@ -519,6 +561,11 @@ namespace pdf_manager
             Properties.Settings.Default.Save();
 
 
+            json = JsonConvert.SerializeObject( historyPasswordOfSelectedFiles, Formatting.Indented);
+            Properties.Settings.Default.historyOfSelectedFiles = json;
+            Properties.Settings.Default.Save();
+
+
             if (File.Exists(pathToSavePreview))
                 File.Delete(pathToSavePreview);
 
@@ -725,7 +772,12 @@ namespace pdf_manager
 
                     selectedFilesPassword[0] = textEncryptPassword.Text;
 
-                    if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
+                    if (historyPasswordOfSelectedFiles.ContainsKey(selectedFilesPassword[0]))
+                        historyPasswordOfSelectedFiles[encryptFile] = textEncryptPassword.Text;
+                    else
+                        historyPasswordOfSelectedFiles.Add(encryptFile, textEncryptPassword.Text);
+
+                if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
                         encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
                     else
                         encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
@@ -755,6 +807,10 @@ namespace pdf_manager
                     PdfDocumentSecurityLevel level = document.SecuritySettings.DocumentSecurityLevel;
 
                     selectedFilesPassword[0] = "";
+
+                    // sprawdzenie czy istnieje w historii i usuniecie jesli tak - nie jest potrzebne bo nie ma hasla 
+                    if (historyPasswordOfSelectedFiles.ContainsKey(selectedFilesPassword[0]))
+                        historyPasswordOfSelectedFiles.Remove(selectedFilesPassword[0]);
 
                     if (encryptPasswordHistory.ContainsKey(decryptFile))
                         encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
@@ -880,6 +936,11 @@ namespace pdf_manager
             json = Properties.Settings.Default.managerPassword;
             if (json != "")
                 passwordManagerPassword = JsonConvert.DeserializeObject<Tuple<string, string>>(json);
+
+
+            json = Properties.Settings.Default.historyOfSelectedFiles;
+            if (json != "")
+                historyPasswordOfSelectedFiles = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
 
         private void resetPassword(object sender, RoutedEventArgs e)
