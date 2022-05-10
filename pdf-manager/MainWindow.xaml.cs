@@ -301,7 +301,7 @@ namespace pdf_manager
             }//disposes the newFileStream object
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void search_Click(object sender, RoutedEventArgs e)
         {
             // usuwanie wyswietlonej histori hasel przed wyszukaniem
             if ( encryptPasswordHistory.Count != 0 )

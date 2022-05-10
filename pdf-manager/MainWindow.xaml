@@ -192,7 +192,7 @@
                 Width="auto"
                 Height="auto"
                 Background="White"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding Items}" Margin="0,0,0,50"
             >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -211,7 +211,7 @@
 
 
 
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Margin="0,-54,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="1*" />
@@ -223,7 +223,7 @@
                             Click="encode_Click"
                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                             ToolTip="Encrypt File"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="3,63,3,23" 
                         >
                             <materialDesign:PackIcon
                             Kind="Lock" 
@@ -232,7 +232,7 @@
 
                         <TextBox 
                              x:Name="textEncryptPassword"
-                             VerticalAlignment="Center"
+                             VerticalAlignment="Top"
                              Grid.Column="0" 
                              TextWrapping="Wrap" 
                              Text="Insert"
@@ -240,8 +240,20 @@
                              MaxHeight="50"
                              FontSize="13"
                              GotFocus="textEncryptPassword_GotFocus"
-                             LostFocus="textEncryptPassword_LostFocus"
+                             LostFocus="textEncryptPassword_LostFocus" Grid.ColumnSpan="2" Margin="0,71,46,0"
                         />
+                        <Button 
+                            Grid.Column="1"
+                            x:Name="decrypt"
+                            Click="decrypt_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Encrypt File"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Margin="3,10,3,76" 
+                        >
+                            <materialDesign:PackIcon
+                                Kind="Lock" 
+                             />
+                        </Button>
                     </Grid>
 
                     <Grid Grid.Row="1">
@@ -363,7 +375,7 @@
                 <Button 
                     Grid.Column="1" 
                     x:Name="searchButton_Copy" 
-                    Click="button_Click"
+                    Click="search_Click"
                     
                     Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                     ToolTip="Search text in selected files"
@@ -434,7 +446,7 @@
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
-                                
+
                                 <GridViewColumn>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -442,7 +454,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                
+
                                 <GridViewColumn DisplayMemberBinding="{Binding Line}" Width="Auto" Header="Line"/>
                                 <!-- <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="File" Width="Auto"/> -->
                                 <GridViewColumn DisplayMemberBinding="{Binding Data}" Header="Data" Width="Auto"/>
