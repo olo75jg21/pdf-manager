@@ -146,7 +146,7 @@ namespace pdf_manager
                             }
                             else
                             {
-                                win.passwordLabel.Content = "Haslo do pdfa zostalo zmienione - podaj nowe";
+                                win.passwordLabel.Content = "PDF password has been changed - insert new password";
                                 win.Title = "PDF Password";
 
                                 bool? result = win.ShowDialog();
@@ -161,14 +161,14 @@ namespace pdf_manager
                                         historyPasswordOfSelectedFiles[file.FilePath] = win.newPassword.Password.ToString();
                                     }
                                     else
-                                        System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                                        System.Windows.MessageBox.Show("Invalid password to PDF");
                                 }
                             }
                         }
                         // nie ma takiej sciezki w historii
                         else
                         {
-                            win.passwordLabel.Content = "Wprowadz haslo do pdfa";
+                            win.passwordLabel.Content = "Insert password to pdf";
                             win.Title = "PDF Password";
 
                             bool? result = win.ShowDialog();
@@ -182,7 +182,7 @@ namespace pdf_manager
                                     historyPasswordOfSelectedFiles.Add(file.FilePath, win.newPassword.Password.ToString());
                                 }
                                 else
-                                    System.Windows.MessageBox.Show("Bledne haslo do pliku pdf");
+                                    System.Windows.MessageBox.Show("Invalid password to PDF");
                             }
                         }
                     }
@@ -769,7 +769,7 @@ namespace pdf_manager
 
                     document.Save(encryptFile);
                     document.Close();
-                    System.Windows.MessageBox.Show("Ustawiono/zmieniono haslo " + textEncryptPassword.Text);
+                    System.Windows.MessageBox.Show("Password was changed/set");
             }
         }
 
@@ -782,7 +782,7 @@ namespace pdf_manager
             {
                 if( password == "")
                 {
-                    System.Windows.MessageBox.Show("Plik jest aktualnie bez hasla");
+                    System.Windows.MessageBox.Show("File doesn't have password");
                     return;
                 }
                 else
@@ -798,13 +798,13 @@ namespace pdf_manager
                         historyPasswordOfSelectedFiles.Remove(selectedFilesPassword[0]);
 
                     if (encryptPasswordHistory.ContainsKey(decryptFile))
-                        encryptPasswordHistory[decryptFile] = "Usunieto haslo " + DateTime.Now;
+                        encryptPasswordHistory[decryptFile] = "Password was removed " + DateTime.Now;
                     else
-                        encryptPasswordHistory.Add(decryptFile, "Usunieto haslo " + DateTime.Now);
+                        encryptPasswordHistory.Add(decryptFile, "Password was removed " + DateTime.Now);
 
                     document.Save(decryptFile);
                     document.Close();
-                    System.Windows.MessageBox.Show("Usunieto haslo");
+                    System.Windows.MessageBox.Show("Password was removed");
                 }
             }
         }
@@ -839,7 +839,7 @@ namespace pdf_manager
 
        private void historyShow()
        {
-            if (System.Windows.MessageBox.Show("Czy na pewno? Workspace zostanie wyczyszczony", "Potwierdzenie", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            if (System.Windows.MessageBox.Show("Are u sure? Workspace will be cleared", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.No)
                 return;
 
             clear_Click(null, null);
@@ -858,9 +858,9 @@ namespace pdf_manager
             Window2 win = new Window2();
 
             if(passwordManagerPassword.Item1 == String.Empty)
-                win.passwordLabel.Content = "Wprowadź nowe hasło do wyświetlania historii haseł:";
+                win.passwordLabel.Content = "Insert new password for a password history display";
             else
-                win.passwordLabel.Content = "Wprowadź hasło uwierzytleniające:"; 
+                win.passwordLabel.Content = "Insert authentication password"; 
 
             bool? result = win.ShowDialog();
 
@@ -882,7 +882,7 @@ namespace pdf_manager
                     historyShow();
                 else
                 {
-                    System.Windows.MessageBox.Show("Bledne haslo");
+                    System.Windows.MessageBox.Show("Password is invalid");
                     return;
                 }
             }
@@ -931,12 +931,12 @@ namespace pdf_manager
         private void resetPassword(object sender, RoutedEventArgs e)
         {
             Window2 win = new Window2();
-            win.passwordLabel.Content = "Proszę wprowadzić nowe hasło do wyświetlania historii haseł";
+            win.passwordLabel.Content = "Insert new password for a password history display";
             bool? result = win.ShowDialog();
 
             if (passwordManagerPassword.Item1 != String.Empty && result.Value == true)
             {
-                if (System.Windows.MessageBox.Show("Poprzednio zapisane hasla zostana usuniete? Czy kontynuować?", "Password Manager Password",
+                if (System.Windows.MessageBox.Show("All saved passwords will be removed? Continue?", "Password Manager Password",
                     MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                         string salt = CreateSalt();
@@ -945,7 +945,7 @@ namespace pdf_manager
 
                         if (String.ReferenceEquals(newHash, String.Empty))
                         {
-                            System.Windows.MessageBox.Show("Trzeba wprowadzic haslo - anulowano resetowanie hasla");
+                            System.Windows.MessageBox.Show("Need to insert new password - password reset was canceled");
                             return;
                         }
 
@@ -972,15 +972,15 @@ namespace pdf_manager
 
                     string newHash = GenerateHash(win.newPassword.Password.ToString(), salt);
                     passwordManagerPassword = new Tuple<string, string>(newHash, salt);
-                    System.Windows.MessageBox.Show("Zmieniono haslo");
+                    System.Windows.MessageBox.Show("Password was changed");
                 }
                 else if( !AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2)
                     && win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString())
-                    System.Windows.MessageBox.Show("Bledne stare haslo oraz nowe hasla nie sa identyczne");
+                    System.Windows.MessageBox.Show("Old password is invalid and new passwords do not match");
                 else if(!AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2) )
-                    System.Windows.MessageBox.Show("Podano bledne stare haslo");
+                    System.Windows.MessageBox.Show("Old password is invalid");
                 else if(win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString() )
-                    System.Windows.MessageBox.Show("Nowe hasla nie sa identyczne");
+                    System.Windows.MessageBox.Show("New passwords do not match");
 
             }
         }
