@@ -50,8 +50,6 @@ namespace pdf_manager
     {
         List<files_info> easySearchFilesInfo = new List<files_info>();
 
-        List<int> easySearchAddedFiles = new List<int>();
-
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
         string pathToSaveHighlight = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "previewHighlight.pdf");
 
@@ -372,7 +370,6 @@ namespace pdf_manager
         private void clear_Click(object sender, RoutedEventArgs e)
         {
             ResultItems.Clear();
-            easySearchAddedFiles.Clear();
         }
 
         private void previewFunction(object sender, RoutedEventArgs e)
@@ -387,30 +384,24 @@ namespace pdf_manager
             PdfCopy nowy_pdf = new PdfCopy(doc, stream);
             doc.Open();
 
+            int previousLineNumber = -1;
+
             // przejscie po zaznaczonych checkboxach
             for (int x = 0; x < results.SelectedItems.Count; x++)
             {
-                // wyluskanie numeru linii z ListBox'a 
-                // string number = results.SelectedItems[x].ToString();
-                // number = number.Substring(0, number.IndexOf(":"));
-
-                // w strukturze indeksuje sie od 0 dlatego - 1
-                // int listBoxLineNumber = Int32.Parse(number) - 1;
                 int listBoxLineNumber = (results.SelectedItems[x] as ResultItem).Id - 1;
+
                 bool czyStrona = false;
 
-                // iteracja po dodanych plikach i sprawdzenie czy ktoras ze stron nie zostal juz dodana ( ta sama sciezka i strona ) 
-                for (int i = 0; i < easySearchAddedFiles.Count; i++)
+                if(previousLineNumber != -1)
                 {
-                    if (easySearchFilesInfo[listBoxLineNumber].Path == easySearchFilesInfo[easySearchAddedFiles[i]].Path)
+                    if (easySearchFilesInfo[previousLineNumber].Path == easySearchFilesInfo[listBoxLineNumber].Path)
                     {
-                        if (easySearchFilesInfo[listBoxLineNumber].Page == easySearchFilesInfo[easySearchAddedFiles[i]].Page)
-                        {
+                        if (easySearchFilesInfo[previousLineNumber].Page == easySearchFilesInfo[listBoxLineNumber].Page)
                             czyStrona = true;
-                            break;
-                        }
                     }
                 }
+                previousLineNumber = listBoxLineNumber; 
 
                 string path = easySearchFilesInfo[listBoxLineNumber].Path;
                 string password = selectedFilesPassword[selectedFilesPath.IndexOf(path)];
@@ -423,9 +414,6 @@ namespace pdf_manager
                         PdfImportedPage importedPage = nowy_pdf.GetImportedPage(kopiowany_pdf, easySearchFilesInfo[listBoxLineNumber].Page);
                         nowy_pdf.AddPage(importedPage);
                     }
-
-                    // wpisanie do listy dodanych linii z ListBoxa 
-                    easySearchAddedFiles.Add(listBoxLineNumber);
                 }
             }
 
@@ -443,9 +431,6 @@ namespace pdf_manager
                 else
                     System.Diagnostics.Process.Start(@pathToSavePreview);
             }
-
-            // wyczyszczenie listy, bo wylowanie funkcji jest w dwoch miejscach i zamkniecie dokumentu
-            easySearchAddedFiles.Clear();
         }
 
 
