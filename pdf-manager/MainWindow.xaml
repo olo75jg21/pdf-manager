@@ -24,7 +24,7 @@
         <local:FileNameConverter x:Key="FileNameConverter" />
     </Window.Resources>
 
-    <Grid Margin="0,0,40,22">
+    <Grid>
         <!-- Main grid -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -39,19 +39,23 @@
 
 
         <!-- Tree Directory Grid -->
+
+
+        
         <Grid Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="12*"/>
+                <RowDefinition Height="18*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="209*"/>
             </Grid.RowDefinitions>
 
             <!-- Add and delete directory/file buttons Grid-->
-            <Grid Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Background="#E8E8E8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
@@ -127,18 +131,19 @@
             </Grid>
             <!-- End Add and delete directory/file buttons Grid-->
 
-            <Viewbox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="2,2,2,2">Selected Directories:</TextBlock>
+            <Viewbox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Margin="2,2,2,2">Directories:</TextBlock>
             </Viewbox>
 
             <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="2,2,2,2">Selected Files:</TextBlock>
+                <TextBlock Margin="2,2,2,2">Files:</TextBlock>
             </Viewbox>
+
             <TreeView
                 Grid.Column="0" 
-                Grid.Row="2"
+                Grid.Row="1"
                 x:Name="DirectoryTreeView"
-                ItemsSource="{Binding RootDirectoryItems}"
+                ItemsSource="{Binding RootDirectoryItems}" Margin="0,27,0,0" Grid.RowSpan="3"
             >
                 <!--
                 Setting up a TreeView style
@@ -177,23 +182,21 @@
 
             </TreeView>
 
-
-
-            <Grid Grid.Column="2" Grid.Row="2">
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="3.5*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
                 <ListView
-                Grid.Row="0"
-                x:Name="SelectedItemsList" 
+                    Grid.Row="0"
+                    x:Name="SelectedItemsList" 
                 
-                Width="auto"
-                Height="auto"
-                Background="White"
-                ItemsSource="{Binding Items}" Margin="0,0,0,50"
-            >
+                    Width="auto"
+                    Height="auto"
+                    Background="White"
+                    ItemsSource="{Binding Items}" Margin="0,0,0,50"
+                >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -247,14 +250,16 @@
                             x:Name="decrypt"
                             Click="decrypt_Click"
                             Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                            ToolTip="Encrypt File"
+                            ToolTip="Decrypt File"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Margin="3,10,3,76" 
                         >
                             <materialDesign:PackIcon
-                                Kind="Lock" 
+                                Kind="LockOpen" 
                              />
                         </Button>
                     </Grid>
+
+
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -337,6 +342,7 @@
                         </Button>
                         -->
                     </Grid>
+
                 </Grid>
             </Grid>
         </Grid>
@@ -346,13 +352,13 @@
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.08*"/>
                 <RowDefinition Height="12.5*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <!-- Top panel grid -->
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Background="#E8E8E8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="0.6*" />
@@ -464,7 +470,7 @@
                     <ListView.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.ContainerStyle>
-                                <Style TargetType="{x:Type GroupItem}">
+                                <Style TargetType="{x:Type GroupItem}" >
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate>
@@ -544,6 +550,10 @@
             </Grid>
 
         </Grid>
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="#E8E8E8">
+            
+        </Grid>
         <!-- End Workspace Grid-->
+        
     </Grid>
 </Window>
