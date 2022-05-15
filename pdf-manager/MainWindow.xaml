@@ -228,7 +228,7 @@
                              Text="Insert"
                              MaxWidth="150"
                              MaxHeight="50"
-                             FontSize="13"
+                             FontSize="14"
                              GotFocus="textEncryptPassword_GotFocus"
                              LostFocus="textEncryptPassword_LostFocus" Height="25"
                         />
@@ -392,7 +392,7 @@
                          Text="Enter Searching Text" 
                          GotFocus="searching_word_GotFocus" 
                          Grid.Column="0"
-                         FontSize="15"
+                         FontSize="14"
                          VerticalAlignment="Center" LostFocus="searching_word_LostFocus"
                 />
                 <!--
