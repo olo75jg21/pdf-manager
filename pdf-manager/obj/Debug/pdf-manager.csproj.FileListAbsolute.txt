@@ -282,3 +282,5 @@ C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager.csproj.CopyComplete
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager.exe
 C:\Users\admin\Desktop\Nowy folder\pdf-manager\pdf-manager\obj\Debug\pdf-manager.pdb
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\CustomMessageBox.g.cs
+C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\CustomMessageBox.baml

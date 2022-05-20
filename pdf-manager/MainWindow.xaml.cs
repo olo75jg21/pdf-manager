@@ -48,6 +48,7 @@ namespace pdf_manager
 {
     public partial class MainWindow : Window
     {
+
         List<files_info> easySearchFilesInfo = new List<files_info>();
 
         string pathToSavePreview = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "preview.pdf");
@@ -118,6 +119,10 @@ namespace pdf_manager
             PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("NamedPage");
             view.GroupDescriptions.Add(groupDescription);
             view.GroupDescriptions.Add(groupDescription2);
+
+            CustomMessageBox cMessage = new CustomMessageBox();
+            cMessage.information.Content = "Password was changed/set";
+            cMessage.ShowDialog();
         }
 
         // przycisk pod drzewkiem, dodajacy wybrane pliki
@@ -161,7 +166,11 @@ namespace pdf_manager
                                         historyPasswordOfSelectedFiles[file.FilePath] = win.newPassword.Password.ToString();
                                     }
                                     else
-                                        System.Windows.MessageBox.Show("Invalid password to PDF");
+                                    {
+                                        CustomMessageBox cMessage = new CustomMessageBox();
+                                        cMessage.information.Content = "Invalid password to PDF";
+                                        cMessage.ShowDialog();
+                                    }
                                 }
                             }
                         }
@@ -182,7 +191,11 @@ namespace pdf_manager
                                     historyPasswordOfSelectedFiles.Add(file.FilePath, win.newPassword.Password.ToString());
                                 }
                                 else
-                                    System.Windows.MessageBox.Show("Invalid password to PDF");
+                                {
+                                    CustomMessageBox cMessage = new CustomMessageBox();
+                                    cMessage.information.Content = "Invalid password to PDF";
+                                    cMessage.ShowDialog();
+                                }
                             }
                         }
                     }
@@ -450,20 +463,20 @@ namespace pdf_manager
             previewFunction(sender, null);
 
             // okno dialogowe do wybrania folderu zapisu 
-            var folderBrowserDialog1 = new FolderBrowserDialog();
+            var folderBrowserDialog1 = new SaveFileDialog();
+            folderBrowserDialog1.Filter = "Plik PDF|*.pdf";
+
             DialogResult result = folderBrowserDialog1.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 // sciezka do zapisu pdfa
                 string pathToSaveCompleted;
-                if (userPath.Text == "Insert Path" || userPath.Text == "")
-                {
-                    userPath.Text = "Insert File Name";
-                    userPath.Background = System.Windows.Media.Brushes.Red;
-                    return;
-                }
-                pathToSaveCompleted = System.IO.Path.Combine(folderBrowserDialog1.SelectedPath, userPath.Text + ".pdf");
+                pathToSaveCompleted = folderBrowserDialog1.FileName;
+
+                // usuwamy jak taki plik istnial 
+                if( File.Exists(pathToSaveCompleted) )
+                    File.Delete(pathToSaveCompleted);
 
                 // wybieranie odpowiedniego pliku do zapisu z podkresleniem lub bez 
                 string fileToSave;
@@ -472,31 +485,16 @@ namespace pdf_manager
                 else
                     fileToSave = pathToSavePreview;
                 
-                
-                if (File.Exists(pathToSaveCompleted))
-                {
-                    userPath.Text = "File Exists";
-                    userPath.Background = System.Windows.Media.Brushes.Red;
-                    return;
-                }
-
                 if (File.Exists(fileToSave))
                 {
                     // sprawdzenie czy ktos chce miec ustawione haslo 
                     if (passwordChecked.IsChecked == true)
                     {
-                        // sprawdzenie czy pole z haslem nie jest puste 
-                        if (password.Text == "Insert Password" || password.Text == "")
-                        {
-                            password.Text = "Insert Password";
-                            password.Background = System.Windows.Media.Brushes.Red;
-                            return;
-                        }
                         // utworzenie kopii pliku w nowej lokalizacji z haslem - inaczej sie nie da w itext
                         using (Stream output = new FileStream(pathToSaveCompleted, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
                             iTextSharp.text.pdf.PdfReader reader = new iTextSharp.text.pdf.PdfReader(fileToSave);
-                            string Password = password.Text;
+                            string Password = password.Password;
                             PdfEncryptor.Encrypt(reader, output, true, Password, Password, PdfWriter.ALLOW_PRINTING);
                         }
                     }
@@ -558,35 +556,6 @@ namespace pdf_manager
                 File.Delete(pathToSaveHighlight);
         }
 
-        // po kliknieciu w texboxa znika tekst 
-        private void password_GotFocus(object sender, RoutedEventArgs e)
-        {
-            password.Text = "";
-            // password.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#ffffff");
-        }
-
-         private void password_LostFocus(object sender, RoutedEventArgs e)
-         {
-            if (password.Text.Length == 0)
-            {
-               password.Text = "Password";
-            }
-         }
-
-      // po kliknieciu w texboxa znika tekst i zmienia sie kolor na standardowy jesli nazwa pliku istaniala 
-       private void userPath_GotFocus(object sender, RoutedEventArgs e)
-        {
-            userPath.Text = "";
-        }
-
-      private void userPath_LostFocus(object sender, RoutedEventArgs e)
-      {
-         if (userPath.Text.Length == 0)
-         {
-            userPath.Text = "File name";
-         }
-      }
-
       private void searching_word_GotFocus(object sender, RoutedEventArgs e)
         {
             searching_word.Text = "";
@@ -597,19 +566,6 @@ namespace pdf_manager
          if (searching_word.Text.Length == 0)
          {
             searching_word.Text = "Enter Searching Text";
-         }
-      }
-
-      private void textEncryptPassword_GotFocus(object sender, RoutedEventArgs e)
-      {
-         textEncryptPassword.Text = "";
-      }
-
-      private void textEncryptPassword_LostFocus(object sender, RoutedEventArgs e)
-      {
-         if (textEncryptPassword.Text.Length == 0)
-         {
-            textEncryptPassword.Text = "Insert";
          }
       }
 
@@ -746,30 +702,34 @@ namespace pdf_manager
             string encryptFile = selectedFilesPath[0];
             string password = selectedFilesPassword[0];
 
-            if (selectedFilesPath.Count == 1 && textEncryptPassword.Text != "")
+
+            if (selectedFilesPath.Count == 1 && textEncryptPassword.Password != "")
             {
 
                     PdfSharp.Pdf.PdfDocument document = PdfSharp.Pdf.IO.PdfReader.Open(encryptFile, password);
                     PdfSecuritySettings securitySettings = document.SecuritySettings;
 
-                    securitySettings.UserPassword = textEncryptPassword.Text;
-                    securitySettings.OwnerPassword = textEncryptPassword.Text;
+                    securitySettings.UserPassword = textEncryptPassword.Password;
+                    securitySettings.OwnerPassword = textEncryptPassword.Password;
 
-                    selectedFilesPassword[0] = textEncryptPassword.Text;
+                    selectedFilesPassword[0] = textEncryptPassword.Password;
 
                     if (historyPasswordOfSelectedFiles.ContainsKey(selectedFilesPassword[0]))
-                        historyPasswordOfSelectedFiles[encryptFile] = textEncryptPassword.Text;
+                        historyPasswordOfSelectedFiles[encryptFile] = textEncryptPassword.Password;
                     else
-                        historyPasswordOfSelectedFiles.Add(encryptFile, textEncryptPassword.Text);
+                        historyPasswordOfSelectedFiles.Add(encryptFile, textEncryptPassword.Password);
 
-                if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
-                        encryptPasswordHistory[encryptFile] = textEncryptPassword.Text + " " + DateTime.Now;
+                    if ( encryptPasswordHistory.Count != 0 && encryptPasswordHistory.ContainsKey(encryptFile))
+                        encryptPasswordHistory[encryptFile] = textEncryptPassword.Password + " " + DateTime.Now;
                     else
-                        encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Text + " " + DateTime.Now);
+                        encryptPasswordHistory.Add(encryptFile, textEncryptPassword.Password + " " + DateTime.Now);
 
                     document.Save(encryptFile);
                     document.Close();
-                    System.Windows.MessageBox.Show("Password was changed/set");
+
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Password was changed/set";
+                    cMessage.ShowDialog();
             }
         }
 
@@ -782,7 +742,9 @@ namespace pdf_manager
             {
                 if( password == "")
                 {
-                    System.Windows.MessageBox.Show("File doesn't have password");
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "File doesn't have password";
+                    cMessage.ShowDialog();
                     return;
                 }
                 else
@@ -804,7 +766,10 @@ namespace pdf_manager
 
                     document.Save(decryptFile);
                     document.Close();
-                    System.Windows.MessageBox.Show("Password was removed");
+
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Password was removed";
+                    cMessage.ShowDialog();
                 }
             }
         }
@@ -882,7 +847,9 @@ namespace pdf_manager
                     historyShow();
                 else
                 {
-                    System.Windows.MessageBox.Show("Password is invalid");
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Password is invalid";
+                    cMessage.Show();
                     return;
                 }
             }
@@ -945,7 +912,9 @@ namespace pdf_manager
 
                         if (String.ReferenceEquals(newHash, String.Empty))
                         {
-                            System.Windows.MessageBox.Show("Need to insert new password - password reset was canceled");
+                            CustomMessageBox cMessage = new CustomMessageBox();
+                            cMessage.information.Content = "Need to insert new password - password reset was canceled";
+                            cMessage.ShowDialog();
                             return;
                         }
 
@@ -972,17 +941,45 @@ namespace pdf_manager
 
                     string newHash = GenerateHash(win.newPassword.Password.ToString(), salt);
                     passwordManagerPassword = new Tuple<string, string>(newHash, salt);
-                    System.Windows.MessageBox.Show("Password was changed");
+
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Password was changed";
+                    cMessage.ShowDialog();
                 }
                 else if( !AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2)
                     && win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString())
-                    System.Windows.MessageBox.Show("Old password is invalid and new passwords do not match");
+                {
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Old password is invalid and new passwords do not match";
+                    cMessage.ShowDialog();
+                }
                 else if(!AreEqual(win.oldPassword.Password.ToString(), passwordManagerPassword.Item1, passwordManagerPassword.Item2) )
-                    System.Windows.MessageBox.Show("Old password is invalid");
+                {
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "Old password is invalid";
+                    cMessage.ShowDialog();
+                }
                 else if(win.newPassword.Password.ToString() != win.newPasswordCheck.Password.ToString() )
-                    System.Windows.MessageBox.Show("New passwords do not match");
-
+                {
+                    CustomMessageBox cMessage = new CustomMessageBox();
+                    cMessage.information.Content = "New passwords do not match";
+                    cMessage.ShowDialog();
+                }
             }
+        }
+
+        private void passwordChecked_Clicked(object sender, RoutedEventArgs e)
+        {
+            password.Password = "";
+            if (passwordChecked.IsChecked == true)
+                password.Visibility = Visibility.Visible;
+            else
+                password.Visibility = Visibility.Hidden;
+        }
+
+        private void textEncryptPassword_LostFocus(object sender, RoutedEventArgs e)
+        {
+            textEncryptPassword.Password = "";
         }
     }
 }
