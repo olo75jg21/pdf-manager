@@ -804,7 +804,11 @@ namespace pdf_manager
 
        private void historyShow()
        {
-            if (System.Windows.MessageBox.Show("Are u sure? Workspace will be cleared", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            ConfirmationBox confirmBox = new ConfirmationBox();
+            confirmBox.information.Content = "Are u sure? Workspace will be cleared";
+            bool? res = confirmBox.ShowDialog();
+
+            if(res.Value == true)
                 return;
 
             clear_Click(null, null);
@@ -903,8 +907,11 @@ namespace pdf_manager
 
             if (passwordManagerPassword.Item1 != String.Empty && result.Value == true)
             {
-                if (System.Windows.MessageBox.Show("All saved passwords will be removed? Continue?", "Password Manager Password",
-                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                ConfirmationBox confirmBox = new ConfirmationBox();
+                confirmBox.information.Content = "All saved passwords will be removed? Continue?";
+                bool? res = confirmBox.ShowDialog();
+
+                if (res.Value == true)
                 {
                         string salt = CreateSalt();
 
