@@ -119,10 +119,6 @@ namespace pdf_manager
             PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("NamedPage");
             view.GroupDescriptions.Add(groupDescription);
             view.GroupDescriptions.Add(groupDescription2);
-
-            CustomMessageBox cMessage = new CustomMessageBox();
-            cMessage.information.Content = "Password was changed/set";
-            cMessage.ShowDialog();
         }
 
         // przycisk pod drzewkiem, dodajacy wybrane pliki
