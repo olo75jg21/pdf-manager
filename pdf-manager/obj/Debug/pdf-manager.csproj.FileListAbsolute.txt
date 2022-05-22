@@ -286,3 +286,7 @@ C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\CustomMessageBox
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\CustomMessageBox.baml
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\ConfirmationBox.g.cs
 C:\Users\Tomek\source\repos\pdf---manager\pdf-manager\obj\Debug\ConfirmationBox.baml
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\ConfirmationBox.g.cs
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\CustomMessageBox.g.cs
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\ConfirmationBox.baml
+D:\Projects\C#\repos\eng_project\pdf-manager\obj\Debug\CustomMessageBox.baml

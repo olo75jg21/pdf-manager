@@ -76,74 +76,85 @@
                 </Button>
                 -->
 
-                <Button 
+
+            </Grid>
+            <!-- End Add and delete directory/file buttons Grid-->
+
+            <DockPanel Background="#FFB5B5B5" Grid.Row="1" HorizontalAlignment="Stretch" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" FontSize="14" FontWeight="Bold">Directories:</TextBlock>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button 
+                    Height="25"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                     Grid.Column="0" 
                     Grid.Row="0"
                     Click="ButtonAddDirectory_Click"
                     
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                    HorizontalAlignment="Center"
                     ToolTip="Add new directory"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FF339740" FontWeight="Normal"
                 >
-                    <materialDesign:PackIcon
+                        <materialDesign:PackIcon
                     Kind="CardPlus" />
-                </Button>
+                    </Button>
 
-                <Button 
-                Grid.Column="1" 
-                Grid.Row="0"
-                Click="ButtonRemoveDirectory_Click"
-                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                HorizontalAlignment="Center"
-                ToolTip="Remove selected directory"
-                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                    <Button 
+                    Height="25"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                    Grid.Column="1" 
+                    Grid.Row="0"
+                    Click="ButtonRemoveDirectory_Click"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    ToolTip="Remove selected directory"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FFD43838" 
                 >
-                    <materialDesign:PackIcon
+                        <materialDesign:PackIcon
                     Kind="CardMinus" />
-                </Button>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
 
-                <Button 
-                Grid.Column="2" 
-                Grid.Row="0"
-                Click="ButtonAddSelectedTreeItems_Click"
-                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                HorizontalAlignment="Center"
-                ToolTip="Add file to selected list"
-                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+            <DockPanel Background="#FFB5B5B5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" FontSize="14" FontWeight="Bold">Files:</TextBlock>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button 
+                    Height="25"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                    Grid.Column="2" 
+                    Grid.Row="0"
+                    Click="ButtonAddSelectedTreeItems_Click"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    ToolTip="Add file to selected list"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FF339740" 
                 >
-                    <materialDesign:PackIcon
+                        <materialDesign:PackIcon
                     Kind="Plus" />
-                </Button>
+                    </Button>
 
-                <Button 
-                Grid.Column="3" 
-                Grid.Row="0"
-                Click="ButtonRemoveSelectedTreeItems_Click"
-                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                HorizontalAlignment="Center"
-                ToolTip="Remove file from selected list"
-                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
-                >
-                    <materialDesign:PackIcon
-                    Kind="Minus" />
-                </Button>
-            </Grid>
-            <!-- End Add and delete directory/file buttons Grid-->
-
-            <Viewbox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="2,2,2,2">Directories:</TextBlock>
-            </Viewbox>
-
-            <Viewbox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="2,2,2,2">Files:</TextBlock>
-            </Viewbox>
+                    <Button 
+                    Height="25"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                    Grid.Column="3" 
+                    Grid.Row="0"
+                    Click="ButtonRemoveSelectedTreeItems_Click"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    ToolTip="Remove file from selected list"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FFD43838" 
+                    >
+                        <materialDesign:PackIcon
+                        Kind="Minus" />
+                    </Button>
+                </StackPanel>
+            </DockPanel>
 
             <TreeView
                 Grid.Column="0" 
                 Grid.Row="1"
                 x:Name="DirectoryTreeView"
                 ItemsSource="{Binding RootDirectoryItems}" Margin="0,27,0,0" Grid.RowSpan="3"
+                Background="#FFF1F1F1" BorderThickness="0,0,1,0" BorderBrush="Black"
             >
                 <!--
                 Setting up a TreeView style
@@ -182,10 +193,12 @@
 
             </TreeView>
 
-            <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3">
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3" Background="#FFF1F1F1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="3.5*" />
-                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="14*" />
+                    <RowDefinition Height="137*"/>
+                    <RowDefinition Height="371*"/>
+                    <RowDefinition Height="149*" />
                 </Grid.RowDefinitions>
 
                 <ListView
@@ -194,8 +207,8 @@
                 
                     Width="auto"
                     Height="auto"
-                    Background="White"
                     ItemsSource="{Binding Items}" Margin="0,0,0,50"
+                    Background="red" BorderThickness="1,0,0,0" Grid.RowSpan="3"
                 >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -206,7 +219,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="2" Margin="0,371,0,0" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
