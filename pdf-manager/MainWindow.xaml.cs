@@ -824,7 +824,7 @@ namespace pdf_manager
             Window2 win = new Window2();
 
             if(passwordManagerPassword.Item1 == String.Empty)
-                win.passwordLabel.Content = "Insert new password for a password history display";
+                win.passwordLabel.Content = "Insert password to display passwords";
             else
                 win.passwordLabel.Content = "Insert authentication password"; 
 
@@ -899,7 +899,7 @@ namespace pdf_manager
         private void resetPassword(object sender, RoutedEventArgs e)
         {
             Window2 win = new Window2();
-            win.passwordLabel.Content = "Insert new password for a password history display";
+            win.passwordLabel.Content = "Reset password for passwords history";
             bool? result = win.ShowDialog();
 
             if (passwordManagerPassword.Item1 != String.Empty && result.Value == true)

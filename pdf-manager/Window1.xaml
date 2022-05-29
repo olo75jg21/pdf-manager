@@ -18,10 +18,9 @@
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}" ResizeMode="CanMinimize"
+        Background="{DynamicResource MaterialDesignDarkBackground}"
         >
-    <Grid  Background="#E8E8E8">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
@@ -76,7 +75,7 @@
 
             <Label 
                 Grid.Column="0"
-                Content="Repeat password:" 
+                Content="Confirm password:" 
                 FontSize="16"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"

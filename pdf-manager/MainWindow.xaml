@@ -17,7 +17,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         
         Title="Pdf Manager" Height="800" Width="1200" Closed="Window_Closed" Loaded="Window_Loaded">
-
+    
     <Window.Resources>
         <BitmapImage x:Key="icoFolder" UriSource="pack://application:,,,/pdf-manager;component/Resources/folder.ico"/>
         <BitmapImage x:Key="icoFile" UriSource="pack://application:,,,/pdf-manager;component/Resources/file.ico"/>
@@ -56,12 +56,92 @@
 
             <!-- Add and delete directory/file buttons Grid-->
             <Grid Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="3,0,3,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+
+                    <Button 
+                            Margin="20,0,20,0"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            x:Name="mergeAllButton"
+                            Click="mergeAllButton_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Merge All"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                        <materialDesign:PackIcon
+                            Kind="Merge" 
+                        />
+                    </Button>
+
+                    <Button x:Name="passwordHistory" 
+                            Margin="20,0,20,0"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Click="passwordHistory_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Password History"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                        <materialDesign:PackIcon
+                                Kind="History" 
+                            />
+                    </Button>
+
+                    <Button 
+                            Margin="20,0,20,0"
+                            x:Name="reset" 
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Click="resetPassword"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Reset Password"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                        <materialDesign:PackIcon
+                                Kind="LockReset" 
+                            />
+                    </Button>
+
+                    <Button 
+                            Margin="20,0,20,0"
+                            x:Name="change"
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Click="changePassword"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            ToolTip="Change Password"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                        >
+                        <materialDesign:PackIcon
+                                Kind="KeyChange" 
+                            />
+                    </Button>
+
+                    <!--
+                        <Button
+                            HorizontalAlignment="Center" 
+                            Grid.Row="1"
+                            FontSize="14"
+                            Width="130"
+                            x:Name="mergeButton"
+                            Click="mergeButton_Click"
+                            VerticalAlignment="Top"
+                         >
+                            Merge Selected
+                        </Button>
+                        -->
+                </Grid>
+
 
                 <!--
                 <Button
@@ -203,7 +283,7 @@
                     <RowDefinition Height="14*" />
                     <RowDefinition Height="137*"/>
                     <RowDefinition Height="371*"/>
-                    <RowDefinition Height="149*" />
+                    <RowDefinition Height="50*" />
                 </Grid.RowDefinitions>
 
                 <ListView
@@ -224,15 +304,12 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Grid Grid.Row="2" Margin="0,371,0,0" Grid.RowSpan="2">
+                <Grid Grid.Row="2" Margin="0,400,0,0" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
 
-
-
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Height="44" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="1*" />
@@ -283,89 +360,6 @@
                              />
                         </Button>
                     -->
-
-
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="0.9*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="1*" />
-                        </Grid.RowDefinitions>
-
-
-                        <Button 
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            x:Name="mergeAllButton"
-                            Click="mergeAllButton_Click"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                            ToolTip="Merge All"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
-                        >
-                            <materialDesign:PackIcon
-                            Kind="Merge" 
-                        />
-                        </Button>
-
-                        <Button x:Name="passwordHistory" 
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Click="passwordHistory_Click"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                            ToolTip="Password History"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
-                        >
-                            <materialDesign:PackIcon
-                                Kind="History" 
-                            />
-                        </Button>
-
-                        <Button 
-                            x:Name="reset" 
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Click="resetPassword"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                            ToolTip="Reset Password"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
-                        >
-                            <materialDesign:PackIcon
-                                Kind="LockReset" 
-                            />
-                        </Button>
-
-                        <Button 
-                            x:Name="change"
-                            Grid.Row="0"
-                            Grid.Column="3"
-                            Click="changePassword"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                            ToolTip="Change Password"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
-                        >
-                            <materialDesign:PackIcon
-                                Kind="KeyChange" 
-                            />
-                        </Button>
-
-                        <!--
-                        <Button
-                            HorizontalAlignment="Center" 
-                            Grid.Row="1"
-                            FontSize="14"
-                            Width="130"
-                            x:Name="mergeButton"
-                            Click="mergeButton_Click"
-                            VerticalAlignment="Top"
-                         >
-                            Merge Selected
-                        </Button>
-                        -->
-                    </Grid>
 
                 </Grid>
             </Grid>
