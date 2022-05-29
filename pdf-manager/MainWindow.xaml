@@ -13,7 +13,7 @@
         TextElement.FontWeight="Regular"
         TextElement.FontSize="12"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="{DynamicResource MaterialDesignDarkBackground}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
         Title="Pdf Manager" Height="800" Width="1200" Closed="Window_Closed" Loaded="Window_Loaded">
@@ -55,7 +55,7 @@
             </Grid.RowDefinitions>
 
             <!-- Add and delete directory/file buttons Grid-->
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Background="#E8E8E8">
+            <Grid Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
@@ -80,54 +80,54 @@
             </Grid>
             <!-- End Add and delete directory/file buttons Grid-->
 
-            <DockPanel Background="#FFB5B5B5" Grid.Row="1" HorizontalAlignment="Stretch" LastChildFill="False">
-                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" FontSize="14" FontWeight="Bold">Directories:</TextBlock>
+            <DockPanel Background="#383838" Grid.Row="1" HorizontalAlignment="Stretch" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" Foreground="#cccccc" FontSize="14" FontWeight="Bold">Directories:</TextBlock>
 
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2,0,2,0">
                     <Button 
                     Height="25"
                     Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                     Grid.Column="0" 
                     Grid.Row="0"
                     Click="ButtonAddDirectory_Click"
-                    
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                     ToolTip="Add new directory"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FF339740" FontWeight="Normal"
+                    BorderBrush="#cccccc"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#3c3c3c" Padding="5,0,5,0"
                 >
                         <materialDesign:PackIcon
-                    Kind="CardPlus" />
+                        Kind="Plus" />
                     </Button>
-
+                
                     <Button 
                     Height="25"
                     Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                     Grid.Column="1" 
                     Grid.Row="0"
                     Click="ButtonRemoveDirectory_Click"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    BorderBrush="#cccccc"
+                    
                     ToolTip="Remove selected directory"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FFD43838" 
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#3c3c3c" Padding="5,0,5,0" 
                 >
                         <materialDesign:PackIcon
-                    Kind="CardMinus" />
+                        Kind="Minus" />
                     </Button>
                 </StackPanel>
             </DockPanel>
 
-            <DockPanel Background="#FFB5B5B5" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" LastChildFill="False">
-                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" FontSize="14" FontWeight="Bold">Files:</TextBlock>
+            <DockPanel Background="#383838" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="2,2,2,2" FontSize="14" FontWeight="Bold" Foreground="#cccccc">Files:</TextBlock>
 
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Width="50" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,2,0">
                     <Button 
                     Height="25"
                     Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
                     Grid.Column="2" 
                     Grid.Row="0"
                     Click="ButtonAddSelectedTreeItems_Click"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    BorderBrush="#cccccc"
                     ToolTip="Add file to selected list"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FF339740" 
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#3c3c3c" Padding="5,0,5,0" 
                 >
                         <materialDesign:PackIcon
                     Kind="Plus" />
@@ -139,12 +139,12 @@
                     Grid.Column="3" 
                     Grid.Row="0"
                     Click="ButtonRemoveSelectedTreeItems_Click"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    BorderBrush="#cccccc"
                     ToolTip="Remove file from selected list"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#FFD43838" 
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Background="#3c3c3c" Padding="5,0,5,0" 
                     >
                         <materialDesign:PackIcon
-                        Kind="Minus" />
+                    Kind="Minus" />
                     </Button>
                 </StackPanel>
             </DockPanel>
@@ -154,7 +154,7 @@
                 Grid.Row="1"
                 x:Name="DirectoryTreeView"
                 ItemsSource="{Binding RootDirectoryItems}" Margin="0,27,0,0" Grid.RowSpan="3"
-                Background="#FFF1F1F1" BorderThickness="0,0,1,0" BorderBrush="Black"
+                Background="#252526" BorderThickness="0,0,1,0" BorderBrush="Black"
             >
                 <!--
                 Setting up a TreeView style
@@ -193,7 +193,7 @@
 
             </TreeView>
 
-            <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3" Background="#FFF1F1F1">
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3" Background="#252526">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="14*" />
                     <RowDefinition Height="137*"/>
@@ -208,7 +208,7 @@
                     Width="auto"
                     Height="auto"
                     ItemsSource="{Binding Items}" Margin="0,0,0,50"
-                    Background="red" BorderThickness="1,0,0,0" Grid.RowSpan="3"
+                    Background="#252526" BorderThickness="1,0,0,0" Grid.RowSpan="3"
                 >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -377,7 +377,7 @@
             </Grid.RowDefinitions>
 
             <!-- Top panel grid -->
-            <Grid Grid.Row="0" Background="#E8E8E8">
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="1.8*" />
@@ -393,6 +393,8 @@
                          TextWrapping="Wrap" 
                          Text="Enter Searching Text" 
                          GotFocus="searching_word_GotFocus" 
+                         Foreground="#cccccc"
+                         Background="#3c3c3c"
                          Grid.Column="0"
                          FontSize="14"
                          VerticalAlignment="Center" LostFocus="searching_word_LostFocus"
@@ -535,7 +537,7 @@
                                                 <Expander IsExpanded="False">
                                                     <Expander.Header>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="10" VerticalAlignment="Bottom" />
+                                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#cccccc" FontSize="10" VerticalAlignment="Bottom" />
                                                             <TextBlock Text="{Binding ItemCount}" FontSize="10" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
                                                             <TextBlock Text=" item(s)" FontSize="10" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
                                                         </StackPanel>
@@ -592,7 +594,7 @@
             </Grid>
 
         </Grid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="#E8E8E8">
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="#383838">
 
         </Grid>
         <!-- End Workspace Grid-->
