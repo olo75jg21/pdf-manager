@@ -18,6 +18,7 @@ using PdfSharp.Pdf.Security;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Windows.Data;
+using System.Text.RegularExpressions;
 
 /// klasa wybranych pdfow do pracy
 class files_info
@@ -348,6 +349,9 @@ namespace pdf_manager
                     string[] words;
                     string line;
 
+                    // do regex
+                    Regex rg = new Regex(szukana_fraza);
+
                     for (int i = 1; i <= reader.NumberOfPages; i++)
                     {
                         string text = PdfTextExtractor.GetTextFromPage(reader, i, new LocationTextExtractionStrategy());
@@ -358,7 +362,7 @@ namespace pdf_manager
                             line = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(words[x]));
                             string lineToCheck = case_sensitivity.IsChecked == false ? line.ToLower() : line;
 
-                            if (lineToCheck.Contains(szukana_fraza))
+                            if (regex.IsChecked == true ? rg.IsMatch(lineToCheck) : lineToCheck.Contains(szukana_fraza))
                             {
                                 // linijki o wygladzie syf
                                 ResultItems.Add(new ResultItem(licznik, path, i, x + 1, line));
