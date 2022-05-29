@@ -206,16 +206,17 @@ namespace pdf_manager
 
         private void ButtonRemoveSelectedTreeItems_Click(object sender, RoutedEventArgs e)
         {
-            String file = SelectedItemsList.SelectedItem as String;
-            if (file != null)
-            {
-                if (selectedFilesPath.Contains(file))
+            List<string> selected = SelectedItemsList.SelectedItems.OfType<string>().ToList();
+            foreach (String file in selected)
+                if (file != null)
                 {
-                    selectedFilesPassword.RemoveAt(selectedFilesPath.IndexOf(file));
+                    if (selectedFilesPath.Contains(file))
+                    {
+                        selectedFilesPassword.RemoveAt(selectedFilesPath.IndexOf(file));
                     
-                    selectedFilesPath.Remove(file);
+                        selectedFilesPath.Remove(file);
+                    }
                 }
-            }
         }
 
         // przycisk nad drzewkiem katalogu, umozliwiajacy dodanie nowego katalogu
