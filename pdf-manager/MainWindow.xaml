@@ -17,7 +17,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         
         Title="Pdf Manager" Height="800" Width="1200" Closed="Window_Closed" Loaded="Window_Loaded">
-    
+
     <Window.Resources>
         <BitmapImage x:Key="icoFolder" UriSource="pack://application:,,,/pdf-manager;component/Resources/folder.ico"/>
         <BitmapImage x:Key="icoFile" UriSource="pack://application:,,,/pdf-manager;component/Resources/file.ico"/>
@@ -177,7 +177,7 @@
                         <materialDesign:PackIcon
                         Kind="Plus" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Button>
-                
+
                     <Button 
                     Height="25"
                     Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
@@ -234,7 +234,7 @@
                 Grid.Row="1"
                 x:Name="DirectoryTreeView"
                 ItemsSource="{Binding RootDirectoryItems}" Margin="0,27,0,0" Grid.RowSpan="3"
-                Background="#252526" BorderThickness="0,0,1,0" BorderBrush="Black"
+                Background="#252526" BorderThickness="0,0,1,0" BorderBrush="#FF512DA8"
             >
                 <!--
                 Setting up a TreeView style
@@ -280,10 +280,12 @@
 
             <Grid Grid.Column="1" Grid.Row="1" Margin="0,27,0,0" Grid.RowSpan="3" Background="#252526">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="14*" />
-                    <RowDefinition Height="137*"/>
-                    <RowDefinition Height="371*"/>
-                    <RowDefinition Height="50*" />
+                    <RowDefinition Height="16*" />
+                    <RowDefinition Height="161*"/>
+                    <RowDefinition Height="128*"/>
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="307*"/>
+                    <RowDefinition Height="59*" />
                 </Grid.RowDefinitions>
 
                 <ListView
@@ -293,7 +295,7 @@
                     Width="auto"
                     Height="auto"
                     ItemsSource="{Binding Items}" Margin="0,0,0,50"
-                    Background="#252526" BorderThickness="1,0,0,0" Grid.RowSpan="3" FontSize="12"
+                    Background="#252526" BorderThickness="1,0,0,0" Grid.RowSpan="5" FontSize="12"
                 >
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -304,7 +306,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <Grid Grid.Row="2" Margin="0,400,0,0" Grid.RowSpan="2">
+                <Grid Grid.Row="4" Margin="0,272,0,0" Grid.RowSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
@@ -444,7 +446,7 @@
                     x:Name="regex"
                     FontSize="14"
                 />
-                
+
                 <CheckBox
                     Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                     IsChecked="False"
@@ -579,7 +581,7 @@
                     <ColumnDefinition Width="0.6*" />
                 </Grid.ColumnDefinitions>
 
-                
+
                 <CheckBox
                     Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                     IsChecked="False"
